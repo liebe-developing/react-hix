@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
-import { Dashboard, PricePlan } from "./pages";
+import { Dashboard, PricePlan,Tool } from "./pages";
+
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="/" element={<PricePlan />} />
+        <Route path="/Tool" element={<Tool />} />
       </Route>
     </Routes>
   );
