@@ -9,7 +9,7 @@ const DarkModeButton = ({ colorMode, toggleColorMode, scrolled }) => {
       onClick={toggleColorMode}
       variant="ghost"
       display="flex"
-      w="fit-content"
+      size={{ base: "sm", md: "md" }}
     >
       {colorMode === "light" ? (
         <BsMoonStarsFill

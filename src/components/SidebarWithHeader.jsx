@@ -236,7 +236,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         </svg>
       </Text>
 
-      <HStack spacing={{ base: "0", md: "6" }}>
+      <HStack spacing={{ base: "1.5", md: "1" }}>
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton
@@ -247,8 +247,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <HStack>
                 <Avatar
                   // size={"sm"}
-                  width={"40px"}
-                  height={"40px"}
+                  width={{ base: "35px", md: "40px" }}
+                  height={{ base: "35px", md: "40px" }}
                   src={
                     "https://s3-alpha-sig.figma.com/img/8b87/d4ec/07e2adaafa5c876cbc7382f809b9bd51?Expires=1711929600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aDFVBDl3a9HYPxMQKzp-5ENzJXOc~w-4iaafrf2GR3y4KUh1CiV135fHv5sSLdv6DolisHQvUbJIK~ieSYcbJTqjlhz792dhI6pznAqx5k4xub2pW~~PljiBYlqZn3mvA5aT4iAb94G8nvipRjM-jBNKSN0z5f1DiIbqSfdTCwHiEfCdC~pH8jhH~gJR9zju4QgLQPLuUExp3YIiLJxQ3jP90cw7lJOJTCVM5t1R4L5qCAOehWmLfxMrM8XF0TqoPfbJgUqDmz-pNtTfepqNGMFEIIeyURgKS8dEg7mG8zpyl9Q6p0bZwGZJvSic~FR0pwGpmEYolJaSJjgaNNSBAA__"
                   }
@@ -291,13 +291,16 @@ const MobileNav = ({ onOpen, ...rest }) => {
           </Menu>
         </Flex>
         <IconButton
-          size="lg"
+          size={{ base: "sm", md: "md" }}
           variant="ghost"
           aria-label="open menu"
           icon={<FiBell />}
         />
+        <DarkModeButton
+          colorMode={colorMode}
+          toggleColorMode={toggleColorMode}
+        />
       </HStack>
-      <DarkModeButton colorMode={colorMode} toggleColorMode={toggleColorMode} />
     </Flex>
   );
 };
