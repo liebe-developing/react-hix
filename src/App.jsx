@@ -1,4 +1,3 @@
-import { Heading } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import { Dashboard, PricePlan } from "./pages";

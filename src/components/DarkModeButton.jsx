@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button } from "@chakra-ui/react";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
 
