@@ -1,7 +1,17 @@
 import { Heading } from "@chakra-ui/react";
+import { Route, Routes } from "react-router-dom";
+import RootLayout from "./layout/RootLayout";
+import { Dashboard, PricePlan } from "./pages";
 
 function App() {
-  return <Heading>React Hix</Heading>;
+  return (
+    <Routes>
+      <Route path="/" element={<RootLayout />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="/" element={<PricePlan />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
