@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
-import { Dashboard, PricePlan,Tool } from "./pages";
+import { Dashboard, PricePlan,Tool,Order } from "./pages";
 
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="/" element={<PricePlan />} />
         <Route path="/Tool" element={<Tool />} />
+        <Route path="/order" element={<Order />} /> 
       </Route>
     </Routes>
   );

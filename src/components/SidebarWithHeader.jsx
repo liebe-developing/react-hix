@@ -38,6 +38,7 @@ import { GoHome } from "react-icons/go";
 import { ImStatsDots } from "react-icons/im";
 import { TbBasketDollar } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
+import { IoCodeSlash } from "react-icons/io5";
 import DarkModeButton from "./DarkModeButton";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 
@@ -50,6 +51,7 @@ const LinkItems = [
   { name: "درگاه پرداخت", icon: TbBasketDollar, href: "/" },
   { name: "تلگرام", icon: FaTelegramPlane, href: "/" },
   { name: "تنظیمات", icon: IoSettingsOutline, href: "/" },
+  { name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
