@@ -33,15 +33,15 @@ const OneMonthPackageTable = ({ oneMonthPackage }) => {
         <Tbody>
           {oneMonthPackage.map((item, idx) => (
             <Tr key={idx}>
-              <Td>{item.ability}</Td>
-              <Td>
+              <Td fontSize={{ base: "11px", md: "14px" }}>{item.ability}</Td>
+              <Td fontSize={{ base: "11px", md: "14px" }}>
                 {item.free.length > 0 ? (
                   item.free
                 ) : !item.free.length && item.free === true ? (
                   <Icon
                     as={FaCheckCircle}
-                    w="30px"
-                    h="30px"
+                    w={{ base: "25px", md: "30px" }}
+                    h={{ base: "25px", md: "30px" }}
                     borderRadius="50%"
                     fill="#55e655"
                     color="white"
@@ -49,22 +49,22 @@ const OneMonthPackageTable = ({ oneMonthPackage }) => {
                 ) : (
                   <Icon
                     as={FaMinusCircle}
-                    w="30px"
-                    h="30px"
+                    w={{ base: "25px", md: "30px" }}
+                    h={{ base: "25px", md: "30px" }}
                     borderRadius="50%"
                     fill="red"
                     color="white"
                   />
                 )}
               </Td>
-              <Td>
+              <Td fontSize={{ base: "11px", md: "14px" }}>
                 {item.economic.length > 0 ? (
                   item.economic
                 ) : !item.economic.length && item.economic === true ? (
                   <Icon
                     as={FaCheckCircle}
-                    w="30px"
-                    h="30px"
+                    w={{ base: "25px", md: "30px" }}
+                    h={{ base: "25px", md: "30px" }}
                     borderRadius="50%"
                     fill="#55e655"
                     color="white"
@@ -72,22 +72,22 @@ const OneMonthPackageTable = ({ oneMonthPackage }) => {
                 ) : (
                   <Icon
                     as={FaMinusCircle}
-                    w="30px"
-                    h="30px"
+                    w={{ base: "25px", md: "30px" }}
+                    h={{ base: "25px", md: "30px" }}
                     borderRadius="50%"
                     fill="red"
                     color="white"
                   />
                 )}
               </Td>
-              <Td>
+              <Td fontSize={{ base: "11px", md: "14px" }}>
                 {item.professional.length > 0 ? (
                   item.professional
                 ) : !item.professional.length && item.professional === true ? (
                   <Icon
                     as={FaCheckCircle}
-                    w="30px"
-                    h="30px"
+                    w={{ base: "25px", md: "30px" }}
+                    h={{ base: "25px", md: "30px" }}
                     borderRadius="50%"
                     fill="#55e655"
                     color="white"
@@ -95,8 +95,8 @@ const OneMonthPackageTable = ({ oneMonthPackage }) => {
                 ) : (
                   <Icon
                     as={FaMinusCircle}
-                    w="30px"
-                    h="30px"
+                    w={{ base: "25px", md: "30px" }}
+                    h={{ base: "25px", md: "30px" }}
                     borderRadius="50%"
                     fill="red"
                     color="white"
