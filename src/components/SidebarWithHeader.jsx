@@ -23,15 +23,6 @@ import {
   useColorMode,
   Button,
 } from "@chakra-ui/react";
-/* import {
-  Folder,
-  Home,
-  Instagram,
-  Payment,
-  Reports,
-  Settings,
-  Telegram,
-} from "../assets/index"; */
 import { Link, Outlet } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
 import { FaInstagram, FaTelegramPlane, FaRegFolder } from "react-icons/fa";
@@ -70,7 +61,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       {...rest}
     >
       <Flex
-        mb={6}
+        mb={2}
         h="20"
         alignItems="center"
         mx="8"
@@ -104,33 +95,35 @@ const SidebarContent = ({ onClose, ...rest }) => {
           <NavItem icon={link.icon}>{link.name}</NavItem>
         </Link>
       ))}
-      <Box
-        mt={4}
-        boxShadow={"2xl"}
-        background={useColorModeValue("#FFF", "gray.800")}
-        mx={4}
-        p={5}
-        borderRadius="md"
-        cursor="pointer"
-      >
-        <Flex
-          flexDirection="column"
-          textAlign={"center"}
-          justifyContent="center"
-          alignItems="center"
-          gap={"12px"}
+      <Link to="/price-plan">
+        <Box
+          mt={4}
+          boxShadow={"2xl"}
+          background={useColorModeValue("#FFF", "gray.800")}
+          mx={4}
+          p={5}
+          borderRadius="md"
+          cursor="pointer"
         >
-          <Icon
-            as={GrUpgrade}
-            w={"20px"}
-            h={"20px"}
-            color={useColorModeValue("gray.700", "gray.400")}
-          />
-          <Button colorScheme="whatsapp" variant="solid" w="full" size="sm">
-            ارتقا به ویژه
-          </Button>
-        </Flex>
-      </Box>
+          <Flex
+            flexDirection="column"
+            textAlign={"center"}
+            justifyContent="center"
+            alignItems="center"
+            gap={"12px"}
+          >
+            <Icon
+              as={GrUpgrade}
+              w={"20px"}
+              h={"20px"}
+              color={useColorModeValue("gray.700", "gray.400")}
+            />
+            <Button colorScheme="whatsapp" variant="solid" w="full" size="sm">
+              ارتقا به ویژه
+            </Button>
+          </Flex>
+        </Box>
+      </Link>
     </Box>
   );
 };
@@ -145,7 +138,7 @@ const NavItem = ({ icon, children, ...rest }) => {
     >
       <Flex
         align="center"
-        p="4"
+        p="13px"
         mx="4"
         borderRadius="lg"
         role="group"
@@ -174,6 +167,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 
 const MobileNav = ({ onOpen, ...rest }) => {
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Flex
       mr={{ base: 0, md: 60 }}
@@ -225,6 +219,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
         <Flex alignItems={"center"}>
+          <Flex mx={14} gap={4}>
+            <Link to="/sign-in">ورود</Link>
+            <Link to="/sign-up">ثبت نام</Link>
+          </Flex>
           <Menu>
             <MenuButton
               py={2}

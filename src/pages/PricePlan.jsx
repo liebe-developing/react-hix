@@ -1,7 +1,6 @@
 import {
   Box,
   Center,
-  Heading,
   Tab,
   TabList,
   TabPanel,
@@ -12,6 +11,8 @@ import {
   OneYearPackageTable,
   OneMonthPackageTable,
   SixMonthPackageTable,
+  PricePlanHeading,
+  Pricing,
 } from "../components";
 import {
   oneMonthPackage,
@@ -20,41 +21,35 @@ import {
 } from "../constants/index";
 
 const PricePlan = () => {
-  console.log(oneMonthPackage);
   return (
     <Box>
-      <Heading
-        boxShadow="0px -6px 32px -7px rgba(105, 68, 216, 0.75)"
-        fontSize="22px"
-        borderRadius="10px"
-        p="10px 20px"
-        w="fit-content"
-        mb={20}
-        mt={5}
-      >
-        مقایسه امکانات بسته ها
-      </Heading>
       <Center>
         <Tabs colorScheme="purple" w="full">
           <TabList>
-            <Tab w="full" fontSize="22px" fontFamily="Casablanca">
-              1 ماهه
+            <Tab w="full" fontSize="20px">
+              ۱ ماهه
             </Tab>
-            <Tab w="full" fontSize="22px" fontFamily="Casablanca">
-              6 ماهه
+            <Tab w="full" fontSize="20px">
+              ۶ ماهه
             </Tab>
-            <Tab w="full" fontSize="22px" fontFamily="Casablanca">
-              1 ساله
+            <Tab w="full" fontSize="20px">
+              ۱ ساله
             </Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
+              <PricePlanHeading />
+              <Pricing />
               <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
             </TabPanel>
             <TabPanel>
+              <PricePlanHeading />
+              <Pricing />
               <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
             </TabPanel>
             <TabPanel>
+              <PricePlanHeading />
+              <Pricing />
               <OneYearPackageTable oneYearPackage={oneYearPackage} />
             </TabPanel>
           </TabPanels>
