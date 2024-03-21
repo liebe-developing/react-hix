@@ -21,6 +21,7 @@ import {
   MenuItem,
   MenuList,
   useColorMode,
+  Button,
 } from "@chakra-ui/react";
 /* import {
   Folder,
@@ -40,7 +41,7 @@ import { TbBasketDollar } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoCodeSlash } from "react-icons/io5";
 import DarkModeButton from "./DarkModeButton";
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { GrUpgrade } from "react-icons/gr";
 
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/dashboard" },
@@ -65,7 +66,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       pos="fixed"
       h="full"
       overflowY="auto"
-      py={3}
+      py={2.5}
       {...rest}
     >
       <Flex
@@ -105,11 +106,11 @@ const SidebarContent = ({ onClose, ...rest }) => {
       ))}
       <Box
         mt={4}
-        boxShadow="4px 4px 0px 0px #000000"
-        background="rgba(255, 109, 0, 0.3)"
-        border="1px solid #000"
+        boxShadow={"2xl"}
+        background={useColorModeValue("#FFF", "gray.800")}
         mx={4}
         p={5}
+        borderRadius="md"
         cursor="pointer"
       >
         <Flex
@@ -119,31 +120,15 @@ const SidebarContent = ({ onClose, ...rest }) => {
           alignItems="center"
           gap={"12px"}
         >
-          <Text
-            fontSize="16px"
-            fontWeight="700"
-            lineHeight="23px"
-            textAlign="center"
-          >
-            ارتقا پلن ربات
-          </Text>
-          <HStack>
-            <Text
-              fontSize="12px"
-              fontWeight="500"
-              lineHeight="16.6px"
-              textAlign="left"
-            >
-              ارتقا به ویژه
-            </Text>
-            <Icon
-              as={MdKeyboardDoubleArrowLeft}
-              border="1px solid rgba(60, 9, 108, 1)"
-              w={"25px"}
-              h={"25px"}
-              borderRadius="10px"
-            />
-          </HStack>
+          <Icon
+            as={GrUpgrade}
+            w={"20px"}
+            h={"20px"}
+            color={useColorModeValue("gray.700", "gray.400")}
+          />
+          <Button colorScheme="whatsapp" variant="solid" w="full" size="sm">
+            ارتقا به ویژه
+          </Button>
         </Flex>
       </Box>
     </Box>
@@ -281,7 +266,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
             </MenuButton>
             <MenuList
               borderColor={useColorModeValue("gray.200", "gray.600")}
-              fontSize="15px"
+              fontSize={{ base: "13px", md: "15px" }}
             >
               <MenuItem>اعلانات</MenuItem>
               <MenuItem>توصیه حساب</MenuItem>

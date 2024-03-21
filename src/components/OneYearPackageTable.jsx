@@ -30,8 +30,8 @@ const OneYearPackageTable = ({ oneYearPackage }) => {
         <Tbody>
           {oneYearPackage.map((item, idx) => (
             <Tr key={idx}>
-              <Td>{item.ability}</Td>
-              <Td>
+              <Td fontSize={{ base: "11px", md: "14px" }}>{item.ability}</Td>
+              <Td fontSize={{ base: "11px", md: "14px" }}>
                 {item.economic.length > 0 ? (
                   item.economic
                 ) : !item.economic.length && item.economic === true ? (
@@ -54,7 +54,7 @@ const OneYearPackageTable = ({ oneYearPackage }) => {
                   />
                 )}
               </Td>
-              <Td>
+              <Td fontSize={{ base: "11px", md: "14px" }}>
                 {item.professional.length > 0 ? (
                   item.professional
                 ) : !item.professional.length && item.professional === true ? (
