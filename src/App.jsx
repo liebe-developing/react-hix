@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
-import { Dashboard, PricePlan, Tool, Order, SignIn, SignUp } from "./pages";
+import { Dashboard, PricePlan, Tool, Order, SignIn, SignUp, Chats } from "./pages";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
         <Route path="/price-plan" element={<PricePlan />} />
         <Route path="/Tool" element={<Tool />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/chats" element={<Chats />} />
       </Route>
       <Route path="sign-in" element={<SignIn />} />
       <Route path="sign-up" element={<SignUp />} />
