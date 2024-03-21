@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "IRANSans";
-  src: url("./fonts/IRANSans.ttf") format("truetype");
+    font-family: "IRANSans";
+    src: url("./fonts/IRANSans.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Casablanca";
-  src: url("./fonts/Casablanca.ttf") format("truetype");
+    font-family: "Casablanca";
+    src: url("./fonts/Casablanca.ttf") format("truetype");
 }
 
 
+/* CHATS  -- START  */
+
+/* CHATS -- END  */
