@@ -13,12 +13,13 @@ import {
   InputGroup,
   InputLeftElement,
   Icon,
-  Checkbox,
   keyframes,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserAuth } from "../services/Axios/Requests";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -27,16 +28,18 @@ to {transform: translateY(-60px)}
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showRepeatedPassword, setShowRepeatedPassword] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobile: "",
     password: "",
-    repeat_password: "",
   });
 
-  const { name, email, mobile, password, repeat_password } = formData;
+  const toast = useToast();
+  const navigate = useNavigate();
+  const { name, email, mobile, password } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,6 +47,39 @@ const SignUp = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleRegisterUser = (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      setError(false);
+
+      UserAuth("/api/auth/register", formData).then(function (res) {
+        if (res.status === 500 || res.status === 400) {
+          setError(true);
+          return;
+        }
+      });
+      toast({
+        title: `پروفایل شما با موفقیت ساخته شد`,
+        status: "success",
+        position: "top-right",
+        isClosable: true,
+      });
+      setLoading(false);
+      navigate("/sign-in");
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+      toast({
+        title: `مشکلی پیش آمده است`,
+        status: "error",
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
@@ -92,132 +128,98 @@ const SignUp = () => {
             >
               ایجاد حساب کاربری
             </Heading>
-            <Stack spacing={4} dir="rtl">
-              <FormControl id="name">
-                <FormLabel>نام و نام خانوادگی</FormLabel>
-                <Input
-                  px="16px"
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={handleChange}
-                  placeholder="زهره رضایی"
-                />
-              </FormControl>
-
-              <FormControl id="email">
-                <FormLabel>ایمیل</FormLabel>
-                <Input
-                  px="16px"
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={handleChange}
-                  placeholder="example@gmail.com"
-                />
-              </FormControl>
-
-              <FormControl id="email">
-                <FormLabel>موبایل</FormLabel>
-                <Input
-                  px="16px"
-                  type="number"
-                  name="mobile"
-                  value={mobile}
-                  onChange={handleChange}
-                  placeholder="8257***0917"
-                />
-              </FormControl>
-
-              <FormControl id="password">
-                <FormLabel>رمز عبور</FormLabel>
-                <InputGroup>
+            <form onSubmit={handleRegisterUser}>
+              <Flex flexDir="column" gap={4} spacing={4} dir="rtl">
+                <FormControl id="name" isRequired>
+                  <FormLabel>نام و نام خانوادگی</FormLabel>
                   <Input
-                    name="password"
-                    value={password}
-                    onChange={handleChange}
                     px="16px"
-                    pr={4}
-                    type={showPassword ? "text" : "password"}
-                    placeholder="********"
+                    type="text"
+                    name="name"
+                    value={name}
+                    onChange={handleChange}
+                    placeholder="زهره رضایی"
                   />
-                  <InputLeftElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
-                      }
-                    >
-                      {showPassword ? (
-                        <Icon as={FaEye} />
-                      ) : (
-                        <Icon as={FaEyeSlash} />
-                      )}
-                    </Button>
-                  </InputLeftElement>
-                </InputGroup>
-              </FormControl>
+                </FormControl>
 
-              <FormControl id="password">
-                <FormLabel>تکرار رمز عبور</FormLabel>
-                <InputGroup>
+                <FormControl id="email" isRequired>
+                  <FormLabel>ایمیل</FormLabel>
                   <Input
-                    name="repeat_password"
-                    value={repeat_password}
-                    onChange={handleChange}
                     px="16px"
-                    pr={4}
-                    type={showRepeatedPassword ? "text" : "password"}
-                    placeholder="********"
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={handleChange}
+                    placeholder="example@gmail.com"
                   />
-                  <InputLeftElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowRepeatedPassword(
-                          (showRepeatedPassword) => !showRepeatedPassword
-                        )
-                      }
-                    >
-                      {showRepeatedPassword ? (
-                        <Icon as={FaEye} />
-                      ) : (
-                        <Icon as={FaEyeSlash} />
-                      )}
-                    </Button>
-                  </InputLeftElement>
-                </InputGroup>
-              </FormControl>
-              <Box mt={4}>
-                <Checkbox>
-                  <Text fontSize="13px">
-                    من با شرایط استفاده از خدمات موافقم.
-                  </Text>
-                </Checkbox>
-              </Box>
-              <Stack spacing={3}>
-                <Button
-                  bg={"cyan.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "cyan.500",
-                  }}
-                >
-                  ثبت نام
-                </Button>
-                <Flex
-                  gap={2}
-                  alignItems="center"
-                  justifyContent="center"
-                  fontSize={"13px"}
-                >
-                  <Text color={"gray.700"}>حساب کاربری دارید؟</Text>
-                  <Link to="/sign-in">
-                    <Text color={"blue.400"}>ورود</Text>
-                  </Link>
-                </Flex>
-              </Stack>
-            </Stack>
+                </FormControl>
+
+                <FormControl id="email" isRequired>
+                  <FormLabel>موبایل</FormLabel>
+                  <Input
+                    px="16px"
+                    type="number"
+                    name="mobile"
+                    value={mobile}
+                    onChange={handleChange}
+                    placeholder="8257***0917"
+                  />
+                </FormControl>
+
+                <FormControl id="password" isRequired>
+                  <FormLabel>رمز عبور</FormLabel>
+                  <InputGroup>
+                    <Input
+                      name="password"
+                      value={password}
+                      onChange={handleChange}
+                      px="16px"
+                      pr={4}
+                      type={showPassword ? "text" : "password"}
+                      placeholder="********"
+                    />
+                    <InputLeftElement h={"full"}>
+                      <Button
+                        variant={"ghost"}
+                        onClick={() =>
+                          setShowPassword((showPassword) => !showPassword)
+                        }
+                      >
+                        {showPassword ? (
+                          <Icon as={FaEye} />
+                        ) : (
+                          <Icon as={FaEyeSlash} />
+                        )}
+                      </Button>
+                    </InputLeftElement>
+                  </InputGroup>
+                </FormControl>
+                <Stack spacing={3} mt={6}>
+                  <Button
+                    bg={"cyan.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "cyan.500",
+                    }}
+                    type="submit"
+                  >
+                    {loading ? "ثبت نام..." : "ثبت نام"}
+                  </Button>
+                  <Flex
+                    gap={2}
+                    alignItems="center"
+                    justifyContent="center"
+                    fontSize={"13px"}
+                  >
+                    <Text color={"gray.700"}>حساب کاربری دارید؟</Text>
+                    <Link to="/sign-in">
+                      <Text color={"blue.400"}>ورود</Text>
+                    </Link>
+                  </Flex>
+                </Stack>
+              </Flex>
+            </form>
+            {error && <Text>Error</Text>}
           </Box>
         </Flex>
       </Flex>
