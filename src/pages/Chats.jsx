@@ -11,6 +11,9 @@ import {
     Text,
 } from '@chakra-ui/react';
 
+import { Search } from '../constants/icons';
+import UserList from '../components/common/Chats/UserList';
+
 
 const Message = ({ text, actor }) => {
     return (
@@ -29,10 +32,40 @@ const Message = ({ text, actor }) => {
 
 export function Chats() {
     return (
-        <Flex h="100vh" py={12} >
+        <Flex h="100vh" py={12}
+            flexDirection={{ base: "column", lg: "row" }}
+            gap="30px"
+        >
+            <Flex 
+            flexDirection="column"
+            h={{base:"95%"}}
+            >
+                <div className='w-[95%] shadow-xl flex flex-row-reverse'>
+                    <Input
+                        color='teal'
+                        placeholder='سرچ کنید'
+                        _placeholder={{ color: 'inherit' }}
+                    />
+                    <Search className='text-4xl text-white bg-black cursor-pointer' />
+                </div>
+                {/* <CHATS CONTENT> */}
+                <div className='w-[95%] custom-scroll h-[100%] md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                      <UserList />  
+                </div>
+            </Flex>
+
             <Flex
                 flexDirection="column"
-                w="4xl"
+                w={{base:"sm",md: "xl",lg:"3xl"}}
                 h="full"
                 borderWidth="1px"
                 mt="5px"
