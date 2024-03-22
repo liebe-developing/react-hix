@@ -14,10 +14,18 @@ import {
   InputLeftElement,
   Icon,
   keyframes,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  signInStart,
+  signInSuccess,
+  singInFailure,
+} from "../redux/user/userSlice";
+import { UserAuth } from "../services/Axios/Requests";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -25,10 +33,17 @@ to {transform: translateY(-60px)}
 `;
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  // const toast = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { email, password } = formData;
 
@@ -38,6 +53,28 @@ const SignIn = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleLoginUser = (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      setError(false);
+
+      UserAuth("/api/auth/login", formData).then(function (res) {
+        if (res.status === 401 || res.status === 400) {
+          setError(true);
+          return;
+        }
+        dispatch(signInSuccess(res.data));
+      });
+      setLoading(false);
+      navigate("/");
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+    }
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
@@ -88,69 +125,74 @@ const SignIn = () => {
               ورود به حساب کاربری
             </Heading>
             <Stack spacing={4} dir="rtl">
-              <FormControl id="email">
-                <FormLabel>ایمیل</FormLabel>
-                <Input
-                  px="16px"
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={handleChange}
-                  placeholder="example@gmail.com"
-                />
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel>رمز عبور</FormLabel>
-                <InputGroup>
+              <form onSubmit={handleLoginUser}>
+                <FormControl id="email">
+                  <FormLabel>ایمیل</FormLabel>
                   <Input
-                    name="password"
-                    value={password}
-                    onChange={handleChange}
                     px="16px"
-                    pr={4}
-                    type={showPassword ? "text" : "password"}
-                    placeholder="********"
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={handleChange}
+                    placeholder="example@gmail.com"
                   />
-                  <InputLeftElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
-                      }
-                    >
-                      {showPassword ? (
-                        <Icon as={FaEye} />
-                      ) : (
-                        <Icon as={FaEyeSlash} />
-                      )}
-                    </Button>
-                  </InputLeftElement>
-                </InputGroup>
-              </FormControl>
-              <Stack spacing={10}>
-                <Stack
-                  direction={"row"}
-                  align={"start"}
-                  mt={2}
-                  justify={"space-between"}
-                  fontSize={"14px"}
-                >
-                  <Text color={"blue.400"}>فراموشی رمز عبور</Text>
-                  <Link to="/sign-up">
-                    <Text color={"blue.400"}>ثبت نام</Text>
-                  </Link>
+                </FormControl>
+                <FormControl id="password">
+                  <FormLabel>رمز عبور</FormLabel>
+                  <InputGroup>
+                    <Input
+                      name="password"
+                      value={password}
+                      onChange={handleChange}
+                      px="16px"
+                      pr={4}
+                      type={showPassword ? "text" : "password"}
+                      placeholder="********"
+                    />
+                    <InputLeftElement h={"full"}>
+                      <Button
+                        variant={"ghost"}
+                        onClick={() =>
+                          setShowPassword((showPassword) => !showPassword)
+                        }
+                      >
+                        {showPassword ? (
+                          <Icon as={FaEye} />
+                        ) : (
+                          <Icon as={FaEyeSlash} />
+                        )}
+                      </Button>
+                    </InputLeftElement>
+                  </InputGroup>
+                </FormControl>
+                <Stack spacing={10}>
+                  <Stack
+                    direction={"row"}
+                    align={"start"}
+                    mt={2}
+                    justify={"space-between"}
+                    fontSize={"14px"}
+                  >
+                    <Text color={"blue.400"}>فراموشی رمز عبور</Text>
+                    <Link to="/sign-up">
+                      <Text color={"blue.400"}>ثبت نام</Text>
+                    </Link>
+                  </Stack>
+                  <Button
+                    bg={"cyan.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "cyan.500",
+                    }}
+                    type="submit"
+                    isDisabled={loading}
+                  >
+                    {loading ? "در حال ورود" : "ورود"}
+                  </Button>
                 </Stack>
-                <Button
-                  bg={"cyan.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "cyan.500",
-                  }}
-                >
-                  ورود
-                </Button>
-              </Stack>
+              </form>
             </Stack>
+            {error && <Text>Error</Text>}
           </Box>
         </Flex>
       </Flex>

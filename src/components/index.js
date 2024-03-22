@@ -4,6 +4,7 @@ import SixMonthPackageTable from "./PricePlan/SixMonthPackageTable";
 import OneYearPackageTable from "./PricePlan/OneYearPackageTable";
 import PricePlanHeading from "./PricePlan/PricePlanHeading";
 import Pricing from "./PricePlan/Pricing";
+import ErrorMessage from "./ErrorMessage";
 
 export {
   SidebarWithHeader,
@@ -12,4 +13,5 @@ export {
   OneYearPackageTable,
   PricePlanHeading,
   Pricing,
+  ErrorMessage,
 };
