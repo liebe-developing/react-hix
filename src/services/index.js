@@ -1,11 +1,10 @@
-import loginPost from "./Axios/Requests/loginRequest";
 import setCookie from "./Axios/configs/setCookie";
 import getCookieChecked from "./Axios/configs/getCookie";
-import regsiterPost from "./Axios/Requests/registerRequest";
+import getPricePlan from "./Axios/Requests/getPriceplanReq";
+
 
 export {
-    loginPost,
     setCookie,
-    regsiterPost,
-    getCookieChecked
+    getCookieChecked,
+    getPricePlan
 }

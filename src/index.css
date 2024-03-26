@@ -13,6 +13,13 @@
 }
 
 
-/* CHATS  -- START  */
+/* LOCAL  -- START  */
+.box_border{
+    box-shadow: rgb(0, 0, 0) 4px 4px;
+    transition: all 0.30s;
+}
 
-/* CHATS -- END  */
+.box_border:hover{
+    box-shadow: rgb(0, 0, 0) 1px 3px;
+}
+/* LOCAL -- END  */
