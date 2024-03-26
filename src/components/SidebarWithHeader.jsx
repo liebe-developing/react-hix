@@ -32,7 +32,7 @@ import { IoCodeSlash } from "react-icons/io5";
 import DarkModeButton from "./DarkModeButton";
 import { GrUpgrade } from "react-icons/gr";
 import { BsCalendarCheck } from "react-icons/bs";
-import { UserAuth } from "../services/Axios/Requests";
+import { UserAuth } from "../api";
 
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/dashboard" },

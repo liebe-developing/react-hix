@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { UserAuth } from "../api";
 
 
 const moveUpAndDown = keyframes`  

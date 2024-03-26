@@ -20,7 +20,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux/user/userSlice";
-import { UserAuth } from "../services/Axios/Requests";
+import { UserAuth } from "../api";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   

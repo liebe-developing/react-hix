@@ -17,11 +17,11 @@ function App() {
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!userToken) {
       navigate("/sign-in");
     }
-  }, []);
+  }, []); */
   return (
     <Routes>
       <Route path="/" element={<RootLayout />}>
