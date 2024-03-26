@@ -10,79 +10,61 @@ import {
   FormLabel,
   FormControl,
   useColorModeValue,
-  InputGroup,
-  InputLeftElement,
-  Icon,
   keyframes,
-  useToast,
+  FormHelperText,
+  Spinner,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { signInSuccess } from "../redux/user/userSlice";
 import { UserAuth } from "../services/Axios/Requests";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
 to {transform: translateY(-60px)} 
 `;
-
-const SignUp = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const ResetPassword = () => {
   const [error, setError] = useState(false);
+  const [isEmailAvailable, setIsEmailAvailable] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    password: "",
-  });
 
-  const toast = useToast();
+  const [email, setEmail] = useState("");
+
+  // const toast = useToast();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { name, email, mobile, password } = formData;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleRegisterUser = (e) => {
+  const handleResetPassowrd = (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
       setError(false);
 
-      UserAuth("/api/auth/register", formData).then(function (res) {
-        if (res.status === 500 || res.status === 400) {
+      UserAuth("/api/auth/reset_password", email).then(function (res) {
+        console.log(res);
+        if (res.status === 404) {
+          setIsEmailAvailable(false);
+          return;
+        } else if (res.status === 500) {
           setError(true);
           return;
         }
-      });
-      toast({
-        title: `پروفایل شما با موفقیت ساخته شد`,
-        status: "success",
-        position: "top-right",
-        isClosable: true,
+        dispatch(signInSuccess(res.data));
       });
       setLoading(false);
-      navigate("/sign-in");
+      // navigate("/sign-in");
     } catch (error) {
       setLoading(false);
       setError(true);
-      toast({
-        title: `مشکلی پیش آمده است`,
-        status: "error",
-        position: "top-right",
-        isClosable: true,
-      });
     }
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
+
   return (
     <Box position={"relative"} dir="ltr">
       <Flex
@@ -126,22 +108,10 @@ const SignUp = () => {
               textAlign="center"
               mb={10}
             >
-              ایجاد حساب کاربری
+              بازیابی رمز عبور
             </Heading>
-            <form onSubmit={handleRegisterUser}>
+            <form onSubmit={handleResetPassowrd}>
               <Flex flexDir="column" gap={4} dir="rtl">
-                <FormControl id="name" isRequired>
-                  <FormLabel>نام و نام خانوادگی</FormLabel>
-                  <Input
-                    px="16px"
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={handleChange}
-                    placeholder="زهره رضایی"
-                  />
-                </FormControl>
-
                 <FormControl id="email" isRequired>
                   <FormLabel>ایمیل</FormLabel>
                   <Input
@@ -149,52 +119,14 @@ const SignUp = () => {
                     type="email"
                     name="email"
                     value={email}
-                    onChange={handleChange}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="example@gmail.com"
                   />
+                  <FormHelperText fontSize="11px" my={1}>
+                    جهت بازیابی ایمیل خود را وارد نمایید.
+                  </FormHelperText>
                 </FormControl>
-
-                <FormControl id="email" isRequired>
-                  <FormLabel>موبایل</FormLabel>
-                  <Input
-                    px="16px"
-                    type="number"
-                    name="mobile"
-                    value={mobile}
-                    onChange={handleChange}
-                    placeholder="8257***0917"
-                  />
-                </FormControl>
-
-                <FormControl id="password" isRequired>
-                  <FormLabel>رمز عبور</FormLabel>
-                  <InputGroup>
-                    <Input
-                      name="password"
-                      value={password}
-                      onChange={handleChange}
-                      px="16px"
-                      pr={4}
-                      type={showPassword ? "text" : "password"}
-                      placeholder="********"
-                    />
-                    <InputLeftElement h={"full"}>
-                      <Button
-                        variant={"ghost"}
-                        onClick={() =>
-                          setShowPassword((showPassword) => !showPassword)
-                        }
-                      >
-                        {showPassword ? (
-                          <Icon as={FaEye} />
-                        ) : (
-                          <Icon as={FaEyeSlash} />
-                        )}
-                      </Button>
-                    </InputLeftElement>
-                  </InputGroup>
-                </FormControl>
-                <Stack spacing={3} mt={6}>
+                <Stack spacing={4}>
                   <Button
                     bg={"cyan.400"}
                     color={"white"}
@@ -202,8 +134,19 @@ const SignUp = () => {
                       bg: "cyan.500",
                     }}
                     type="submit"
+                    isDisabled={loading}
                   >
-                    {loading ? "ثبت نام..." : "ثبت نام"}
+                    {loading ? (
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="blue.500"
+                        size="xl"
+                      />
+                    ) : (
+                      "بازیابی"
+                    )}
                   </Button>
                   <Flex
                     gap={2}
@@ -219,7 +162,19 @@ const SignUp = () => {
                 </Stack>
               </Flex>
             </form>
-            {error && <Text>Error</Text>}
+            {error && (
+              <Alert status="error" dir="rtl" mt={5} fontSize="14.5px">
+                <AlertIcon />
+                مشکلی بوجود آمده است!
+              </Alert>
+            )}
+
+            {!isEmailAvailable && (
+              <Alert status="error" dir="rtl" mt={5} fontSize="14.5px">
+                <AlertIcon />
+                ایمیل یافت نشد
+              </Alert>
+            )}
           </Box>
         </Flex>
       </Flex>
@@ -227,4 +182,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ResetPassword;

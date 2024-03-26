@@ -14,17 +14,12 @@ import {
   InputLeftElement,
   Icon,
   keyframes,
-  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  signInStart,
-  signInSuccess,
-  singInFailure,
-} from "../redux/user/userSlice";
+import { signInSuccess } from "../redux/user/userSlice";
 import { UserAuth } from "../services/Axios/Requests";
 
 const moveUpAndDown = keyframes`  
@@ -63,6 +58,7 @@ const SignIn = () => {
       setError(false);
 
       UserAuth("/api/auth/login", formData).then(function (res) {
+        console.log(res);
         if (res.status === 401 || res.status === 400) {
           setError(true);
           return;
@@ -124,9 +120,9 @@ const SignIn = () => {
             >
               ورود به حساب کاربری
             </Heading>
-            <Stack spacing={4} dir="rtl">
-              <form onSubmit={handleLoginUser}>
-                <FormControl id="email">
+            <form onSubmit={handleLoginUser}>
+              <Flex flexDir="column" gap={4} dir="rtl">
+                <FormControl id="email" isRequired>
                   <FormLabel>ایمیل</FormLabel>
                   <Input
                     px="16px"
@@ -137,7 +133,7 @@ const SignIn = () => {
                     placeholder="example@gmail.com"
                   />
                 </FormControl>
-                <FormControl id="password">
+                <FormControl id="password" isRequired>
                   <FormLabel>رمز عبور</FormLabel>
                   <InputGroup>
                     <Input
@@ -173,7 +169,9 @@ const SignIn = () => {
                     justify={"space-between"}
                     fontSize={"14px"}
                   >
-                    <Text color={"blue.400"}>فراموشی رمز عبور</Text>
+                    <Link to="/reset-password">
+                      <Text color={"blue.400"}>فراموشی رمز عبور</Text>
+                    </Link>
                     <Link to="/sign-up">
                       <Text color={"blue.400"}>ثبت نام</Text>
                     </Link>
@@ -190,8 +188,8 @@ const SignIn = () => {
                     {loading ? "در حال ورود" : "ورود"}
                   </Button>
                 </Stack>
-              </form>
-            </Stack>
+              </Flex>
+            </form>
             {error && <Text>Error</Text>}
           </Box>
         </Flex>

@@ -21,7 +21,7 @@ import {
   useColorMode,
   Button,
 } from "@chakra-ui/react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
 import { FaInstagram, FaTelegramPlane, FaRegFolder } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
@@ -31,6 +31,8 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoCodeSlash } from "react-icons/io5";
 import DarkModeButton from "./DarkModeButton";
 import { GrUpgrade } from "react-icons/gr";
+import { BsCalendarCheck } from "react-icons/bs";
+import { UserAuth } from "../services/Axios/Requests";
 
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/dashboard" },
@@ -165,6 +167,22 @@ const NavItem = ({ icon, children, ...rest }) => {
 
 const MobileNav = ({ onOpen, ...rest }) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const today = new Date().toLocaleDateString("fa-IR", options);
+
+  const navigate = useNavigate();
+
+  const handleLogoutUser = () => {
+    UserAuth("/api/auth/logout")
+      .then((res) => {
+        console.log(res);
+        localStorage.clear();
+        navigate("/sign-in");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Flex
@@ -217,10 +235,14 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
         <Flex alignItems={"center"}>
-          <Flex mx={14} gap={4}>
-            <Link to="/sign-in">ورود</Link>
-            <Link to="/sign-up">ثبت نام</Link>
-          </Flex>
+          <Text
+            className="flex items-center gap-1.5 ml-7"
+            color={useColorModeValue("gray.600", "gray.400")}
+            fontSize={{ base: "7px", md: "12.5px" }}
+          >
+            <BsCalendarCheck />
+            {today}
+          </Text>
           <Menu>
             <MenuButton
               py={2}
@@ -267,7 +289,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem>اعلانات</MenuItem>
               <MenuItem>توصیه حساب</MenuItem>
               <MenuDivider />
-              <MenuItem _hover={{ bg: "red", color: "white" }}>
+              <MenuItem
+                _hover={{ bg: "red", color: "white" }}
+                onClick={handleLogoutUser}
+              >
                 خارج شدن از حساب
               </MenuItem>
             </MenuList>
