@@ -5,6 +5,8 @@ import OneYearPackageTable from "./PricePlan/OneYearPackageTable";
 import PricePlanHeading from "./PricePlan/PricePlanHeading";
 import Pricing from "./PricePlan/Pricing";
 import ErrorMessage from "./ErrorMessage";
+import { BoxUiContentHero, BoxUiContentBottom } from "./common/dashboard/BoxContent";
+
 
 export {
   SidebarWithHeader,
@@ -14,4 +16,6 @@ export {
   PricePlanHeading,
   Pricing,
   ErrorMessage,
+  BoxUiContentHero,
+  BoxUiContentBottom
 };

@@ -6,12 +6,25 @@ import { IoDocuments } from "react-icons/io5";
 import { BiSolidMessageAltCheck as MesIcon } from "react-icons/bi";
 import { AiOutlineFileSearch as Search } from "react-icons/ai";
 import { FaCircleCheck as CircleCheck } from "react-icons/fa6";
-export{
+
+// -------
+// DASHBOARD.JSX
+// -------
+import { MdInstallDesktop as DesktopIcons } from "react-icons/md";
+import { FaFacebook } from "react-icons/fa6";
+import { PiInstagramLogoDuotone as InstIcon } from 'react-icons/pi'
+import { CiMenuKebab as MenuCricle } from "react-icons/ci";
+
+export {
     ArrowDown,
-IoDocuments,
+    IoDocuments,
     MesIcon,
     Search,
-    CircleCheck
+    CircleCheck,
+    DesktopIcons,
+    FaFacebook,
+    InstIcon,
+    MenuCricle
 }
 
 

@@ -40,8 +40,8 @@ const LinkItems = [
   { name: "محصولات", icon: FaRegFolder, href: "/" },
   { name: "دستورات", icon: IoSettingsOutline, href: "/" },
   { name: "اینستاگرام", icon: FaInstagram, href: "/" },
-  { name: "درگاه پرداخت", icon: TbBasketDollar, href: "/" },
-  { name: "تلگرام", icon: FaTelegramPlane, href: "/" },
+  { name: "درگاه پرداخت", icon: TbBasketDollar, href: "/order" },
+  { name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
   { name: "تنظیمات", icon: IoSettingsOutline, href: "/" },
   { name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
 ];
