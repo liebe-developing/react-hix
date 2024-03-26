@@ -2,24 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  box-sizing: 0;
+}
 @font-face {
-    font-family: "IRANSans";
-    src: url("./fonts/IRANSans.ttf") format("truetype");
+  font-family: "IRANSans";
+  src: url("./fonts/IRANSans.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "Casablanca";
-    src: url("./fonts/Casablanca.ttf") format("truetype");
+  font-family: "Casablanca";
+  src: url("./fonts/Casablanca.ttf") format("truetype");
 }
-
 
 /* LOCAL  -- START  */
-.box_border{
-    box-shadow: rgb(0, 0, 0) 4px 4px;
-    transition: all 0.30s;
+.box_border {
+  box-shadow: rgb(0, 0, 0) 4px 4px;
+  transition: all 0.3s;
 }
 
-.box_border:hover{
-    box-shadow: rgb(0, 0, 0) 1px 3px;
+.box_border:hover {
+  box-shadow: rgb(0, 0, 0) 1px 3px;
 }
 /* LOCAL -- END  */

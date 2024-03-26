@@ -5,8 +5,10 @@ import OneYearPackageTable from "./PricePlan/OneYearPackageTable";
 import PricePlanHeading from "./PricePlan/PricePlanHeading";
 import Pricing from "./PricePlan/Pricing";
 import ErrorMessage from "./ErrorMessage";
-import { BoxUiContentHero, BoxUiContentBottom } from "./common/dashboard/BoxContent";
-
+import MediaBox from "./Dashboard/MediaBox";
+import Stats from "./Dashboard/Stats";
+import PopularProducts from "./Dashboard/PopularProducts";
+import PopularClients from "./Dashboard/PopularClients";
 
 export {
   SidebarWithHeader,
@@ -16,6 +18,8 @@ export {
   PricePlanHeading,
   Pricing,
   ErrorMessage,
-  BoxUiContentHero,
-  BoxUiContentBottom
+  MediaBox,
+  Stats,
+  PopularProducts,
+  PopularClients,
 };

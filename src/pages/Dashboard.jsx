@@ -1,52 +1,48 @@
-import { DesktopIcons, FaFacebook } from "../constants/icons";
-import { SimpleGrid } from '@chakra-ui/react'
-import { BoxUiContentHero, BoxUiContentBottom } from "../components/index"
+import { Box, Flex } from "@chakra-ui/react";
+import {
+  MediaBox,
+  Stats,
+  PopularProducts,
+  PopularClients,
+} from "../components/index";
+import { fistNavlinkData, secondNavlinkData, stats } from "../constants";
+import NavlinkBox from "../components/Dashboard/NavlinkBox";
 
 const Dashboard = () => {
-
-
   return (
-    <div className="flex flex-col">
-      <div className=" w-full md:h-[400px]  rounded-md grid grid-cols-1 lg:grid-cols-7 gap-2">
-        {/* RGITH - CONTENT */}
-        <div className="box_border col-span-5 w-full  md:h-1/2 p-2
-      shadow-lg bg-orange-500 rounded-lg flex flex-col md:flex-row">
-          <div className="flex flex-col md:flex-row">
-            <div className="flex flex-col justify-around">
-              <h3>سلام متیونم کمکتون کنم ممنون میشم راهنمایی به من بدید ممنون میشم خیلی باید تلاش کننم تا به اهدافم برسی</h3>
-              <div className="mr-10">
-                <span className="mx-3"><DesktopIcons className="inline-flex text-3xl lg:text-5xl cursor-pointer hover:bg-purple-500 text-white bg-purple-700 rounded-full p-2" /></span>
-                <span><FaFacebook className="inline-flex text-3xl lg:text-5xl cursor-pointer hover:bg-purple-500 text-white bg-purple-700 rounded-full p-2" /></span>
-              </div>
-            </div>
-            <img src="/taking-note.png" alt="not-found" className=" h-[70%] mx-10" />
-          </div>
-        </div>
-        {/* </>*/}
+    <Flex flexWrap="wrap" gap={12}>
+      <Box flex={1.2}>
+        <MediaBox />
+        <Flex flexWrap="wrap" justifyContent="space-between" my={8} rowGap={4}>
+          {fistNavlinkData.map((item, i) => (
+            <NavlinkBox key={i} {...item} />
+          ))}
+        </Flex>
+        <MediaBox />
+        <Flex flexWrap="wrap" justifyContent="space-between" my={8} rowGap={4}>
+          {secondNavlinkData.map((item, i) => (
+            <NavlinkBox key={i} {...item} />
+          ))}
+        </Flex>
+        <PopularClients />
+      </Box>
+      <Box
+        bg="rgba(255, 109, 0, 0.3)"
+        height="inherit"
+        w={"2px"}
+        display={{ base: "none", md: "flex" }}
+      ></Box>
+      <Box flex={1}>
+        <Flex flexWrap="wrap" columnGap={8} rowGap={8} justifyContent="start">
+          {stats.map((item, i) => (
+            <Stats key={i} {...item} />
+          ))}
+        </Flex>
 
-        {/* LFET - CONTENT -- COM */}
-        <div className="col-span-2">
-          <SimpleGrid columns={2} spacing={10} paddingTop={5} paddingLeft={3}>
-            <BoxUiContentHero /> 
-            <BoxUiContentHero /> 
-            <BoxUiContentHero /> 
-            <BoxUiContentHero /> 
-          </SimpleGrid>
-        </div>
-      </div>
-      {/* CONTENT-NEW BOTTOM - COTNAINER --COM */}
-      <div className="max-w-3xl md:mr-[120px] mt-10 ">
-        <SimpleGrid columns={[1, 2, 2]} spacing={10}>
-          <BoxUiContentBottom />
-          <BoxUiContentBottom />
-        </SimpleGrid>
-      </div>
-    </div>
+        <PopularProducts />
+      </Box>
+    </Flex>
   );
 };
 
 export default Dashboard;
-
-
-// Style
-

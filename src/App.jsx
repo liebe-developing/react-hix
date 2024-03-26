@@ -1,4 +1,8 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  // useNavigate
+} from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import {
   Dashboard,
@@ -10,12 +14,12 @@ import {
   Chats,
   ResetPassword,
 } from "./pages";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+/* import { useSelector } from "react-redux";
+import { useEffect } from "react"; */
 
 function App() {
-  const userToken = useSelector((state) => state?.user?.currentUser?.token);
-  const navigate = useNavigate();
+  /* const userToken = useSelector((state) => state?.user?.currentUser?.token);
+  const navigate = useNavigate(); */
 
   /* useEffect(() => {
     if (!userToken) {

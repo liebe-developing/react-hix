@@ -1,3 +1,19 @@
+import {
+  instagram,
+  orders,
+  paymentGateway,
+  products,
+  profile,
+  reports,
+  settings,
+  telegram,
+  product1,
+  product2,
+  product3,
+  product4,
+  clientAvatar,
+} from "../../public/dashboard/index";
+
 const oneMonthPackage = [
   {
     ability: "تعداد مکالمه هوشمند",
@@ -373,4 +389,75 @@ const oneYearPackage = [
   },
 ];
 
-export { oneMonthPackage, sixMonthPackage, oneYearPackage };
+const fistNavlinkData = [
+  { title: "گزارش ها", desc: "آنالیزها و گزارش ها", icon: reports },
+  { title: "محصولات", desc: "محصولات کسب و کار", icon: products },
+  { title: "دستورات", icon: orders },
+  {
+    title: "اینستاگرام",
+    desc: "اتصال پیج اینستاگرام به ربات",
+    icon: instagram,
+  },
+];
+const secondNavlinkData = [
+  {
+    title: "درگاه پرداخت",
+    desc: "درگاه پرداخت متصل به کسب و کار",
+    icon: paymentGateway,
+  },
+  { title: "تلگرام", desc: "اتصال به ربات تلگرامی", icon: telegram },
+  { title: "تنظیمات", desc: "تنظیمات ربات هیکس دی ام", icon: settings },
+  { title: "پروفایل", desc: "تنظیمات حساب کاربری", icon: profile },
+];
+
+const stats = [
+  { title: "تعداد کاربران", number: 250 },
+  { title: "تعداد فروش", number: 2 },
+  { title: "تعداد محصولات", number: 5 },
+  { title: "تعداد دایرکت ها", number: 3 },
+];
+
+const popularProducts = [
+  { title: "محصول 1", quantity: 236, productImg: product1 },
+  { title: "محصول 2", quantity: 210, productImg: product2 },
+  { title: "محصول 3", quantity: 198, productImg: product3 },
+  { title: "محصول 4", quantity: 145, productImg: product4 },
+];
+
+const popularClients = [
+  {
+    name: "علی زارعی",
+    avatar: clientAvatar,
+    username: "ali_zarei",
+    totalPurchase: "123.000.000 هزارتومان",
+  },
+  {
+    name: "علی زارعی",
+    avatar: clientAvatar,
+    username: "ali_zarei",
+    totalPurchase: "123.000.000 هزارتومان",
+  },
+  {
+    name: "علی زارعی",
+    avatar: clientAvatar,
+    username: "ali_zarei",
+    totalPurchase: "123.000.000 هزارتومان",
+  },
+  {
+    name: "علی زارعی",
+    avatar: clientAvatar,
+    username: "ali_zarei",
+    totalPurchase: "123.000.000 هزارتومان",
+  },
+];
+
+export {
+  oneMonthPackage,
+  sixMonthPackage,
+  oneYearPackage,
+  fistNavlinkData,
+  secondNavlinkData,
+  stats,
+  popularProducts,
+  popularClients,
+};
