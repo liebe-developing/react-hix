@@ -6,6 +6,8 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import ResetPassword from "./ResetPassword";
 import Chats from "./Chats";
+import Profile from "./Profile";
+import Settings from "./Settings";
 
 export {
   PricePlan,
@@ -16,4 +18,6 @@ export {
   SignUp,
   Chats,
   ResetPassword,
+  Profile,
+  Settings,
 };

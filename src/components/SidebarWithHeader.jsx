@@ -23,7 +23,12 @@ import {
 } from "@chakra-ui/react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
-import { FaInstagram, FaTelegramPlane, FaRegFolder } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaTelegramPlane,
+  FaRegFolder,
+  FaRegUser,
+} from "react-icons/fa";
 import { GoHome } from "react-icons/go";
 import { ImStatsDots } from "react-icons/im";
 import { TbBasketDollar } from "react-icons/tb";
@@ -42,7 +47,8 @@ const LinkItems = [
   { name: "اینستاگرام", icon: FaInstagram, href: "/" },
   { name: "درگاه پرداخت", icon: TbBasketDollar, href: "/order" },
   { name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
-  { name: "تنظیمات", icon: IoSettingsOutline, href: "/" },
+  { name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
+  { name: "پروفایل", icon: FaRegUser, href: "/profile" },
   { name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
 ];
 
@@ -97,11 +103,11 @@ const SidebarContent = ({ onClose, ...rest }) => {
       ))}
       <Link to="/price-plan">
         <Box
-          mt={4}
+          mt={1}
           boxShadow={"2xl"}
           background={useColorModeValue("#FFF", "gray.800")}
           mx={4}
-          p={5}
+          p={2}
           borderRadius="md"
           cursor="pointer"
         >

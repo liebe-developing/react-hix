@@ -9,6 +9,8 @@ import MediaBox from "./Dashboard/MediaBox";
 import Stats from "./Dashboard/Stats";
 import PopularProducts from "./Dashboard/PopularProducts";
 import PopularClients from "./Dashboard/PopularClients";
+import PrimaryButton from "./PrimaryButton";
+import Field from "./Field";
 
 export {
   SidebarWithHeader,
@@ -22,4 +24,6 @@ export {
   Stats,
   PopularProducts,
   PopularClients,
+  PrimaryButton,
+  Field,
 };

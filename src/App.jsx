@@ -13,6 +13,8 @@ import {
   SignUp,
   Chats,
   ResetPassword,
+  Profile,
+  Settings,
 } from "./pages";
 /* import { useSelector } from "react-redux";
 import { useEffect } from "react"; */
@@ -34,6 +36,8 @@ function App() {
         <Route path="/Tool" element={<Tool />} />
         <Route path="/order" element={<Order />} />
         <Route path="/chats" element={<Chats />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/sign-up" element={<SignUp />} />
