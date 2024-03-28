@@ -19,7 +19,7 @@ import {
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../api";
+import { apiPostRequest } from "../api/apiRequest";
 
 
 const moveUpAndDown = keyframes`  
@@ -57,7 +57,7 @@ const SignUp = () => {
       setLoading(true);
       setError(false);
 
-      UserAuth("/api/auth/register", formData).then(function (res) {
+      apiPostRequest("/api/auth/register", formData).then(function (res) {
         if (res.status === 500 || res.status === 400) {
           setError(true);
           return;

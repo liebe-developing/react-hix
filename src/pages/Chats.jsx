@@ -33,6 +33,7 @@ const Message = ({ text, actor }) => {
 export function Chats() {
     return (
         <Flex h="100vh" py={12}
+
             flexDirection={{ base: "column", lg: "row" }}
             gap="30px"
         >
@@ -49,7 +50,7 @@ export function Chats() {
                     <Search className='text-4xl text-white bg-black cursor-pointer' />
                 </div>
                 {/* <CHATS CONTENT> */}
-                <div className='w-[95%] custom-scroll h-[100%] md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
+                <div className='w-[95%] custom-scroll  h-[100%] md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
                       <UserList />  
                       <UserList />  
                       <UserList />  
@@ -64,6 +65,8 @@ export function Chats() {
             </Flex>
 
             <Flex
+                className='md:absolute left-1 top-[80px]'
+            
                 flexDirection="column"
                 w={{base:"sm",md: "xl",lg:"3xl"}}
                 h="full"

@@ -37,7 +37,7 @@ import { IoCodeSlash } from "react-icons/io5";
 import DarkModeButton from "./DarkModeButton";
 import { GrUpgrade } from "react-icons/gr";
 import { BsCalendarCheck } from "react-icons/bs";
-import { UserAuth } from "../api";
+import { apiPostRequest } from "../api/apiRequest";
 
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/dashboard" },
@@ -45,14 +45,13 @@ const LinkItems = [
   { name: "محصولات", icon: FaRegFolder, href: "/" },
   { name: "دستورات", icon: IoSettingsOutline, href: "/" },
   { name: "اینستاگرام", icon: FaInstagram, href: "/" },
-  { name: "درگاه پرداخت", icon: TbBasketDollar, href: "/order" },
   { name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
   { name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
   { name: "پروفایل", icon: FaRegUser, href: "/profile" },
   { name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
 ];
 
-const SidebarContent = ({ onClose, ...rest }) => {
+const SidebarContent = ({ onClose, userContent, ...rest }) => {
   return (
     <Box
       transition="3s ease"
@@ -96,11 +95,13 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </svg>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <Link key={link.name} to={link.href}>
+      {LinkItems.map((link) => {
+        return userContent?.plan ? <Link key={link.name} to={link.href} >
           <NavItem icon={link.icon}>{link.name}</NavItem>
-        </Link>
-      ))}
+        </Link> :
+          <NavItem icon={link.icon} key={link.name}>{link.name}</NavItem>
+      })
+      }
       <Link to="/price-plan">
         <Box
           mt={1}
@@ -130,7 +131,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
           </Flex>
         </Box>
       </Link>
-    </Box>
+    </Box >
   );
 };
 
@@ -171,17 +172,17 @@ const NavItem = ({ icon, children, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, ...rest }) => {
+const MobileNav = ({ onOpen, userContent, ...rest }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const today = new Date().toLocaleDateString("fa-IR", options);
-
+  
   const navigate = useNavigate();
 
   const handleLogoutUser = () => {
-    UserAuth("/api/auth/logout")
+    apiPostRequest("/api/auth/logout")
       .then((res) => {
-        console.log(res);
+
         localStorage.clear();
         navigate("/sign-in");
       })
@@ -272,7 +273,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   ml="2"
                 >
                   <Text fontSize="14px" lineHeight={"23.24px"} fontWeight={500}>
-                    زهره رضوی
+                    {userContent?.user?.name}
                   </Text>
                   <Text
                     fontSize="12px"
@@ -280,7 +281,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                     fontWeight={500}
                     color={useColorModeValue("gray.600", "gray.400")}
                   >
-                    پلن پایه
+                    {userContent?.plan ? userContent?.plan?.title : ""}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -319,7 +320,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   );
 };
 
-const SidebarWithHeader = () => {
+const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -337,13 +338,13 @@ const SidebarWithHeader = () => {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose} userContent={userContent} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} userContent={userContent} />
       <Box mr={{ base: 0, md: 60 }} p="6">
-        <Outlet />
+        <Outlet context={{  userToken  }}/>
       </Box>
     </Box>
   );

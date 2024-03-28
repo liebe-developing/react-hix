@@ -20,7 +20,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux/user/userSlice";
-import { UserAuth } from "../api";
+import { apiPostRequest } from "../api/apiRequest";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -57,16 +57,16 @@ const SignIn = () => {
       setLoading(true);
       setError(false);
 
-      UserAuth("/api/auth/login", formData).then(function (res) {
+      apiPostRequest("/api/auth/login", formData).then(function (res) {
         console.log(res);
         if (res.status === 401 || res.status === 400) {
           setError(true);
           return;
         }
         dispatch(signInSuccess(res.data));
+        setLoading(false);
+        navigate("/");
       });
-      setLoading(false);
-      navigate("/");
     } catch (error) {
       setLoading(false);
       setError(true);

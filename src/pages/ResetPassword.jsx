@@ -20,8 +20,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { signInSuccess } from "../redux/user/userSlice";
-import { UserAuth } from "../api";
-
+import { apiPostRequest } from "../api/apiRequest";
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
 to {transform: translateY(-60px)} 
@@ -44,7 +43,7 @@ const ResetPassword = () => {
       setLoading(true);
       setError(false);
 
-      UserAuth("/api/auth/reset_password", email).then(function (res) {
+      apiPostRequest("/api/auth/reset_password", email).then(function (res) {
         console.log(res);
         if (res.status === 404) {
           setIsEmailAvailable(false);

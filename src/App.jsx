@@ -1,6 +1,7 @@
 import {
   Route,
   Routes,
+  useNavigate,
   // useNavigate
 } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
@@ -16,22 +17,22 @@ import {
   Profile,
   Settings,
 } from "./pages";
-/* import { useSelector } from "react-redux";
-import { useEffect } from "react"; */
+import { useSelector } from "react-redux";
+import { useEffect } from "react"; 
 
 function App() {
-  /* const userToken = useSelector((state) => state?.user?.currentUser?.token);
-  const navigate = useNavigate(); */
+  const userToken = useSelector((state) => state?.user?.currentUser?.token);
+  const navigate = useNavigate();
 
-  /* useEffect(() => {
+   useEffect(() => {
     if (!userToken) {
       navigate("/sign-in");
     }
-  }, []); */
+  }, []); 
   return (
     <Routes>
       <Route path="/" element={<RootLayout />}>
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/price-plan" element={<PricePlan />} />
         <Route path="/Tool" element={<Tool />} />
         <Route path="/order" element={<Order />} />

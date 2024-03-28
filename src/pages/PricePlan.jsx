@@ -20,7 +20,29 @@ import {
   oneYearPackage,
 } from "../constants/index";
 
-const PricePlan = () => {
+import { useOutletContext } from "react-router-dom";
+import { apiGetRequest } from "../api/apiRequest";
+import { useEffect, useState } from "react";
+
+const PricePlan = ({}) => {
+  // prop
+  const {
+    userToken
+  } = useOutletContext()
+  const [monthOne, setMonthOne] = useState();
+  const [monthTwo, setMonthTwo] = useState();
+  const [monthThree, setMonthThree] = useState();
+  
+  useEffect(() => {
+    apiGetRequest("api/plan",userToken).then(res => {
+      console.log(res.data.data);
+    }).catch(error => {
+      console.log(error);
+    })
+    
+  }, [])
+  
+
   return (
     <Box>
       <Center>
