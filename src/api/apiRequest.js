@@ -11,11 +11,11 @@ export const apiGetRequest = (route, token = undefined) => {
 
 
 
-export const apiPostRequest = (route, token = undefined, data) => {
-    return apiRequests.post(route, {
+export const apiPostRequest = (route, token = undefined, data = undefined) => {
+    return apiRequests.post(route, data, {
         headers: {
             'Authorization': token ? `Bearer ${token}` : undefined
         }
-    }, data)
+    });
 }
 

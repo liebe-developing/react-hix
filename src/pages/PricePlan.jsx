@@ -24,24 +24,29 @@ import { useOutletContext } from "react-router-dom";
 import { apiGetRequest } from "../api/apiRequest";
 import { useEffect, useState } from "react";
 
-const PricePlan = ({}) => {
+const PricePlan = ({ }) => {
   // prop
   const {
     userToken
   } = useOutletContext()
   const [monthOne, setMonthOne] = useState();
-  const [monthTwo, setMonthTwo] = useState();
-  const [monthThree, setMonthThree] = useState();
-  
+  const [monthThree, setMonthTwo] = useState();
+  const [monthOneYear, setMonthThree] = useState();
+
+
   useEffect(() => {
-    apiGetRequest("api/plan",userToken).then(res => {
-      console.log(res.data.data);
+    apiGetRequest("api/plan", userToken).then(res => {
+      const plans = res.data.data;
+      const plansOneMonth = plans.filter(plan => plan.days == 30);
+      const plansThreeMonth = plans.filter(plan => plan.days == 90);
+      const plansOneYear = plans.filter(plan => plan.days == 365);
+      
+      setMonthOne(plansOneMonth);;
     }).catch(error => {
       console.log(error);
     })
-    
   }, [])
-  
+
 
   return (
     <Box>
@@ -59,21 +64,25 @@ const PricePlan = ({}) => {
             </Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
-              <PricePlanHeading />
-              <Pricing />
-              <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
-            </TabPanel>
-            <TabPanel>
-              <PricePlanHeading />
-              <Pricing />
-              <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
-            </TabPanel>
-            <TabPanel>
-              <PricePlanHeading />
-              <Pricing />
-              <OneYearPackageTable oneYearPackage={oneYearPackage} />
-            </TabPanel>
+            {monthOne && 
+            <>
+              <TabPanel>
+                <PricePlanHeading />
+                <Pricing monthOne={monthOne} userToken={userToken} />
+                <OneMonthPackageTable oneMonthPackage={oneMonthPackage}  />
+
+              </TabPanel>
+              <TabPanel>
+                <PricePlanHeading />
+                <Pricing />
+                <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
+              </TabPanel>
+              <TabPanel>
+                <PricePlanHeading />
+                <Pricing />
+                <OneYearPackageTable oneYearPackage={oneYearPackage} />
+              </TabPanel>
+            </>}
           </TabPanels>
         </Tabs>
       </Center>

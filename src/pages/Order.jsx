@@ -1,11 +1,15 @@
 import { useRef } from "react";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Order() {
-
+  const location = useLocation();
+  console.log(location.state.invoiceId);
   const [discount, setDiscount] = useState("")
   const [checked, setChecked] = useState(false)
   const btnDis = useRef()
+
+  
 
   const sendShopping = (event) => {
     event.preventDefault();
