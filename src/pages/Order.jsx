@@ -1,26 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { apiGetRequest } from "../api/apiRequest";
+import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 
 function Order() {
   const location = useLocation();
   // console.log(location.state.invoiceId);
   const [discount, setDiscount] = useState("")
   const [checked, setChecked] = useState(false)
-  const [dataApiInvoiceSet, setDataApiInvoiceSet] = useState()
+  const [discountChecked, setDiscountChecked] = useState(false)
+  const [dataApiInvoiceSetUi, setDataApiInvoiceSetUi] = useState()
   const [discountPercent, setDiscountPercent] = useState(0)
   const btnDis = useRef()
 
-  // useEffect(() => {
-  //   apiGetRequest(`api/invoice/${location.state.invoiceId}`).then(res =>{
-  //     setDataApiInvoiceSet(res.data.data)
-  //   }).catch(error=>{
-  //     console.log(error)
-  //   })
+  useEffect(() => {
+    apiGetRequest(`api/invoice/${location.state.invoiceId}`).then(res =>{
+      setDataApiInvoiceSetUi(res.data.data)
+    }).catch(error=>{
+      console.log(error)
+    })
 
-  // }, [])
-
-
+  }, [discountChecked])
 
   const sendShopping = (event) => {
     event.preventDefault();
@@ -28,17 +27,32 @@ function Order() {
       alert('لطفاً قبول شرایط را تأیید کنید!');
       return;
     }
-    console.log('سفارش ارسال شد');
-  }
 
+    console.log('سفارش ارسال شد');
+    apiPostRequest("api/invoice/pay",{
+      id: location.state.invoiceId,
+      discountCode: discountChecked && discountChecked.trim().length > 0 ? discountChecked.trim() : undefined
+    }).then(res =>{
+      window.location.href = res.data.paymentUrl
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+  
   const discountHandler = (event) => {
     event.preventDefault()
     if (discount < 4) {
       alert('کد اشتباه است')
-    } else {
-      console.log(discount);
-      btnDis.current.classList.remove('bg-blue-500');
     }
+    apiPostRequest("api/discount",discount).then(res => {
+      setDiscountChecked(false)
+      if(res.status === 200){
+        setDiscountPercent(res.data.percent)
+        setDiscountChecked(true)
+      }
+    }).catch(erorr =>{
+      console.log(erorr)
+    })
   }
 
   return (
@@ -46,7 +60,7 @@ function Order() {
       <div className="grid col-span-4">
       </div>
       {
-        dataApiInvoiceSet.map(item => {
+        dataApiInvoiceSetUi.map(item => {
           return <div className="flex flex-col items-center justify-center
                                 gap-3 col-span-8 border-r-2 border-gray-300">
             <img src='/avatar.webp' width={50} className="shadow-2xl rounded-full" />
@@ -81,7 +95,9 @@ function Order() {
                   قیمت نهایی:
                 </h5>
                 <h3 className="text-xl font-bold text-blue-500 underline underline-offset-8 border-orange-500">
-                  {item.price * (100 - discountPercent) / 100} ریال
+                  {
+                    discountPercent ? item.price * (100 - discountPercent) / 100 : item.price
+                  } ریال
                 </h3>
                 <h3 className="mt-6 flex items-center">
                   <input
