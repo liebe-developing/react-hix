@@ -1,5 +1,5 @@
 // Chats.jsx
-import { CircleCheck } from "../../../constants/icons"
+import { CircleCheck } from "../../constants/icons"
 
 
 

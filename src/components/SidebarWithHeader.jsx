@@ -40,7 +40,7 @@ import { BsCalendarCheck } from "react-icons/bs";
 import { apiPostRequest } from "../api/apiRequest";
 
 const LinkItems = [
-  { name: "داشبورد", icon: GoHome, href: "/dashboard" },
+  { name: "داشبورد", icon: GoHome, href: "/" },
   { name: "گزارش ها", icon: ImStatsDots, href: "/" },
   { name: "محصولات", icon: FaRegFolder, href: "/" },
   { name: "دستورات", icon: IoSettingsOutline, href: "/" },
@@ -96,7 +96,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => {
-        return userContent?.plan ? <Link key={link.name} to={link.href} >
+        return userContent?.plan || true ? <Link key={link.name} to={link.href} >
           <NavItem icon={link.icon}>{link.name}</NavItem>
         </Link> :
           <NavItem icon={link.icon} key={link.name}>{link.name}</NavItem>
