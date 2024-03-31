@@ -11,6 +11,7 @@ import PopularProducts from "./Dashboard/PopularProducts";
 import PopularClients from "./Dashboard/PopularClients";
 import PrimaryButton from "./PrimaryButton";
 import Field from "./Field";
+import UserList from './Chats/UserList';
 
 export {
   SidebarWithHeader,
@@ -26,4 +27,5 @@ export {
   PopularClients,
   PrimaryButton,
   Field,
+  UserList
 };

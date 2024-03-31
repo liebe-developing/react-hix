@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 
 import { Search } from '../constants/icons';
-import UserList from '../components/common/Chats/UserList';
+import { UserList } from '../components';
 
 
 const Message = ({ text, actor }) => {
