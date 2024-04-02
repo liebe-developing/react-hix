@@ -57,7 +57,7 @@ export function Chats() {
                 </div>
                 {/* <CHATS CONTENT> */}
                 <div className=' custom-scroll  md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
-                    <UserList />
+                    <UserList  />
                     <UserList />
                     <UserList />
                     <UserList />
@@ -97,10 +97,9 @@ export function Chats() {
                         },
                     }}
                 >
-                    <Message text="سلام" actor="user" />
-                    <Message text="میتونم کمکتون کنم؟" actor="bot" />
-                    <Message text="بله" actor="user" />
-                    <Message text="چی کمکی از دست من بر میاد" actor="bot" />
+                    <Box>
+                        انتخاب کنید چت مورنظر استفاده کنید ....
+                    </Box>
                 </Stack>
 
                 <HStack p={4} bg="gray.100">

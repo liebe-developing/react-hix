@@ -57,7 +57,7 @@ const SignIn = () => {
       setLoading(true);
       setError(false);
 
-      apiPostRequest("/api/auth/login", formData).then(function (res) {
+      apiPostRequest("/api/auth/login",undefined, formData).then(function (res) {
         console.log(res);
         if (res.status === 401 || res.status === 400) {
           setError(true);

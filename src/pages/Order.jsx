@@ -1,21 +1,27 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
-
+import {
+  useToast,
+} from "@chakra-ui/react";
 function Order() {
+  const toast = useToast()
+  const { userToken } = useOutletContext();
   const location = useLocation();
   // console.log(location.state.invoiceId);
   const [discount, setDiscount] = useState("")
   const [checked, setChecked] = useState(false)
   const [discountChecked, setDiscountChecked] = useState(false)
   const [dataApiInvoiceSetUi, setDataApiInvoiceSetUi] = useState()
-  const [discountPercent, setDiscountPercent] = useState(0)
+  const [acceptedPercent, setAcceptedPercent] = useState()
   const btnDis = useRef()
 
+
+  console.log(location.state.invoiceId);
   useEffect(() => {
-    apiGetRequest(`api/invoice/${location.state.invoiceId}`).then(res =>{
+    apiGetRequest(`api/invoice/${location.state.invoiceId}`, userToken).then(res => {
       setDataApiInvoiceSetUi(res.data.data)
-    }).catch(error=>{
+    }).catch(error => {
       console.log(error)
     })
 
@@ -24,33 +30,48 @@ function Order() {
   const sendShopping = (event) => {
     event.preventDefault();
     if (!checked) {
-      alert('لطفاً قبول شرایط را تأیید کنید!');
+      toast({
+        title: ` لطفا شرایط را بپذیرد!`,
+        status: "warning",
+        position: "bottom",
+        isClosable: true,
+      });
       return;
     }
 
-    console.log('سفارش ارسال شد');
-    apiPostRequest("api/invoice/pay",{
+    toast({
+      title: `تایید شد`,
+      status: "success",
+      position: "top-right",
+      isClosable: true,
+    });
+    apiPostRequest("api/invoice/pay", userToken, {
       id: location.state.invoiceId,
-      discountCode: discountChecked && discountChecked.trim().length > 0 ? discountChecked.trim() : undefined
-    }).then(res =>{
+      discountCode: discountChecked && acceptedPercent && discount.trim().length > 0 ? discount : undefined
+    }).then(res => {
       window.location.href = res.data.paymentUrl
     }).catch(error => {
       console.log(error);
     })
   }
-  
+
   const discountHandler = (event) => {
     event.preventDefault()
-    if (discount < 4) {
-      alert('کد اشتباه است')
-    }
-    apiPostRequest("api/discount",discount).then(res => {
+    apiPostRequest("api/discount", userToken, { discountCode: discount }).then(res => {
       setDiscountChecked(false)
-      if(res.status === 200){
-        setDiscountPercent(res.data.percent)
+      if (res.status === 200) {
+        toast({
+          title: `تایید شد!`,
+          status: "success",
+          position: "bottom",
+          isClosable: true,
+        });
+        setAcceptedPercent(res.data.percent)
+
+        console.log(res.data.percent);
         setDiscountChecked(true)
       }
-    }).catch(erorr =>{
+    }).catch(erorr => {
       console.log(erorr)
     })
   }
@@ -60,63 +81,64 @@ function Order() {
       <div className="grid col-span-4">
       </div>
       {
-        dataApiInvoiceSetUi.map(item => {
-          return <div className="flex flex-col items-center justify-center
+        dataApiInvoiceSetUi &&
+        <><div className="flex flex-col dataApiInvoiceSetUis-center justify-center
                                 gap-3 col-span-8 border-r-2 border-gray-300">
-            <img src='/avatar.webp' width={50} className="shadow-2xl rounded-full" />
-            <h3 className="pm-10">{item.title}</h3>
-            <h3 className="mt-3 underline underline-offset-8">
-              {item.days / 30} ماهه
+          <img src='/avatar.webp' width={50} className="shadow-2xl rounded-full" />
+          <h3 className="pm-10">{dataApiInvoiceSetUi.plan.title.trim()}</h3>
+          <h3 className="mt-3 underline underline-offset-8">
+            {dataApiInvoiceSetUi.plan.days / 30} ماهه
+          </h3>
+          <div>
+            <h5 className="my-2 text-md">
+              قیمت:
+            </h5>
+            <h3 className="text-xl font-bold text-blue-500">
+              {dataApiInvoiceSetUi.plan.price}
             </h3>
-            <div>
-              <h5 className="my-2 text-md">
-                قیمت:
-              </h5>
-              <h3 className="text-xl font-bold text-blue-500">
-                {item.price}
-              </h3>
-              <h5 className="my-5">
-                کد تخفیف :
-              </h5>
-              <form>
-                <input
-                  value={discount}
-                  onChange={(e) => setDiscount(e.target.value)}
-                  type="text" className=" rounded-lg border-4" />
-                <span className="mx-3">
-                  <button
-                    ref={btnDis}
-                    onClick={discountHandler}
-                    className="py-1 px-2 bg-blue-500 rounded text-black hover:scale-105">
-                    ثبت
-                  </button>
-                </span>
-                <h5 className="text-md my-5">
-                  قیمت نهایی:
-                </h5>
-                <h3 className="text-xl font-bold text-blue-500 underline underline-offset-8 border-orange-500">
-                  {
-                    discountPercent ? item.price * (100 - discountPercent) / 100 : item.price
-                  } ریال
-                </h3>
-                <h3 className="mt-6 flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={(e) => setChecked(e.target.checked)}
-                    className="me-1 w-4 h-4 "
-                  />
-                  <label>شرایط می‌پذیرد!</label>
-                </h3>
+            <h5 className="my-5">
+              کد تخفیف :
+            </h5>
+            <form>
+              <input
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+                type="text" className=" rounded-lg border-4" />
+              <span className="mx-3">
                 <button
-                  type="submit"
-                  onClick={sendShopping}
-                  className="mt-10 bg-rose-600
+                  ref={btnDis}
+                  onClick={discountHandler}
+                  className="py-1 px-2 bg-blue-500 rounded text-black hover:scale-105">
+                  ثبت
+                </button>
+              </span>
+              <h5 className="text-md my-5">
+                قیمت نهایی:
+              </h5>
+              <h3 className="text-xl font-bold text-blue-500 underline underline-offset-8 border-orange-500">
+                {
+                  acceptedPercent ? dataApiInvoiceSetUi.plan.price * (100 - acceptedPercent) / 100 : dataApiInvoiceSetUi.plan.price
+                } ریال
+              </h3>
+              <h3 className="mt-6 flex dataApiInvoiceSetUis-center">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={(e) => setChecked(e.target.checked)}
+                  className="me-1 w-4 h-4 "
+                />
+                <label>شرایط می‌پذیرد!</label>
+              </h3>
+              <button
+                type="submit"
+                onClick={sendShopping}
+                className="mt-10 bg-rose-600
                 hover:bg-rose-500 text-white rounded-md py-1 px-9 mr-10">ثبت سفارش</button>
-              </form>
-            </div>
+            </form>
           </div>
-        })
+        </div>
+
+        </>
       }
     </section>
   )

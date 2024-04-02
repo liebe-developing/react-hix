@@ -57,7 +57,9 @@ const SignUp = () => {
       setLoading(true);
       setError(false);
 
-      apiPostRequest("/api/auth/register", formData).then(function (res) {
+      console.log(formData);
+
+      apiPostRequest("/api/auth/register", undefined, formData).then(function (res) {
         if (res.status === 500 || res.status === 400) {
           setError(true);
           return;
