@@ -1,21 +1,23 @@
 import {
   Box,
-  Button,
   Flex,
   HStack,
   Heading,
   Icon,
-  IconButton,
   Image,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const MediaBox = () => {
   return (
     <Box
-      background="rgba(255, 109, 0, 1)"
+      background={useColorModeValue(
+        "rgba(255, 109, 0, 1)",
+        "rgba(255, 109, 0, 0.9)"
+      )}
       w={"full"}
       h={"180px"}
       borderRadius={"20px"}

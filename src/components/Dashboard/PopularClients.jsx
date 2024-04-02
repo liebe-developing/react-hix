@@ -1,4 +1,12 @@
-import { Box, Heading, Image, Text, Flex } from "@chakra-ui/react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import {
+  Box,
+  Heading,
+  Image,
+  Text,
+  Flex,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { popularClients } from "../../constants";
 import { Link } from "react-router-dom";
 
@@ -49,7 +57,11 @@ const PopularClients = () => {
             </Text>
           </Box>
           <Box>{item.totalPurchase}</Box>
-          <Box color={"#3C096C"}>
+          <Box
+            color={useColorModeValue("#3C096C", "gray.400")}
+            transition="all 0.3s ease-in-out"
+            _hover={{ color: useColorModeValue("#3c096ccc", "gray.300") }}
+          >
             <Link to="#">جزئیات حساب</Link>
           </Box>
         </Flex>

@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-constant-condition */
 /* eslint-disable react/prop-types */
 import {
   IconButton,
@@ -31,7 +33,6 @@ import {
 } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
 import { ImStatsDots } from "react-icons/im";
-import { TbBasketDollar } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoCodeSlash } from "react-icons/io5";
 import DarkModeButton from "./DarkModeButton";
@@ -96,15 +97,19 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => {
-        return userContent?.plan || true ? <Link key={link.name} to={link.href} >
-          <NavItem icon={link.icon}>{link.name}</NavItem>
-        </Link> :
-          <NavItem icon={link.icon} key={link.name}>{link.name}</NavItem>
-      })
-      }
+        return userContent?.plan || true || true ? (
+          <Link key={link.name} to={link.href}>
+            <NavItem icon={link.icon}>{link.name}</NavItem>
+          </Link>
+        ) : (
+          <NavItem icon={link.icon} key={link.name}>
+            {link.name}
+          </NavItem>
+        );
+      })}
       <Link to="/price-plan">
         <Box
-          mt={1}
+          mt={2}
           boxShadow={"2xl"}
           background={useColorModeValue("#FFF", "gray.800")}
           mx={4}
@@ -131,7 +136,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
           </Flex>
         </Box>
       </Link>
-    </Box >
+    </Box>
   );
 };
 
@@ -145,24 +150,20 @@ const NavItem = ({ icon, children, ...rest }) => {
     >
       <Flex
         align="center"
-        p="13px"
+        p="15px"
         mx="4"
         borderRadius="lg"
         role="group"
         cursor="pointer"
-        transition="all 0.7s"
-        _hover={{
-          color: "#3C096C",
-        }}
+        transition="all 0.3s"
+        _hover={{ color: useColorModeValue("#3C096C", "gray.400") }}
         {...rest}
       >
         {icon && (
           <Icon
             ml="4"
             fontSize="24"
-            _groupHover={{
-              color: "#3C096C",
-            }}
+            _groupHover={{ color: useColorModeValue("#3C096C", "gray.400") }}
             as={icon}
           />
         )}
@@ -176,13 +177,12 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const today = new Date().toLocaleDateString("fa-IR", options);
-  
+
   const navigate = useNavigate();
 
   const handleLogoutUser = () => {
     apiPostRequest("/api/auth/logout")
-      .then((res) => {
-
+      .then(() => {
         localStorage.clear();
         navigate("/sign-in");
       })
@@ -345,8 +345,8 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} userContent={userContent} />
-      <Box mr={{ base: 0, md: 60 }} p="3">
-        <Outlet context={{  userToken,userContent  }}/>
+      <Box mr={{ base: 0, md: 60 }} p="6">
+        <Outlet context={{ userToken,userContent }} />
       </Box>
     </Box>
   );
