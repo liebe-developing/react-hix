@@ -410,12 +410,6 @@ const secondNavlinkData = [
   { title: "پروفایل", desc: "تنظیمات حساب کاربری", icon: profile },
 ];
 
-const stats = [
-  { title: "تعداد کاربران", number: 250 },
-  { title: "تعداد فروش", number: 2 },
-  { title: "تعداد محصولات", number: 5 },
-  { title: "تعداد دایرکت ها", number: 3 },
-];
 
 const popularProducts = [
   { title: "محصول 1", quantity: 236, productImg: product1 },
@@ -457,7 +451,6 @@ export {
   oneYearPackage,
   fistNavlinkData,
   secondNavlinkData,
-  stats,
   popularProducts,
   popularClients,
 };

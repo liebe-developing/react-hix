@@ -96,7 +96,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => {
-        return userContent?.plan ? <Link key={link.name} to={link.href} >
+        return userContent?.plan || true ? <Link key={link.name} to={link.href} >
           <NavItem icon={link.icon}>{link.name}</NavItem>
         </Link> :
           <NavItem icon={link.icon} key={link.name}>{link.name}</NavItem>
@@ -346,7 +346,7 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} userContent={userContent} />
       <Box mr={{ base: 0, md: 60 }} p="3">
-        <Outlet context={{  userToken  }}/>
+        <Outlet context={{  userToken,userContent  }}/>
       </Box>
     </Box>
   );

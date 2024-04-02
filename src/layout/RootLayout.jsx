@@ -20,7 +20,7 @@ const RootLayout = () => {
       }
     }).catch(error => console.log(error))
   }, [])
-  return <SidebarWithHeader userContent={user} userAuth={userToken} />;
+  return user && <SidebarWithHeader userContent={user} userAuth={userToken} />;
 };
 
 export default RootLayout;

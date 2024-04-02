@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
 
-const Stats = ({ title, number }) => {
+const Stats = ({ title, value }) => {
   return (
     <Box
       border="1px solid #000"
@@ -29,7 +29,7 @@ const Stats = ({ title, number }) => {
           <Flex alignItems="center" justifyContent="space-between" w="full">
             <Box>
               <Text color="#FF6D00" fontWeight="700" fontSize="40px">
-                {number}
+                {value}
               </Text>
             </Box>
             <Spacer />
