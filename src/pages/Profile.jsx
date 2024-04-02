@@ -10,8 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { IoClose } from "react-icons/io5";
 import { Field, PrimaryButton } from "../components";
+import { useState } from "react";
 
 const Profile = () => {
+  const [valuesData,setValueData] = useState([
+
+  ])
+
   return (
     <Box>
       <Heading
@@ -57,6 +62,7 @@ const Profile = () => {
           <Field
             label="نام و نام خانوادگی"
             placeholder="نام و نام خانوادگی خود را وارد کنید"
+            type
           />
           <Field
             label="کد ملی"

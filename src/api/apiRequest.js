@@ -19,3 +19,11 @@ export const apiPostRequest = (route, token = undefined, data = undefined) => {
     });
 }
 
+export const apiPutRequest = (route, token = undefined, data = undefined) =>{
+    return apiRequests.put(route,data,{
+        headers: {
+            'Authorization': token ? `Bearer ${token}` : undefined
+        }
+    })
+}
+

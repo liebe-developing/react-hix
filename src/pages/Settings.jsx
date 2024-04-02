@@ -17,13 +17,16 @@ import {
 import { Field, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
 import { useRef, useState, useEffect } from "react";
-import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
+import { apiGetRequest, apiPostRequest, apiPutRequest } from "../api/apiRequest";
 import { useOutletContext } from 'react-router-dom'
+import {
+  useToast,
+} from "@chakra-ui/react";
 
 const Settings = () => {
   const fileInput = useRef(null);
   const { userToken, userContent } = useOutletContext()
-
+  const toast = useToast()
   const [formData, setFormData] = useState({
     widgetTitle: "",
     widgetDescription: "",
@@ -59,6 +62,7 @@ const Settings = () => {
       ...prevState,
       [name]: value,
     }));
+   
   };
 
   const fileSelectedHandler = (e) => {
@@ -70,10 +74,30 @@ const Settings = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const fd = new FormData();
-    selectedWidgetFile &&
-      fd.append("image", selectedWidgetFile, selectedWidgetFile?.name);
+    formData.selectedWidgetFile &&
+      fd.append("image", formData.selectedWidgetFile, formData.selectedWidgetFile?.name);
 
-    apiPostRequest("")
+    apiPutRequest("api/settings", userToken, {
+      color: formData.widgetColor,
+      title: formData.widgetTitle,
+      caption: formData.widgetDescription,
+      pos: formData.widgetPosition,
+      icon: formData.iconUrl,
+      welcome: formData.welcomeMessage,
+      explain: formData.storeDescription,
+      user_plan_id: userContent.user_plan_id,
+    }).then(res => {
+      if (res.status === 200) {
+        toast({
+          title: `تایید شد!`,
+          status: "success",
+          position: "bottom",
+          isClosable: true,
+        });
+      }
+    }).catch(error => {
+      console.log(error)
+    })
   };
 
   return (
