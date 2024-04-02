@@ -32,17 +32,23 @@ const Message = ({ text, actor }) => {
 
 export function Chats() {
     return (
-        <Flex h="100vh" py={12}
-
+        <Flex h="100vh" 
             flexDirection={{ base: "column", lg: "row" }}
-            gap="30px"
+            gap="6px"
         >
-            <Flex 
-            flexDirection="column"
-            h={{base:"95%"}}
+            
+            <Flex
+                flexDirection="column"
+                h={{ base: "95%" }}
+                position="relative"
             >
-                <div className='w-[95%] shadow-xl flex flex-row-reverse'>
+                <div className="absolute -top-9 md:-top-[83px] text-white px-3 py-1 rounded-lg bg-blue-400">
+                    چت با کاربره
+                </div>
+
+                <div className='w-[95%] mt-3 lg:mt-0 shadow-xl flex flex-row-reverse'>
                     <Input
+                        width={270}
                         color='teal'
                         placeholder='سرچ کنید'
                         _placeholder={{ color: 'inherit' }}
@@ -50,51 +56,29 @@ export function Chats() {
                     <Search className='text-4xl text-white bg-black cursor-pointer' />
                 </div>
                 {/* <CHATS CONTENT> */}
-                <div className='w-[95%] custom-scroll  h-[100%] md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
-                      <UserList />  
+                <div className=' custom-scroll  md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
+                    <UserList />
+                    <UserList />
+                    <UserList />
+                    <UserList />
+                    <UserList />
+                    <UserList />
+                    <UserList />
+                    <UserList />
                 </div>
             </Flex>
 
             <Flex
-                className='md:absolute left-1 top-[80px]'
-            
+                className=' left-1 top-[80px]'
+
                 flexDirection="column"
-                w={{base:"sm",md: "xl",lg:"3xl"}}
+                w={{ base: "sm", md: "xl", lg: "3xl" }}
                 h="full"
                 borderWidth="1px"
                 mt="5px"
                 roundedTop="lg"
                 rounded="10px"
             >
-                <HStack p={4} bg="blue.500">
-                    <Heading size="lg" width="100%">
-                        <Flex>
-                            <Box p='1' color="white">
-                                چت با کاربره
-                            </Box>
-                            <Spacer />
-                            <Box p='1'>
-                                <Flex>
-                                    <Badge ml='1' height="20px" colorScheme='green'>
-                                        پیام جدید
-                                    </Badge>
-                                    <img src="avatar.webp" alt="not-found" width={50} />
-                                </Flex>
-
-                            </Box>
-                        </Flex>
-                    </Heading>
-                </HStack>
-
                 <Stack
                     px={4}
                     py={8}
@@ -113,14 +97,10 @@ export function Chats() {
                         },
                     }}
                 >
-                    <Message text="Hi" actor="user" />
-                    <Message text="How may I help you?" actor="bot" />
-                    <Message text="Hi" actor="user" />
-                    <Message text="How may I help you?" actor="bot" />
-                    <Message text="Hi" actor="user" />
-                    <Message text="How may I help you?" actor="bot" />
-                    <Message text="Hi" actor="user" />
-                    <Message text="How may I help you?" actor="bot" />
+                    <Message text="سلام" actor="user" />
+                    <Message text="میتونم کمکتون کنم؟" actor="bot" />
+                    <Message text="بله" actor="user" />
+                    <Message text="چی کمکی از دست من بر میاد" actor="bot" />
                 </Stack>
 
                 <HStack p={4} bg="gray.100">
@@ -128,9 +108,7 @@ export function Chats() {
                     <Button colorScheme="blue">Send</Button>
                 </HStack>
             </Flex>
-            <Box>
 
-            </Box>
         </Flex>
     );
 }

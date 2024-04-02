@@ -41,7 +41,7 @@ import { apiPostRequest } from "../api/apiRequest";
 
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/" },
-  { name: "گزارش ها", icon: ImStatsDots, href: "/" },
+  { name: "گزارش ها", icon: ImStatsDots, href: "/report" },
   { name: "محصولات", icon: FaRegFolder, href: "/" },
   { name: "دستورات", icon: IoSettingsOutline, href: "/" },
   { name: "اینستاگرام", icon: FaInstagram, href: "/" },
@@ -242,6 +242,8 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
         <Flex alignItems={"center"}>
+          
+          
           <Text
             className="flex items-center gap-1.5 ml-7"
             color={useColorModeValue("gray.600", "gray.400")}
@@ -343,7 +345,7 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} userContent={userContent} />
-      <Box mr={{ base: 0, md: 60 }} p="6">
+      <Box mr={{ base: 0, md: 60 }} p="3">
         <Outlet context={{  userToken  }}/>
       </Box>
     </Box>

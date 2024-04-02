@@ -16,6 +16,7 @@ import {
   ResetPassword,
   Profile,
   Settings,
+  Report
 } from "./pages";
 import { useSelector } from "react-redux";
 import { useEffect } from "react"; 
@@ -33,6 +34,7 @@ function App() {
     <Routes>
       <Route path="/" element={<RootLayout />}>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/report" element={<Report />} />
         <Route path="/price-plan" element={<PricePlan />} />
         <Route path="/Tool" element={<Tool />} />
         <Route path="/order" element={<Order />} />

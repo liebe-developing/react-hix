@@ -20,6 +20,7 @@ import { Field, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
 
 const Settings = () => {
+
   return (
     <Box>
       <Flex alignItems="start" flexDir="column" gap={3}>
@@ -78,7 +79,7 @@ const Settings = () => {
             accept="image/png, image/jpeg"
           />
         </SimpleGrid>
-        <PrimaryButton title="ذخیره تغییرات" mr={4} />
+        <PrimaryButton  title="ذخیره تغییرات" mr={4} />
       </form>
     </Box>
   );
