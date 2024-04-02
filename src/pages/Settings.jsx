@@ -16,32 +16,42 @@ import {
 } from "@chakra-ui/react";
 import { Field, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
+import { useOutletContext } from 'react-router-dom'
 
 const Settings = () => {
   const fileInput = useRef(null);
+  const { userToken, userContent } = useOutletContext()
 
   const [formData, setFormData] = useState({
     widgetTitle: "",
     widgetDescription: "",
     welcomeMessage: "",
     storeDescription: "",
-    widgetPosition: "",
-    widgetAttention: false,
+    widgetPosition: 0,
     widgetColor: "",
+    iconUrl: "",
     selectedWidgetFile: null,
   });
 
-  const {
-    widgetTitle,
-    widgetDescription,
-    welcomeMessage,
-    storeDescription,
-    widgetPosition,
-    widgetColor,
-    widgetAttention,
-    selectedWidgetFile,
-  } = formData;
+  useEffect(() => {
+    apiGetRequest(`api/settings/${userContent.user_plan_id}`, userToken).then(res => {
+      console.log(res.data)
+      setFormData({
+        widgetTitle: res.data.data.title,
+        widgetDescription: res.data.data.caption,
+        welcomeMessage: res.data.data.welcome,
+        storeDescription: res.data.data.description,
+        widgetPosition: res.data.data.pos,
+        widgetColor: res.data.data.color,
+        iconUrl: res.data.data.icon
+      })
+    })
+
+
+  }, [])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,7 +73,7 @@ const Settings = () => {
     selectedWidgetFile &&
       fd.append("image", selectedWidgetFile, selectedWidgetFile?.name);
 
-    console.log(formData);
+    apiPostRequest("")
   };
 
   return (
@@ -89,28 +99,28 @@ const Settings = () => {
             label="عنوان بالای ابزارک"
             placeholder="پشتیبانی سایت"
             onChange={handleChange}
-            value={widgetTitle}
+            value={formData.widgetTitle}
             name="widgetTitle"
           />
           <Field
             label="توضیح بالای ابزارک"
             placeholder="پاسخگوی سوالات شما هستیم"
             onChange={handleChange}
-            value={widgetDescription}
+            value={formData.widgetDescription}
             name="widgetDescription"
           />
           <Field
             onChange={handleChange}
             label="پیام خوش آمد گویی"
             placeholder="متن خوش آمد گویی"
-            value={welcomeMessage}
+            value={formData.welcomeMessage}
             name="welcomeMessage"
           />
           <Field
             onChange={handleChange}
             label="توضیحات فروشگاه"
             placeholder="توضیحات"
-            value={storeDescription}
+            value={formData.storeDescription}
             name="storeDescription"
           />
           <FormControl>
@@ -118,36 +128,20 @@ const Settings = () => {
             <Select
               onChange={handleChange}
               name="widgetPosition"
-              value={widgetPosition}
+              value={formData.widgetPosition}
               _placeholder={{ fontSize: "12px" }}
               icon={<Icon as={MdArrowDropDown} ml={6} />}
             >
-              <option value="چپ">چپ</option>
-              <option value="راست">راست</option>
+              <option value="0">چپ</option>
+              <option value="1">راست</option>
             </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel fontSize="14px">جلب توجه ابزارک</FormLabel>
-            <Select
-              onChange={handleChange}
-              name="widgetAttention"
-              value={widgetAttention}
-              _placeholder={{ fontSize: "12px" }}
-              icon={<Icon as={MdArrowDropDown} ml={6} />}
-            >
-              <option value="بله">بله</option>
-              <option value="خیر">خیر</option>
-            </Select>
-            <FormHelperText fontSize="11px">
-              نیاز به حرکت آیکون دارد یا خیر
-            </FormHelperText>
           </FormControl>
           <Field
             label="رنگ ابزارک"
             type="color"
             w="30%"
             onChange={handleChange}
-            value={widgetColor}
+            value={formData.widgetColor}
             name="widgetColor"
           />
           <Flex flexDir="column">
@@ -168,13 +162,13 @@ const Settings = () => {
                 >
                   انتخاب فایل
                 </Button>
-                <Text fontSize="13px">{selectedWidgetFile?.name}</Text>
+                <Text fontSize="13px">{formData.selectedWidgetFile?.name || formData.iconUrl}</Text>
               </Flex>
             </Field>
             <Text fontSize="11px" color={"gray.600"}>
               حداکثر 1 مکابایت با پسوند png, jpeg
             </Text>
-            {selectedWidgetFile?.size > 1000000 && (
+            {formData.selectedWidgetFile?.size > 1000000 && (
               <Alert status="error" dir="rtl" mt={4} fontSize="13px">
                 <AlertIcon />
                 <AlertTitle>
@@ -188,7 +182,7 @@ const Settings = () => {
           title="ذخیره تغییرات"
           mr={4}
           type="submit"
-          isDisabled={selectedWidgetFile?.size > 1000000}
+          isDisabled={formData.selectedWidgetFile?.size > 1000000}
         />
       </form>
     </Box>
