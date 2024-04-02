@@ -60,6 +60,8 @@ function Order() {
     apiPostRequest("api/discount", userToken, { discountCode: discount }).then(res => {
       setDiscountChecked(false)
       if (res.status === 200) {
+        btnDis.current.classList.add("bg-white");
+        btnDis.current.disabled = true
         toast({
           title: `تایید شد!`,
           status: "success",
