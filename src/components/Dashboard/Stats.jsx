@@ -1,15 +1,18 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Text, useColorModeValue } from "@chakra-ui/react";
 
 const Stats = ({ title, number }) => {
   return (
     <Box
-      border="1px solid #000"
+      border={useColorModeValue("1px solid #000", "1px solid gray.500")}
       borderRadius="20px"
       h="180px"
       w={{ base: "45%", md: "46%" }}
       p={6}
-      boxShadow="4px 4px 0px 0px #000000"
+      boxShadow={useColorModeValue(
+        "4px 4px 0px 0px #000000",
+        "4px 4px 0px 0px #00000036"
+      )}
     >
       <Flex
         flexDir="column"

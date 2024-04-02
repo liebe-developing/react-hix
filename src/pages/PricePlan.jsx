@@ -24,30 +24,34 @@ import { useOutletContext } from "react-router-dom";
 import { apiGetRequest } from "../api/apiRequest";
 import { useEffect, useState } from "react";
 
-const PricePlan = ({ }) => {
+const PricePlan = () => {
   // prop
-  const {
-    userToken
-  } = useOutletContext()
-  const [monthOne, setMonthOne] = useState();
-  const [monthThree, setMonthTwo] = useState();
-  const [monthOneYear, setMonthThree] = useState();
-
+  const { userToken } = useOutletContext();
+  const [oneMonth, setOneMonth] = useState();
+  const [monthThree, setSixMonth] = useState();
+  const [monthOneYear, setOneYear] = useState();
 
   useEffect(() => {
-    apiGetRequest("api/plan", userToken).then(res => {
-      const plans = res.data.data;
-      const plansOneMonth = plans.filter(plan => plan.days == 30);
-      const plansThreeMonth = plans.filter(plan => plan.days == 90);
-      const plansOneYear = plans.filter(plan => plan.days == 365);
-      
-      setMonthOne(plansOneMonth);;
-    }).catch(error => {
-      console.log(error);
-    })
-  }, [])
+    apiGetRequest("api/plan", userToken)
+      .then((res) => {
+        const plans = res.data.data;
+        console.log(plans);
+        const oneMonthPlans = plans.filter((plan) => plan.days == 30);
+        const sixMonthPlans = plans.filter((plan) => plan.days == 180);
+        const oneYearPlans = plans.filter((plan) => plan.days == 365);
 
+        setOneMonth(oneMonthPlans);
+        setSixMonth(sixMonthPlans);
+        setOneYear(oneYearPlans);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
+  /* console.log(oneMonth);
+  console.log(monthThree);
+  console.log(monthOneYear); */
   return (
     <Box>
       <Center>
@@ -64,13 +68,11 @@ const PricePlan = ({ }) => {
             </Tab>
           </TabList>
           <TabPanels>
-            {monthOne && 
             <>
               <TabPanel>
                 <PricePlanHeading />
-                <Pricing monthOne={monthOne} userToken={userToken} />
-                <OneMonthPackageTable oneMonthPackage={oneMonthPackage}  />
-
+                <Pricing oneMonth={oneMonth} userToken={userToken} />
+                <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
               </TabPanel>
               <TabPanel>
                 <PricePlanHeading />
@@ -82,7 +84,7 @@ const PricePlan = ({ }) => {
                 <Pricing />
                 <OneYearPackageTable oneYearPackage={oneYearPackage} />
               </TabPanel>
-            </>}
+            </>
           </TabPanels>
         </Tabs>
       </Center>

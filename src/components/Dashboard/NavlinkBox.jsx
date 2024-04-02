@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Box,
   Flex,
@@ -6,9 +7,9 @@ import {
   Image,
   Text,
   VStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
-import { IoEllipsisVerticalOutline } from "react-icons/io5";
 
 const NavlinkBox = ({ icon, title, desc }) => {
   return (
@@ -16,8 +17,8 @@ const NavlinkBox = ({ icon, title, desc }) => {
       w={{ base: "full", md: "300px" }}
       h="80px"
       borderRadius="16px"
-      border="1px solid #000"
-      bgColor="#FF6D004D"
+      border={useColorModeValue("1px solid #000", "1px solid gray.500")}
+      bgColor={useColorModeValue("#FF6D004D", "gray.800")}
       p={3}
       cursor="pointer"
       role="group"
@@ -31,7 +32,7 @@ const NavlinkBox = ({ icon, title, desc }) => {
           />
           <VStack spacing={1} align="start">
             <Text
-              color="#303030"
+              color={useColorModeValue("#303030", "white")}
               lineHeight="20px"
               fontSize={"12px"}
               fontWeight="600"
@@ -39,7 +40,7 @@ const NavlinkBox = ({ icon, title, desc }) => {
               {title}
             </Text>
             <Text
-              color="rgba(60, 9, 108, 0.5)"
+              color={useColorModeValue("rgba(60, 9, 108, 0.5)", "gray.300")}
               lineHeight="20px"
               fontSize={"12px"}
             >
@@ -53,7 +54,7 @@ const NavlinkBox = ({ icon, title, desc }) => {
           padding={2.5}
           cursor="pointer"
           borderRadius="50%"
-          _hover={{ bg: "#f4bb8f96" }}
+          _hover={{ bg: useColorModeValue("#f4bb8f96", "gray.700") }}
         />
       </Flex>
     </Box>

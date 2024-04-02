@@ -12,7 +12,19 @@ import {
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const Field = ({ label, type, placeholder, helper, accept, ...rest }) => {
+const Field = ({
+  label,
+  type,
+  placeholder,
+  helper,
+  accept,
+  onChange,
+  value,
+  reference,
+  name,
+  children,
+  ...rest
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -24,7 +36,11 @@ const Field = ({ label, type, placeholder, helper, accept, ...rest }) => {
           placeholder={placeholder}
           pr={4}
           _placeholder={{ fontSize: "12px" }}
+          onChange={onChange}
+          value={value}
+          name={name}
           accept={accept}
+          ref={reference}
           {...rest}
         />
         {type === "password" && (
@@ -38,6 +54,7 @@ const Field = ({ label, type, placeholder, helper, accept, ...rest }) => {
           </InputLeftElement>
         )}
       </InputGroup>
+      {children}
       <FormHelperText fontSize="11px">{helper}</FormHelperText>
     </FormControl>
   );
