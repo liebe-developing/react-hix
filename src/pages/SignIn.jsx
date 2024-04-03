@@ -15,12 +15,14 @@ import {
   Icon,
   keyframes,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux/user/userSlice";
 import { apiPostRequest } from "../api/apiRequest";
+import { useSelector } from "react-redux";
+
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -36,11 +38,19 @@ const SignIn = () => {
     password: "",
   });
 
+  const userToken = useSelector((state) => state?.user?.currentUser?.token);
+
   // const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { email, password } = formData;
+
+  useEffect(() => {
+    if(userToken){
+      navigate("/")
+    }
+  }, [])
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +60,9 @@ const SignIn = () => {
     }));
   };
 
+ 
+
+
   const handleLoginUser = (e) => {
     e.preventDefault();
 
@@ -57,7 +70,7 @@ const SignIn = () => {
       setLoading(true);
       setError(false);
 
-      apiPostRequest("/api/auth/login",undefined, formData).then(function (res) {
+      apiPostRequest("/api/auth/login", undefined, formData).then(function (res) {
         console.log(res);
         if (res.status === 401 || res.status === 400) {
           setError(true);
@@ -72,6 +85,8 @@ const SignIn = () => {
       setError(true);
     }
   };
+
+
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
 

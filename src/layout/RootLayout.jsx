@@ -16,7 +16,7 @@ const RootLayout = () => {
     ).then(res => {
       setuser(res.data.data);
       if (!res.data.data.plan) {
-        // navigate('/price-plan');
+        navigate('/price-plan');
       }
     }).catch(error => console.log(error))
   }, [])

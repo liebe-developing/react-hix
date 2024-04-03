@@ -79,13 +79,12 @@ function Order() {
   }
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-12 h-auto">
-      <div className="grid col-span-4">
-      </div>
+    <section className="flex items-center justify-center h-auto">
+
       {
         dataApiInvoiceSetUi &&
-        <><div className="flex flex-col dataApiInvoiceSetUis-center justify-center
-                                gap-3 col-span-8 border-r-2 border-gray-300">
+        <><div className="flex flex-col justify-center items-center dataApiInvoiceSetUis-center 
+                                gap-3 col-span-8 ">
           <img src='/avatar.webp' width={50} className="shadow-2xl rounded-full" />
           <h3 className="pm-10">{dataApiInvoiceSetUi.plan.title.trim()}</h3>
           <h3 className="mt-3 underline underline-offset-8">

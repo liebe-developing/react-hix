@@ -1,15 +1,30 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   ArrowDown,
   IoDocuments,
   MesIcon,
 } from "../constants/icons"
+import { apiGetRequest, apiPutRequest } from "../api/apiRequest"
+import { useOutletContext } from "react-router-dom"
+import { CopyBlock, dracula } from 'react-code-blocks';
 
 function Tool() {
 
-  const [copytext, setCopytext] = useState(" Lorem ipsum dolor sit amet, consectetur adipisicing elit. A magnam exercitationem vel modi molestias neque provident eius mollitia quisquam delectus. Quibusdam natus eaque iusto ab sint expedita dolorem? Itaque, voluptates!")
 
-  const copyHandler = ()=>{
+  const { userToken, userContent } = useOutletContext()
+  const [copytext, setCopyText] = useState("")
+
+  console.log(userToken, userContent);
+
+  useEffect(() => {
+    apiGetRequest(`api/settings/script/${userContent.user_plan_id}`, userToken).then(res => {
+
+      setCopyText(res.data.data)
+    })
+  }, [])
+
+
+  const copyHandler = () => {
     navigator.clipboard.writeText(copytext);
   }
 
@@ -23,12 +38,24 @@ function Tool() {
           <ArrowDown className="text-3xl text-white" />
         </span>
         <h3 >برای نمایش ابزارک گفتگو در سایت خود، کد زیر را در قالب سایت درج کنید:</h3>
-        <button
+        {/* <button
+        dir="ltr"
         onClick={copyHandler}
-        className="w-[90]  py-5 border-l-4 border border-l-red-500 rounded-lg border-gray-500 
-        my-6">
+          className="w-[90] bg-black  py-5 border-l-4 border border-l-red-500 rounded-lg border-gray-500 
+        my-6 text-start ps-4 ">
           {copytext}
-        </button>
+        </button> */}
+        <div
+          dir='ltr'>
+        <CopyBlock
+          text={copytext}
+          language='html'
+          showLineNumbers={true}
+          theme={dracula}
+          wrapLines
+          codeBlock
+        />
+        </div>
       </div>
       {/* </ contentCopy > */}
 

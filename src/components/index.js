@@ -12,7 +12,7 @@ import PopularClients from "./Dashboard/PopularClients";
 import PrimaryButton from "./PrimaryButton";
 import Field from "./Field";
 import UserList from './Chats/UserList';
-
+import CardeCom from "./Card";
 export {
   SidebarWithHeader,
   OneMonthPackageTable,
@@ -27,5 +27,6 @@ export {
   PopularClients,
   PrimaryButton,
   Field,
-  UserList
+  UserList,
+  CardeCom
 };

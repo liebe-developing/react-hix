@@ -97,7 +97,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => {
-        return userContent?.plan || true  ? (
+        return userContent?.user_plan_id ? (
           <Link key={link.name} to={link.href}>
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
@@ -330,6 +330,7 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
+        userContent={userContent}
       />
       <Drawer
         isOpen={isOpen}

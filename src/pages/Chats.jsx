@@ -54,7 +54,7 @@ export function Chats() {
                 </div>
                 {/* <CHATS CONTENT> */}
                 <div className=' custom-scroll  md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
-                    <UserList  />
+                    <UserList />
                     <UserList />
                     <UserList />
                     <UserList />
