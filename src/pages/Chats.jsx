@@ -1,12 +1,9 @@
 import {
-    Badge,
     Box,
     Button,
     Flex,
-    Heading,
     HStack,
     Input,
-    Spacer,
     Stack,
     Text,
 } from '@chakra-ui/react';
