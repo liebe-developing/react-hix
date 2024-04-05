@@ -68,23 +68,21 @@ const PricePlan = () => {
             </Tab>
           </TabList>
           <TabPanels>
-            <>
-              <TabPanel>
-                <PricePlanHeading />
-                <Pricing oneMonth={oneMonth} userToken={userToken} />
-                <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
-              </TabPanel>
-              <TabPanel>
-                <PricePlanHeading />
-                <Pricing />
-                <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
-              </TabPanel>
-              <TabPanel>
-                <PricePlanHeading />
-                <Pricing />
-                <OneYearPackageTable oneYearPackage={oneYearPackage} />
-              </TabPanel>
-            </>
+            <TabPanel>
+              <PricePlanHeading />
+              <Pricing monthPlan={oneMonth} userToken={userToken} />
+              <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
+            </TabPanel>
+            <TabPanel>
+              <PricePlanHeading />
+              <Pricing monthPlan={monthThree} userToken={userToken} />
+              <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
+            </TabPanel>
+            <TabPanel>
+              <PricePlanHeading />
+              <Pricing monthPlan={monthOneYear} userToken={userToken} />
+              <OneYearPackageTable oneYearPackage={oneYearPackage} />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Center>
@@ -93,3 +91,21 @@ const PricePlan = () => {
 };
 
 export default PricePlan;
+
+            // <>
+            //   <TabPanel>
+            //     <PricePlanHeading />
+            //     <Pricing oneMonth={oneMonth} userToken={userToken} />
+            //     <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
+            //   </TabPanel>
+            //   <TabPanel>
+            //     <PricePlanHeading />
+            //     <Pricing />
+            //     <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
+            //   </TabPanel>
+            //   <TabPanel>
+            //     <PricePlanHeading />
+            //     <Pricing />
+            //     <OneYearPackageTable oneYearPackage={oneYearPackage} />
+            //   </TabPanel>
+            // </>
