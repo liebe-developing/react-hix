@@ -10,36 +10,60 @@ import {
 
 import { Search } from '../constants/icons';
 import { UserList } from '../components';
+import { useEffect, useState } from 'react';
+import { apiGetRequest } from '../api/apiRequest';
+import { useOutletContext } from 'react-router-dom';
+import { Message } from '../components/Chats/UserList';
 
 
-const Message = ({ text, actor }) => {
-    return (
-        <Flex
-            p={4}
-            bg={actor === 'user' ? 'blue.500' : 'gray.100'}
-            color={actor === 'user' ? 'white' : 'gray.600'}
-            borderRadius="lg"
-            w="fit-content"
-            alignSelf={actor === 'user' ? 'flex-end' : 'flex-start'}
-        >
-            <Text>{text}</Text>
-        </Flex>
-    );
-};
+// const Message = ({ text, actor }) => {
+//     return (
+//         <Flex
+//             p={4}
+//             bg={actor === 'user' ? 'blue.500' : 'gray.100'}
+//             color={actor === 'user' ? 'white' : 'gray.600'}
+//             borderRadius="lg"
+//             w="fit-content"
+//             alignSelf={actor === 'user' ? 'flex-end' : 'flex-start'}
+//         >
+//             <Text>{text}</Text>
+//         </Flex>
+//     );
+// };
 
 export function Chats() {
+
+    const [listUser, setListUser] = useState([])
+    const [selectedChat, setSelectedChat] = useState();
+
+    const { userToken, userContent } = useOutletContext()
+    useEffect(() => {
+        apiGetRequest(`api/chat_user/?upid=${userContent.user_plan_id}`, userToken).then(res => {
+            console.log(res.data.data);
+            setListUser(res.data.data)
+        })
+    }, [])
+
+    const selectUserChat = (id) => {
+        setSelectedChat(id);
+        // request bezani be server be hamrahe id
+        // list e payam ha miad
+        // toye state payam ha ro zakhire mikoni
+        // toye Box e payam ha neshun midi
+        
+    };
+
     return (
-        <Flex h="100vh" 
+        <Flex h="100vh"
             flexDirection={{ base: "column", lg: "row" }}
             gap="6px"
         >
-            
             <Flex
                 flexDirection="column"
                 h={{ base: "95%" }}
                 position="relative"
             >
-                <div className="absolute -top-9 md:-top-[83px] text-white px-3 py-1 rounded-lg bg-blue-400">
+                <div className="absolute -top-9 md:-top-[78px] text-white px-3 py-1 rounded-lg bg-blue-400">
                     چت با کاربره
                 </div>
 
@@ -54,14 +78,12 @@ export function Chats() {
                 </div>
                 {/* <CHATS CONTENT> */}
                 <div className=' custom-scroll  md:h-full overflow-y-scroll  shadow-xl flex flex-col'>
-                    <UserList />
-                    <UserList />
-                    <UserList />
-                    <UserList />
-                    <UserList />
-                    <UserList />
-                    <UserList />
-                    <UserList />
+                    {
+                        listUser.map(item => {
+                            console.log(item)
+                            return <Button onClick={() => selectUserChat(item.id)}><UserList {...item} /></Button>
+                        })
+                    }
                 </div>
             </Flex>
 
@@ -95,7 +117,14 @@ export function Chats() {
                     }}
                 >
                     <Box>
-                        انتخاب کنید چت مورنظر استفاده کنید ....
+                        {
+                            selectedChat &&
+                            <>
+                                <Message text="Salam" actor="user" />
+                                <Message text="Salam" />
+                            </>
+
+                        }
                     </Box>
                 </Stack>
 

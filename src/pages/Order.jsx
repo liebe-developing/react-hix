@@ -40,7 +40,7 @@ function Order() {
     }
 
     toast({
-      title: `تایید شد`,
+      title: `درحال انتقال به درگاه پرداخت!`,
       status: "success",
       position: "top-right",
       isClosable: true,

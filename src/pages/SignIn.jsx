@@ -33,24 +33,26 @@ const SignIn = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
+
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
+  
 
   // const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { email, password } = formData;
 
+
   useEffect(() => {
-    if(userToken){
-      navigate("/")
-    }
+    userToken && navigate("/")
   }, [])
-  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +62,7 @@ const SignIn = () => {
     }));
   };
 
- 
+
 
 
   const handleLoginUser = (e) => {

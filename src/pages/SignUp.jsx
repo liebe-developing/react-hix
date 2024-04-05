@@ -36,11 +36,12 @@ const SignUp = () => {
     email: "",
     mobile: "",
     password: "",
+    restpass : "",
   });
 
   const toast = useToast();
   const navigate = useNavigate();
-  const { name, email, mobile, password } = formData;
+  const { name, email, mobile, password, restpass } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,20 +60,31 @@ const SignUp = () => {
 
       console.log(formData);
 
-      apiPostRequest("/api/auth/register", undefined, formData).then(function (res) {
-        if (res.status === 500 || res.status === 400) {
-          setError(true);
-          return;
-        }
-      });
-      toast({
-        title: `پروفایل شما با موفقیت ساخته شد`,
-        status: "success",
-        position: "top-right",
-        isClosable: true,
-      });
-      setLoading(false);
-      navigate("/sign-in");
+      if(formData.password !== formData.restpass){
+        toast({
+          title: `فیلد رمز باهم برابر نیست!`,
+          status: "error",
+          position: "top-right",
+          isClosable: true,
+        });
+      }else{
+        apiPostRequest("/api/auth/register", undefined, formData).then(function (res) {
+          if (res.status === 500 || res.status === 400) {
+            setError(true);
+            return;
+          }
+        });
+        toast({
+          title: `پروفایل شما با موفقیت ساخته شد`,
+          status: "success",
+          position: "top-right",
+          isClosable: true,
+        });
+        setLoading(false);
+        navigate("/sign-in");
+      }
+
+      
     } catch (error) {
       setLoading(false);
       setError(true);
@@ -175,6 +187,34 @@ const SignUp = () => {
                     <Input
                       name="password"
                       value={password}
+                      onChange={handleChange}
+                      px="16px"
+                      pr={4}
+                      type={showPassword ? "text" : "password"}
+                      placeholder="********"
+                    />
+                    <InputLeftElement h={"full"}>
+                      <Button
+                        variant={"ghost"}
+                        onClick={() =>
+                          setShowPassword((showPassword) => !showPassword)
+                        }
+                      >
+                        {showPassword ? (
+                          <Icon as={FaEye} />
+                        ) : (
+                          <Icon as={FaEyeSlash} />
+                        )}
+                      </Button>
+                    </InputLeftElement>
+                  </InputGroup>
+                </FormControl>
+                <FormControl id="password" isRequired>
+                  <FormLabel>تکرار رمز  عبور</FormLabel>
+                  <InputGroup>
+                    <Input
+                      name="restpass"
+                      value={restpass}
                       onChange={handleChange}
                       px="16px"
                       pr={4}
