@@ -16,11 +16,11 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { signInSuccess } from "../redux/user/userSlice";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
+import { useSelector } from "react-redux";
+
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
 to {transform: translateY(-60px)} 
@@ -30,36 +30,34 @@ const ResetPassword = () => {
   const [isEmailAvailable, setIsEmailAvailable] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const userToken = useSelector((state) => state?.user?.currentUser?.token);
+
   const [email, setEmail] = useState("");
 
   // const toast = useToast();
-  const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleResetPassowrd = (e) => {
+  useEffect(() => {
+    userToken && navigate("/");
+  }, []);
+
+  const resetPasswordHandler = (e) => {
     e.preventDefault();
-
-    try {
-      setLoading(true);
-      setError(false);
-
-      apiPostRequest("/api/auth/reset_password", email).then(function (res) {
+    setLoading(true);
+    
+    apiPostRequest("/api/auth/reset_password", undefined, email)
+      .then(function (res) {
         console.log(res);
         if (res.status === 404) {
-          setIsEmailAvailable(false);
-          return;
-        } else if (res.status === 500) {
-          setError(true);
-          return;
+          setIsEmailAvailable(true);
         }
-        dispatch(signInSuccess(res.data));
+        setLoading(false);
+        // navigate("/sign-in");
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
       });
-      setLoading(false);
-      // navigate("/sign-in");
-    } catch (error) {
-      setLoading(false);
-      setError(true);
-    }
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
@@ -109,7 +107,7 @@ const ResetPassword = () => {
             >
               بازیابی رمز عبور
             </Heading>
-            <form onSubmit={handleResetPassowrd}>
+            <form onSubmit={resetPasswordHandler}>
               <Flex flexDir="column" gap={4} dir="rtl">
                 <FormControl id="email" isRequired>
                   <FormLabel>ایمیل</FormLabel>
@@ -141,7 +139,7 @@ const ResetPassword = () => {
                         speed="0.65s"
                         emptyColor="gray.200"
                         color="blue.500"
-                        size="xl"
+                        size="lg"
                       />
                     ) : (
                       "بازیابی"

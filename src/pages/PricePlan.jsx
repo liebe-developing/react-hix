@@ -35,10 +35,9 @@ const PricePlan = () => {
     apiGetRequest("api/plan", userToken)
       .then((res) => {
         const plans = res.data.data;
-        console.log(plans);
-        const oneMonthPlans = plans.filter((plan) => plan.days == 30);
-        const sixMonthPlans = plans.filter((plan) => plan.days == 180);
-        const oneYearPlans = plans.filter((plan) => plan.days == 365);
+        const oneMonthPlans = plans.filter((plan) => plan.days === 30);
+        const sixMonthPlans = plans.filter((plan) => plan.days === 180);
+        const oneYearPlans = plans.filter((plan) => plan.days === 365);
 
         setOneMonth(oneMonthPlans);
         setSixMonth(sixMonthPlans);
@@ -49,9 +48,7 @@ const PricePlan = () => {
       });
   }, []);
 
-  /* console.log(oneMonth);
-  console.log(monthThree);
-  console.log(monthOneYear); */
+  // console.log(oneMonth);
   return (
     <Box>
       <Center>

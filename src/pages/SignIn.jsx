@@ -14,6 +14,7 @@ import {
   InputLeftElement,
   Icon,
   keyframes,
+  Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -22,7 +23,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux/user/userSlice";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
-
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -33,26 +33,21 @@ const SignIn = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
-  
 
   // const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { email, password } = formData;
 
-
   useEffect(() => {
-    userToken && navigate("/")
-  }, [])
-
+    userToken && navigate("/");
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,9 +57,6 @@ const SignIn = () => {
     }));
   };
 
-
-
-
   const handleLoginUser = (e) => {
     e.preventDefault();
 
@@ -72,7 +64,9 @@ const SignIn = () => {
       setLoading(true);
       setError(false);
 
-      apiPostRequest("/api/auth/login", undefined, formData).then(function (res) {
+      apiPostRequest("/api/auth/login", undefined, formData).then(function (
+        res
+      ) {
         console.log(res);
         if (res.status === 401 || res.status === 400) {
           setError(true);
@@ -87,8 +81,6 @@ const SignIn = () => {
       setError(true);
     }
   };
-
-
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
 
@@ -202,7 +194,17 @@ const SignIn = () => {
                     type="submit"
                     isDisabled={loading}
                   >
-                    {loading ? "در حال ورود" : "ورود"}
+                    {loading ? (
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="blue.500"
+                        size="lg"
+                      />
+                    ) : (
+                      "ورود"
+                    )}
                   </Button>
                 </Stack>
               </Flex>

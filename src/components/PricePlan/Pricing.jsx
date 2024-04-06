@@ -47,7 +47,6 @@ function PriceWrapper(props) {
 export default function ThreeTierPricing({ userToken, monthPlan }) {
   const navigate = useNavigate()
   const sendRouteOrderHandler = (planId) => {
-    console.log(userToken);
     apiPostRequest("api/invoice", userToken,{
       planId 
     }).then(res => {

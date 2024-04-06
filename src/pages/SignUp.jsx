@@ -14,13 +14,14 @@ import {
   InputLeftElement,
   Icon,
   keyframes,
+  Spinner,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
-
+import { useSelector } from "react-redux";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -36,12 +37,18 @@ const SignUp = () => {
     email: "",
     mobile: "",
     password: "",
-    restpass : "",
+    restpass: "",
   });
 
   const toast = useToast();
   const navigate = useNavigate();
   const { name, email, mobile, password, restpass } = formData;
+
+  const userToken = useSelector((state) => state?.user?.currentUser?.token);
+
+  useEffect(() => {
+    userToken && navigate("/");
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,20 +67,22 @@ const SignUp = () => {
 
       console.log(formData);
 
-      if(formData.password !== formData.restpass){
+      if (formData.password !== formData.restpass) {
         toast({
           title: `فیلد رمز باهم برابر نیست!`,
           status: "error",
           position: "top-right",
           isClosable: true,
         });
-      }else{
-        apiPostRequest("/api/auth/register", undefined, formData).then(function (res) {
-          if (res.status === 500 || res.status === 400) {
-            setError(true);
-            return;
+      } else {
+        apiPostRequest("/api/auth/register", undefined, formData).then(
+          function (res) {
+            if (res.status === 500 || res.status === 400) {
+              setError(true);
+              return;
+            }
           }
-        });
+        );
         toast({
           title: `پروفایل شما با موفقیت ساخته شد`,
           status: "success",
@@ -83,8 +92,6 @@ const SignUp = () => {
         setLoading(false);
         navigate("/sign-in");
       }
-
-      
     } catch (error) {
       setLoading(false);
       setError(true);
@@ -210,7 +217,7 @@ const SignUp = () => {
                   </InputGroup>
                 </FormControl>
                 <FormControl id="password" isRequired>
-                  <FormLabel>تکرار رمز  عبور</FormLabel>
+                  <FormLabel>تکرار رمز عبور</FormLabel>
                   <InputGroup>
                     <Input
                       name="restpass"
@@ -246,7 +253,17 @@ const SignUp = () => {
                     }}
                     type="submit"
                   >
-                    {loading ? "ثبت نام..." : "ثبت نام"}
+                    {loading ? (
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="blue.500"
+                        size="lg"
+                      />
+                    ) : (
+                      "ثبت نام"
+                    )}
                   </Button>
                   <Flex
                     gap={2}

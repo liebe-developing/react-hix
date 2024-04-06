@@ -23,7 +23,7 @@ import {
   useColorMode,
   Button,
 } from "@chakra-ui/react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
 import {
   FaInstagram,
@@ -67,7 +67,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       {...rest}
     >
       <Flex
-        mb={2}
+        mb={10}
         h="10"
         alignItems="center"
         mx="8"
@@ -130,7 +130,7 @@ const NavItem = ({ icon, children, ...rest }) => {
     >
       <Flex
         align="center"
-        p="15px"
+        p="16px"
         mx="4"
         borderRadius="lg"
         role="group"
@@ -153,19 +153,16 @@ const NavItem = ({ icon, children, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, userContent, logOut, ...rest }) => {
+const MobileNav = ({ onOpen, userContent, ...rest }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const today = new Date().toLocaleDateString("fa-IR", options);
-
-  const navigate = useNavigate();
 
   const handleLogoutUser = () => {
     apiPostRequest("/api/auth/logout")
       .then(() => {
         localStorage.clear();
-        // ali test
-        window.open(window.location.href = "/sign-in", "_blank");
+        window.open((window.location.href = "/sign-in"), "_blank");
       })
       .catch((err) => {
         console.log(err);
@@ -223,12 +220,10 @@ const MobileNav = ({ onOpen, userContent, logOut, ...rest }) => {
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
         <Flex alignItems={"center"}>
-
-
           <Text
             className="flex items-center gap-1.5 ml-7"
             color={useColorModeValue("gray.600", "gray.400")}
-            fontSize={{ base: "7px", md: "12.5px" }}
+            fontSize={{ base: "11px", md: "12.5px" }}
           >
             <BsCalendarCheck />
             {today}
@@ -303,7 +298,7 @@ const MobileNav = ({ onOpen, userContent, logOut, ...rest }) => {
   );
 };
 
-const SidebarWithHeader = ({ userContent, userAuth: userToken, logOut }) => {
+const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -326,9 +321,14 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken, logOut }) => {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} userContent={userContent} logOut={logOut} />
+      <MobileNav onOpen={onOpen} userContent={userContent} />
       <Box mr={{ base: 0, md: 60 }} p="6">
-        <Outlet context={{ userToken, userContent }} />
+        <Outlet
+          context={{
+            userToken,
+            userContent,
+          }}
+        />
       </Box>
     </Box>
   );

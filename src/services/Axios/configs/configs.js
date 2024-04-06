@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BaseHixUrl = {
-  BASE_URL: "http://localhost:3000",
+  BASE_URL: "https://portal.hixdm.com",
   USER_PLAN_ID: -1,
 };
 
