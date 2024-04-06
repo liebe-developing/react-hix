@@ -1,6 +1,7 @@
 import {
     Card, CardHeader, CardBody, CardFooter, Heading, Button, Text, Flex, Table,
 } from '@chakra-ui/react'
+import React from 'react'
 
 function CardeCom({ title, caption, button, img }) {
     return (
