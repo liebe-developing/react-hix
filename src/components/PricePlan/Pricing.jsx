@@ -44,7 +44,7 @@ function PriceWrapper(props) {
   );
 }
 
-export default function ThreeTierPricing({ userToken, oneMonth }) {
+export default function ThreeTierPricing({ userToken, monthPlan }) {
   const navigate = useNavigate()
   const sendRouteOrderHandler = (planId) => {
     apiPostRequest("api/invoice", userToken,{
@@ -68,7 +68,7 @@ export default function ThreeTierPricing({ userToken, oneMonth }) {
         py={0}
       >
 
-        {oneMonth && oneMonth.map(item =>{
+        {monthPlan && monthPlan.map(item =>{
           console.log(item);
           if(item.price === 0)
             return;
