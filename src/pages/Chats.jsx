@@ -5,6 +5,7 @@ import {
   HStack,
   Input,
   Stack,
+  useColorMode,
   Text,
 } from "@chakra-ui/react";
 
@@ -13,9 +14,9 @@ import { UserList } from "../components";
 import { useEffect, useState } from "react";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
-import { Message } from "../components/Chats/UserList";
 import io from "socket.io-client";
 import { useCookies } from "react-cookie";
+import { Message } from "../components/Chats/TypeMessage";
 
 // const Message = ({ text, actor }) => {
 //     return (
@@ -37,6 +38,9 @@ let socket;
 export function Chats() {
   const [listUser, setListUser] = useState([]);
   const [selectedChat, setSelectedChat] = useState();
+  const [selectedChatMessages, setSelectedChatMessages] = useState([]);
+
+  const { colorMode } = useColorMode();
 
   const { userToken, userContent } = useOutletContext();
   useEffect(() => {
@@ -53,10 +57,11 @@ export function Chats() {
 
   const selectUserChat = (id) => {
     setSelectedChat(id);
-    // request bezani be server be hamrahe id
-    // list e payam ha miad
-    // toye state payam ha ro zakhire mikoni
-    // toye Box e payam ha neshun midi
+    apiGetRequest(`/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`,userToken).then(res => {
+      console.log(res.data.data);
+      setSelectedChatMessages(res.data.data);
+    })
+    
   };
 
   useEffect(() => {
@@ -75,7 +80,7 @@ export function Chats() {
       });
   }, []);
 
-//   console.log(cookies.name);
+  //   console.log(cookies.name);
 
   const sendMessage = () => {
     socket.emit("send_message", { message: "Hello" });
@@ -84,43 +89,52 @@ export function Chats() {
   return (
     <Flex h="100vh" flexDirection={{ base: "column", lg: "row" }} gap="6px">
       <Flex flexDirection="column" h={{ base: "95%" }} position="relative">
-        <div className="absolute -top-9 md:-top-[78px] text-white px-3 py-1 rounded-lg bg-blue-400">
-          چت با کاربره
-        </div>
 
-        <div className="w-[95%] mt-3 lg:mt-0 shadow-xl flex flex-row-reverse">
+        <div className="w-full mt-3 lg:mt-0 shadow-xl flex flex-row-reverse">
           <Input
-            width={270}
+         height={16}
+            width={290}
             color="teal"
             placeholder="سرچ کنید"
             _placeholder={{ color: "inherit" }}
           />
-          <Search className="text-4xl text-white bg-black cursor-pointer" />
+          <Search className="text-4xl text-white h-16  bg-black cursor-pointer" />
         </div>
         {/* <CHATS CONTENT> */}
-        <div className=" custom-scroll  md:h-full overflow-y-scroll  shadow-xl flex flex-col">
+        <div className=" custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar ">
           {listUser.map((item) => {
             console.log(item);
             return (
-              <Button key={item.id} onClick={() => selectUserChat(item.id)}>
+              <div key={item.id} onClick={() => selectUserChat(item.id)}>
                 <UserList {...item} />
-              </Button>
+              </div>
             );
           })}
         </div>
       </Flex>
 
       <Flex
-        className=" left-1 top-[80px]"
         flexDirection="column"
         w={{ base: "sm", md: "xl", lg: "3xl" }}
         h="full"
         borderWidth="1px"
-        mt="5px"
         roundedTop="lg"
         rounded="10px"
       >
+        {listUser && (
+          <Flex
+            bg={colorMode === "light" ? "gray.300" : "gray.700"}
+            className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
+            color={colorMode === "light" ? "black" : "white"}>
+            <div className="px-4 py-2 bg-blue-500 rounded-lg text-white shadow-xl">
+              چت با کاربر
+            </div>
+            <div>کاربر شماره {listUser.id}</div>
+          </Flex>
+        )}
+        
         <Stack
+          bg={colorMode === "light" ? "gray.200" : "gray.800"}
           px={4}
           py={8}
           overflow="auto"
@@ -138,18 +152,17 @@ export function Chats() {
             },
           }}
         >
-          <Box>
-            {selectedChat && (
-              <>
-                <Message text="Salam" actor="user" />
-                <Message text="Salam" />
-              </>
-            )}
+          <Box className="flex flex-col">
+            {selectedChat && selectedChatMessages && selectedChatMessages.map((item,index)=>(
+              <Message key={index} {...item} type={item.type}  />
+            ))}
           </Box>
         </Stack>
 
-        <HStack p={4} bg="gray.100">
-          <Input bg="white" placeholder="Enter your text" />
+        <HStack p={4}
+          bg={colorMode === "light" ? "gray.200" : "gray.800"}
+        >
+          <Input color={colorMode == "light" ? "black" : "white"} bg="gray.500" placeholder="Enter your text" _placeholder={{color: "gray.200",opacity: 1, fontWeight:"bold"}} />
           <Button onClick={sendMessage} colorScheme="blue">
             Send
           </Button>

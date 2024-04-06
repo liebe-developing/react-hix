@@ -61,6 +61,8 @@ const SignUp = () => {
   const handleRegisterUser = (e) => {
     e.preventDefault();
 
+    
+
     try {
       setLoading(true);
       setError(false);
@@ -93,7 +95,6 @@ const SignUp = () => {
         navigate("/sign-in");
       }
     } catch (error) {
-      setLoading(false);
       setError(true);
       toast({
         title: `مشکلی پیش آمده است`,
@@ -102,6 +103,9 @@ const SignUp = () => {
         isClosable: true,
       });
     }
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;

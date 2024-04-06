@@ -45,7 +45,6 @@ const LinkItems = [
   { name: "گزارش ها", icon: ImStatsDots, href: "/report" },
   { name: "محصولات", icon: FaRegFolder, href: "/" },
   { name: "دستورات", icon: IoSettingsOutline, href: "/" },
-  { name: "اینستاگرام", icon: FaInstagram, href: "/" },
   { name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
   { name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
   { name: "پروفایل", icon: FaRegUser, href: "/profile" },
@@ -322,7 +321,7 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} userContent={userContent} />
-      <Box mr={{ base: 0, md: 60 }} p="6">
+      <Box mr={{ base: 0, md: 60 }} p="1">
         <Outlet
           context={{
             userToken,

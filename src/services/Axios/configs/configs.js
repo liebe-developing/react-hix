@@ -9,8 +9,9 @@ const apiRequests = axios.create({
   baseURL: BaseHixUrl.BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    // Auth : `Bearer ` + getCookie("hix")
+    Accept: "application/json"
   },
+  withCredentials: true,
 });
 
 export default apiRequests;

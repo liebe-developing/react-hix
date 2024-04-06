@@ -3,20 +3,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { CircleCheck } from "../../constants/icons"
 
 
-export const Message = ({ text, actor }) => {
-  return (
-    <Flex
-      p={4}
-      bg={actor === 'user' ? 'blue.500' : 'gray.100'}
-      color={actor === 'user' ? 'white' : 'gray.600'}
-      borderRadius="lg"
-      w="fit-content"
-      alignSelf={actor === 'user' ? 'flex-end' : 'flex-start'}
-    >
-      <Text>{text}</Text>
-    </Flex>
-  );
-};
+
 
 
 function UserList({name,id,email}) {

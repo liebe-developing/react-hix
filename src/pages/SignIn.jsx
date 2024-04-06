@@ -80,6 +80,9 @@ const SignIn = () => {
       setLoading(false);
       setError(true);
     }
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;

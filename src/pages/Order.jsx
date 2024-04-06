@@ -73,6 +73,14 @@ function Order() {
         console.log(res.data.percent);
         setDiscountChecked(true)
       }
+      if(res.status === 403){
+        toast({
+          title: `تایید نشد!`,
+          status: "success",
+          position: "bottom",
+          isClosable: true,
+        });
+      }
     }).catch(erorr => {
       console.log(erorr)
     })
@@ -128,7 +136,7 @@ function Order() {
                   onChange={(e) => setChecked(e.target.checked)}
                   className="me-1 w-4 h-4 "
                 />
-                <label>شرایط می‌پذیرد!</label>
+                <label>شرایط را میپزیرم!</label>
               </h3>
               <button
                 type="submit"
