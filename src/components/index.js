@@ -13,6 +13,8 @@ import PrimaryButton from "./PrimaryButton";
 import Field from "./Field";
 import UserList from './Chats/UserList';
 import CardeCom from "./Card";
+import Pagination from "./product/Pagination";
+
 export {
   SidebarWithHeader,
   OneMonthPackageTable,
@@ -28,5 +30,6 @@ export {
   PrimaryButton,
   Field,
   UserList,
-  CardeCom
+  CardeCom,
+  Pagination
 };

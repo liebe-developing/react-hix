@@ -43,7 +43,7 @@ import { apiPostRequest } from "../api/apiRequest";
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/" },
   { name: "گزارش ها", icon: ImStatsDots, href: "/report" },
-  { name: "محصولات", icon: FaRegFolder, href: "/" },
+  { name: "محصولات", icon: FaRegFolder, href: "/product" },
   { name: "دستورات", icon: IoSettingsOutline, href: "/" },
   { name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
   { name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },

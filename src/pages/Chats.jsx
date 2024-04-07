@@ -56,7 +56,9 @@ export function Chats() {
   const [cookies, setCookie] = useCookies(["sid"]);
 
   useEffect(() => {
-    const es = new EventSource('https://portal.hixdm.com/chat-streaming');
+    const es = new EventSource('https://portal.hixdm.com/chat-streaming', {
+      withCredentials: true
+    });
     es.onmessage = event => {
       console.log(JSON.parse(event.data));
     }

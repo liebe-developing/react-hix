@@ -15,10 +15,12 @@ import {
   ResetPassword,
   Profile,
   Settings,
-  Report
+  Report,
+  Product
 } from "./pages";
  import { useSelector } from "react-redux";
 import { useEffect } from "react";
+
 
 function App() {
    const userToken = useSelector((state) => state?.user?.currentUser?.token);
@@ -36,6 +38,7 @@ function App() {
         <Route path="/report" element={<Report />} />
         <Route path="/price-plan" element={<PricePlan />} />
         <Route path="/Tool" element={<Tool />} />
+        <Route path="/product" element={<Product />} />
         <Route path="/order" element={<Order />} />
         <Route path="/chats" element={<Chats />} />
         <Route path="/profile" element={<Profile />} />

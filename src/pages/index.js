@@ -9,7 +9,7 @@ import Chats from "./Chats";
 import Profile from "./Profile";
 import Settings from "./Settings";
 import Report from "./Report";
-
+import Product from "./Product";
 export {
   PricePlan,
   Dashboard,
@@ -21,5 +21,6 @@ export {
   ResetPassword,
   Profile,
   Settings,
-  Report
+  Report,
+  Product
 };
