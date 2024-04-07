@@ -14,7 +14,7 @@ import { UserList } from "../components";
 import { useEffect, useState } from "react";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { useCookies } from "react-cookie";
 import { Message } from "../components/Chats/TypeMessage";
 
@@ -33,7 +33,7 @@ import { Message } from "../components/Chats/TypeMessage";
 //     );
 // };
 
-let socket;
+// let socket;
 
 export function Chats() {
   const [listUser, setListUser] = useState([]);
@@ -55,13 +55,20 @@ export function Chats() {
 
   const [cookies, setCookie] = useCookies(["sid"]);
 
+  useEffect(() => {
+    const es = new EventSource('https://portal.hixdm.com/chat-streaming');
+    es.onmessage = event => {
+      console.log(JSON.parse(event.data));
+    }
+  }, [])
+
   const selectUserChat = (id) => {
     setSelectedChat(id);
-    apiGetRequest(`/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`,userToken).then(res => {
+    apiGetRequest(`/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`, userToken).then(res => {
       console.log(res.data.data);
       setSelectedChatMessages(res.data.data);
     })
-    
+
   };
 
   useEffect(() => {
@@ -71,9 +78,9 @@ export function Chats() {
         /* setCookie("sid", res.data.sid, {
           path: "https://portal.hixdm.com/",
         }); */
-        socket = io("https://portal.hixdm.com", {
-          withCredentials: true,
-        });
+        // socket = io("https://portal.hixdm.com", {
+        //   withCredentials: true,
+        // });
       })
       .catch((error) => {
         console.log(error);
@@ -83,7 +90,8 @@ export function Chats() {
   //   console.log(cookies.name);
 
   const sendMessage = () => {
-    socket.emit("send_message", { message: "Hello" });
+    // socket.emit("send_message", { message: "Hello" });
+    console.log('reza');
   };
 
   return (
@@ -92,7 +100,7 @@ export function Chats() {
 
         <div className="w-full mt-3 lg:mt-0 shadow-xl flex flex-row-reverse">
           <Input
-         height={16}
+            height={16}
             width={290}
             color="teal"
             placeholder="سرچ کنید"
@@ -132,7 +140,7 @@ export function Chats() {
             <div>کاربر شماره {listUser.id}</div>
           </Flex>
         )}
-        
+
         <Stack
           bg={colorMode === "light" ? "gray.200" : "gray.800"}
           px={4}
@@ -153,8 +161,8 @@ export function Chats() {
           }}
         >
           <Box className="flex flex-col">
-            {selectedChat && selectedChatMessages && selectedChatMessages.map((item,index)=>(
-              <Message key={index} {...item} type={item.type}  />
+            {selectedChat && selectedChatMessages && selectedChatMessages.map((item, index) => (
+              <Message key={index} {...item} type={item.type} />
             ))}
           </Box>
         </Stack>
@@ -162,7 +170,7 @@ export function Chats() {
         <HStack p={4}
           bg={colorMode === "light" ? "gray.200" : "gray.800"}
         >
-          <Input color={colorMode == "light" ? "black" : "white"} bg="gray.500" placeholder="Enter your text" _placeholder={{color: "gray.200",opacity: 1, fontWeight:"bold"}} />
+          <Input color={colorMode == "light" ? "black" : "white"} bg="gray.500" placeholder="Enter your text" _placeholder={{ color: "gray.200", opacity: 1, fontWeight: "bold" }} />
           <Button onClick={sendMessage} colorScheme="blue">
             Send
           </Button>

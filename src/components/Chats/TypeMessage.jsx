@@ -36,7 +36,7 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
                                                 <th scope="col" class="py-3 px-6">{item.title}</th>
                                             </tr>
                                         </thead>
-                                    <tbody>
+                                        <tbody className="odd:bg-white even:bg-slate-50">
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <td class="py-4 px-6">{item.title}</td>
                                         </tr>

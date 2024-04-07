@@ -9,7 +9,9 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 
 function CardeCom({ title, caption, button, img }) {
     return (
-        <Card display="flex">
+        <Card
+        shadow="md"
+        display="flex">
             <CardHeader>
                 <Heading size='md'>
                     <FaShoppingBasket className='text-5xl p-3 bg-blue-700 rounded-full
