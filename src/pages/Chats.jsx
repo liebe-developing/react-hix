@@ -6,9 +6,11 @@ import {
   Input,
   Stack,
   useColorMode,
-  Text,
+  Icon,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
-
+import { CiSearch } from "react-icons/ci";
 import { Search } from "../constants/icons";
 import { UserList } from "../components";
 import { useEffect, useState } from "react";
@@ -56,21 +58,23 @@ export function Chats() {
   const [cookies, setCookie] = useCookies(["sid"]);
 
   useEffect(() => {
-    const es = new EventSource('https://portal.hixdm.com/chat-streaming', {
-      withCredentials: true
+    const es = new EventSource("https://portal.hixdm.com/chat-streaming", {
+      withCredentials: true,
     });
-    es.onmessage = event => {
+    es.onmessage = (event) => {
       console.log(JSON.parse(event.data));
-    }
-  }, [])
+    };
+  }, []);
 
   const selectUserChat = (id) => {
     setSelectedChat(id);
-    apiGetRequest(`/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`, userToken).then(res => {
+    apiGetRequest(
+      `/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`,
+      userToken
+    ).then((res) => {
       console.log(res.data.data);
       setSelectedChatMessages(res.data.data);
-    })
-
+    });
   };
 
   useEffect(() => {
@@ -93,25 +97,35 @@ export function Chats() {
 
   const sendMessage = () => {
     // socket.emit("send_message", { message: "Hello" });
-    console.log('reza');
+    console.log("reza");
   };
 
   return (
-    <Flex h="100vh" flexDirection={{ base: "column", lg: "row" }} gap="6px">
-      <Flex flexDirection="column" h={{ base: "95%" }} position="relative">
-
-        <div className="w-full mt-3 lg:mt-0 shadow-xl flex flex-row-reverse">
+    <Flex
+      h="100vh"
+      flexDirection={{ base: "column", lg: "row" }}
+      gap="6px"
+      w="full"
+    >
+      <Flex
+        flexDirection="column"
+        h={{ base: "95%" }}
+        position="relative"
+        // w="30%"
+      >
+        <InputGroup boxShadow="xl">
           <Input
-            height={16}
-            width={290}
-            color="teal"
+            w="full"
             placeholder="سرچ کنید"
-            _placeholder={{ color: "inherit" }}
+            _placeholder={{ color: "gray.600", fontSize: "15px" }}
+            pr={8}
           />
-          <Search className="text-4xl text-white h-16  bg-black cursor-pointer" />
-        </div>
+          <InputRightElement>
+            <Icon as={CiSearch} boxSize={5} cursor="pointer" />
+          </InputRightElement>
+        </InputGroup>
         {/* <CHATS CONTENT> */}
-        <div className=" custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar ">
+        <div className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar ">
           {listUser.map((item) => {
             console.log(item);
             return (
@@ -130,12 +144,15 @@ export function Chats() {
         borderWidth="1px"
         roundedTop="lg"
         rounded="10px"
+        flexGrow="grow"
+        flex={1}
       >
         {listUser && (
           <Flex
             bg={colorMode === "light" ? "gray.300" : "gray.700"}
             className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
-            color={colorMode === "light" ? "black" : "white"}>
+            color={colorMode === "light" ? "black" : "white"}
+          >
             <div className="px-4 py-2 bg-blue-500 rounded-lg text-white shadow-xl">
               چت با کاربر
             </div>
@@ -163,16 +180,21 @@ export function Chats() {
           }}
         >
           <Box className="flex flex-col">
-            {selectedChat && selectedChatMessages && selectedChatMessages.map((item, index) => (
-              <Message key={index} {...item} type={item.type} />
-            ))}
+            {selectedChat &&
+              selectedChatMessages &&
+              selectedChatMessages.map((item, index) => (
+                <Message key={index} {...item} type={item.type} />
+              ))}
           </Box>
         </Stack>
 
-        <HStack p={4}
-          bg={colorMode === "light" ? "gray.200" : "gray.800"}
-        >
-          <Input color={colorMode == "light" ? "black" : "white"} bg="gray.500" placeholder="Enter your text" _placeholder={{ color: "gray.200", opacity: 1, fontWeight: "bold" }} />
+        <HStack p={4} bg={colorMode === "light" ? "gray.200" : "gray.800"}>
+          <Input
+            color={colorMode == "light" ? "black" : "white"}
+            bg="gray.500"
+            placeholder="Enter your text"
+            _placeholder={{ color: "gray.200", opacity: 1, fontWeight: "bold" }}
+          />
           <Button onClick={sendMessage} colorScheme="blue">
             Send
           </Button>
