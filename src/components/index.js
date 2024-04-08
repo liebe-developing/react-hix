@@ -11,9 +11,11 @@ import PopularProducts from "./Dashboard/PopularProducts";
 import PopularClients from "./Dashboard/PopularClients";
 import PrimaryButton from "./PrimaryButton";
 import Field from "./Field";
-import UserList from './Chats/UserList';
+import UserList from "./Chats/UserList";
 import CardeCom from "./Card";
 import Pagination from "./product/Pagination";
+import Loading from "./Loading";
+import Error from "./Error";
 
 export {
   SidebarWithHeader,
@@ -31,5 +33,7 @@ export {
   Field,
   UserList,
   CardeCom,
-  Pagination
+  Pagination,
+  Loading,
+  Error,
 };

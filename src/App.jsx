@@ -1,8 +1,4 @@
-import {
-  Route,
-  Routes,
-  useNavigate
-} from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import {
   Dashboard,
@@ -16,21 +12,20 @@ import {
   Profile,
   Settings,
   Report,
-  Product
+  Product,
 } from "./pages";
- import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-
 function App() {
-   const userToken = useSelector((state) => state?.user?.currentUser?.token);
+  const userToken = useSelector((state) => state?.user?.currentUser?.token);
   const navigate = useNavigate();
 
-   useEffect(() => {
+  useEffect(() => {
     if (!userToken) {
       navigate("/sign-in");
     }
-  }, []); 
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<RootLayout />}>
@@ -47,6 +42,7 @@ function App() {
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
 }
