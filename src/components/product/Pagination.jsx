@@ -11,8 +11,8 @@ function Pagination(props) {
     const pageButtons = [];
     for (let i = 1; i <= boxContent; i++) {
         if (Math.abs(i - currentPage) > 3 && Math.abs(i - boxContent) > 3 && Math.abs(i - 1) > 3) {
-            if (pageButtons[pageButtons.length - 1] != '_____')
-                pageButtons.push('_____');
+            if (pageButtons[pageButtons.length - 1] != '___')
+                pageButtons.push('___');
             continue;
         }
         pageButtons.push(
@@ -25,31 +25,31 @@ function Pagination(props) {
                 {i}
             </Button>
         )
-        // const firstSplit = pageButtons.indexOf('_____');
-        // const lastSplit = pageButtons.lastIndexOf('_____')
+        const firstSplit = pageButtons.indexOf('___');
+        const lastSplit = pageButtons.lastIndexOf('___')
 
-        // if (firstSplit > 0 && lastSplit > 0) {
-        //     // flash e samte rast
-        //     pageButtons[firstSplit] = <IoIosArrowForward className="mt-3 inline-flex" />
-        //     // flash e samte chap
-        //     pageButtons[lastSplit] = <IoIosArrowBack className="mt-3 inline-flex" />
-        // }
-        // else {
-        //     if (firstSplit > 0) {
-        //         if (Math.abs(i - boxContent) <= 3) {
-        //             // flash e samte rast
-        //             pageButtons[firstSplit] = <IoIosArrowForward className="mt-3 inline-flex" />
-        //         } else {
-        //             //flash e samte chap
-        //             pageButtons[firstSplit] = <IoIosArrowBack className="mt-3 inline-flex" />
+        if (firstSplit > 0 && lastSplit > 0) {
+            // flash e samte rast
+            pageButtons[firstSplit] = <IoIosArrowBack className="mt-3" />
+            // flash e samte chap
+            pageButtons[lastSplit] = <IoIosArrowBack className="mt-3 inline-flex bg-red-400" />
+        }
+        else {
+            if (firstSplit > 0) {
+                if (Math.abs(i - boxContent) <= 3) {
+                    // flash e samte rast
+                    pageButtons[firstSplit] = <IoIosArrowForward className="mt-3 inline-flex" />
+                } else {
+                    //flash e samte chap
+                    pageButtons[firstSplit] = <IoIosArrowBack className="mt-3 inline-flex" />
 
-        //         }
-        //     }
-        //     if (lastSplit > 0) {
-        //         // flash e samte chap
-        //         pageButtons[lastSplit] = <IoIosArrowForward className="mt-3 inline-flex" />
-        //     }
-        // }
+                }
+            }
+            if (lastSplit > 0) {
+                // flash e samte chap
+                pageButtons[lastSplit] = <IoIosArrowForward className="mt-3 inline-flex " />
+            }
+        }
     }
     return (
         <div>
