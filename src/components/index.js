@@ -16,6 +16,8 @@ import CardeCom from "./Card";
 import Pagination from "./product/Pagination";
 import Loading from "./Loading";
 import Error from "./Error";
+import Table from "./Table";
+import ProductModal from "./product/ProductModal";
 
 export {
   SidebarWithHeader,
@@ -36,4 +38,6 @@ export {
   Pagination,
   Loading,
   Error,
+  ProductModal,
+  Table,
 };

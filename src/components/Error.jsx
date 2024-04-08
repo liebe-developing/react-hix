@@ -1,5 +1,6 @@
 import { Flex, Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
 
+// eslint-disable-next-line react/prop-types
 const Error = ({ title }) => {
   return (
     <Flex justifyContent="center" alignItems="center" w="full" h="full">
