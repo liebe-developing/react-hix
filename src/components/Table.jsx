@@ -2,37 +2,37 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 import { useColorMode, useDisclosure } from "@chakra-ui/react";
-import { Iconcheck } from "../constants/icons";
+import { MdOutlineRemoveDone } from "react-icons/md";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import ProductModal from "./product/ProductModal";
 
-const Table = ({ tableData, currentPage }) => {
+const Table = ({ tableData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   
-  
   const colorMode = useColorMode(); 
-  console.log(tableData);
+ 
 
   const createData = (item) => {
-    const { id, title, brand, description, image, price, status, onClick } =
+    const { id, title, brand, description, image, price, status,url } =
       item;
     return (
       <tr
-        key={item.id}
+        key={id}
         bg={colorMode === "light" ? "gray.300" : "gray.700"}
         className="border-b cursor-pointer hover:bg-gray-100"
         onClick={onOpen}
       >
         <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
-          {item.id}
+          {id}
         </td>
         <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
-          {item.title}
+          {title}
         </td>
         <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
-          {item.status === true ? <Iconcheck className="bg-white text-blue-600  text-2xl inline" /> : 'نبود'}
+          {status === true ? <IoCheckmarkDoneSharp className="bg-gray-50 rounded-full text-blue-600  text-2xl inline" /> : <MdOutlineRemoveDone className="bg-white rounded-full text-black  text-2xl inline" />}
         </td>
         <td  className="text-center py-4 whitespace-nowrap text-sm font-medium ">
-          <a href={item.url} className="text-blue-500">
+          <a href={url} className="text-blue-500">
             لینک
           </a>
         </td>

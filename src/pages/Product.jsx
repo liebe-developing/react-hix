@@ -35,6 +35,8 @@ function Product() {
       {!loading && <Loading />}
       {loading && (
         <div className=" rounded-md">
+          <h3 className="my-3 mr-5 bg-red-400 text-white inline-block p-2 rounded-xl shadow-2xl border-black border-2"
+          >برای دیدن جزئیات  بیشتر روی فیلد آیتم ها کلیک فرمایید!</h3>
           <table className="w-[97%] mx-auto overflow-x-scroll">
             <thead className="bg-blue-500 border-b ">
               <tr className="text-white">

@@ -22,7 +22,7 @@ import { apiPostRequest, apiPutRequest } from "../../api/apiRequest";
 
 
 const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
-  console.log(dataContentModal);
+  
   const { userToken, userContent } = useOutletContext();
   const toast = useToast();
 
@@ -60,9 +60,6 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
   const handleChangeCecked = ()=>{
     setFormData({ status: !formData.status });
   }
-
-  console.log(formData.status);
-  
   
   // BACK-END SENDE DATA
 
@@ -74,9 +71,15 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
         position: "top",
         isClosable: true,
       });
+    }).catch(error => {
+      toast({
+        title: `خطایی رخ داده است!`,
+        status: "error",
+        position: "top",
+        isClosable: true,
+      });
     })
   }
-
 
 
 
@@ -111,15 +114,21 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
           pb={0}
           className="pl-[1px] relative"
         >
-          <Flex className="w-full max-sm:flex-col max-sm:px-4 mx-2   py-2 relative ">
+          <Flex className="w-full max-sm:flex-col max-sm:px-4 mx-2  py-2 relative ">
             <Box
               h={{ base: 350, md: 540 }}
               minW={{ base: "auto", md: 400 }}
               maxW={{ base: "auto", md: 400 }}
               className="group sm:sticky top-0 max-sm:mb-3 right-0"
-              onClick={dataSend}
+              
             >
-              <img w="full" h="full" src={image} className="shadow-md" />
+              <img w="full" h="full"  src={image} className="shadow-sm mix-blend-normal object-contain h-[200px] mx-auto block" />
+              <Box mt={2} className="text-md">
+                اعمال کد تخفیف
+              </Box>
+              <Text className="sm:text-lg mt-1 text-md font-extrabold">
+                <input type="text" className="border-green-300 border-2 rounded-xl " />
+              </Text>
               <Link state={dataContentModal} className="max-sm:mb-20">
                 <Button
                   title="مشاهده جزئیات"
@@ -127,11 +136,12 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                   bottom="0"
                   color={useColorModeValue("#22c35e", "green.300")}
                   rounded
+                  onClick={dataSend}
                   w="full"
                   _groupHover={{ opacity: 1 }}
                   className="max-sm:rounded-xl group-hover:transition group-hover:duration-500 ease-in-out "
                 >
-                  ویرایش
+                  ذخیره
                 </Button>
               </Link>
             </Box>
@@ -140,7 +150,8 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                 درباره
               </Box>
               <Box w="100%">
-                <textarea value={formData.title} name="title" className="w-full h-20" onChange={handleChange}></textarea>
+                <textarea value={formData.title} name="title" className="w-full h-20 text-sm px-2 leading-7"
+                 onChange={handleChange}></textarea>
               </Box>
               <Text
                 className="sm:text-lg text-lg font-extrabold"
@@ -156,15 +167,17 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
               <Box mt={5} className="text-xs">
                 اطلاعات
               </Box>
-              <Text className="sm:text-lg mt-1 text-md font-extrabold">
-                <textarea value={formData.description} type="text" name="description" onChange={handleChange} className="w-full h-32" ></textarea>
+              <Text className="sm:text-lg mt-1  font-extrabold">
+                <textarea value={formData.description} type="text" name="description" onChange={handleChange}
+                  className="w-full h-32 text-sm leading-7" ></textarea>
               </Text>
               {/* IMAGE */}
               <Box mt={12} className="text-xs">
                 عکس 
               </Box>
               <Text className="sm:text-lg mt-1 text-md font-extrabold">
-                <textarea value={formData.image} type="text" name="image" onChange={handleChange} className="w-full h-20" ></textarea>
+                <textarea value={formData.image} type="text" name="image" onChange={handleChange} className="w-full h-20 text-sm" >
+                </textarea>
               </Text>
               <Box >
                 وضعیت
