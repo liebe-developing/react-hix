@@ -177,7 +177,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                     checked={formData.status}
                     type="checkbox"
                     onChange={handleChangeCecked}
-                    className="mr-5 w-5 h-5"
+                    className="mr-6 w-7 h-7 cursor-pointer"
                   />
                 </span>
               </h3>
