@@ -58,12 +58,7 @@ export function Chats() {
   const [cookies, setCookie] = useCookies(["sid"]);
 
   useEffect(() => {
-    const es = new EventSource("https://portal.hixdm.com/chat-streaming", {
-      withCredentials: true,
-    });
-    es.onmessage = (event) => {
-      console.log(JSON.parse(event.data));
-    };
+   
   }, []);
 
   const selectUserChat = (id) => {
@@ -81,12 +76,12 @@ export function Chats() {
     apiPostRequest("/operator/chat", userToken, undefined)
       .then((res) => {
         console.log(res.data.sid);
-        /* setCookie("sid", res.data.sid, {
-          path: "https://portal.hixdm.com/",
-        }); */
-        // socket = io("https://portal.hixdm.com", {
-        //   withCredentials: true,
-        // });
+        const es = new EventSource("https://portal.hixdm.com/chat-streaming", {
+          withCredentials: true,
+        });
+        es.onmessage = (event) => {
+          console.log(JSON.parse(event.data));
+        };
       })
       .catch((error) => {
         console.log(error);

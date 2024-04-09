@@ -15,6 +15,11 @@ import { FaFacebook } from "react-icons/fa6";
 import { PiInstagramLogoDuotone as InstIcon } from 'react-icons/pi'
 import { CiMenuKebab as MenuCricle } from "react-icons/ci";
 
+// -------
+// PRODUCT.JSX
+// -------
+import { FaCircleCheck as Iconcheck} from "react-icons/fa6";
+
 export {
     ArrowDown,
     IoDocuments,
@@ -24,7 +29,8 @@ export {
     DesktopIcons,
     FaFacebook,
     InstIcon,
-    MenuCricle
+    MenuCricle,
+    Iconcheck
 }
 
 

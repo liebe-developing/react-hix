@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { apiGetRequest } from "../api/apiRequest";
-import { Pagination, ProductModal, Table } from "../components/index";
+import { Pagination, Table } from "../components/index";
 import { Button, useDisclosure } from "@chakra-ui/react";
 
+
 function Product() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  
 
   let counter = 1;
   const { userToken, userContent } = useOutletContext();
-  const [productData, setDataProduct] = useState();
+  const [productData, setDataProduct] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [boxButtons, setBoxButtons] = useState();
 
@@ -29,18 +30,40 @@ function Product() {
 
   return (
     <div className="">
-      <Button onClick={onOpen}>Click</Button>
+      <Button>Click</Button>
+      <div className=" rounded-md">
+        <table className="w-[97%] mx-auto overflow-x-scroll">
+          <thead className="bg-blue-500 border-b ">
+            <tr className="text-white">
+              <th scope="col" className="text-sm font-medium  text-center py-4">
+                شمارنده
+              </th>
+              <th scope="col" className="text-sm font-medium  text-center py-4">
+                عنوان
+              </th>
+              <th scope="col"  className="text-sm font-medium  text-center py-4">
+                موجود
+              </th>
+              <th scope="col" className="text-sm  font-medium  text-center py-4">
+                لینک
+              </th>
+            </tr>
+          </thead>
       {productData &&
         productData.map((item, idx) => {
-          return <Table key={idx} tableData={item} />;
+          console.log(item);
+          return <Table key={idx} tableData={item} currentPage={currentPage} />;
         })}
+
+        </table>
+      </div>
       <Pagination
         currentPage={currentPage}
         boxContent={boxButtons}
         productData={productData}
         setCurrentPage={setCurrentPage}
       />
-      <ProductModal isOpen={isOpen} onClose={onClose} product={productData} />
+
     </div>
   );
 }
