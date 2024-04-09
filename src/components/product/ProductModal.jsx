@@ -14,29 +14,42 @@ import {
   UnorderedList,
   useColorModeValue,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
+import { apiPostRequest, apiPutRequest } from "../../api/apiRequest";
 
 
 const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
+  console.log(dataContentModal);
+  const { userToken, userContent } = useOutletContext();
+  const toast = useToast();
+
   const {
     description,
     image,
     price,
     status,
-    title
+    title,
+    id,
+    url
+
   } = dataContentModal;
 
   const [formData, setFormData] = useState({
-    name: title,
-    price: price,
-    caption: description,
+    id: id,
+    url: url,
+    title: title,
+    description: description,
     image: image,
     status: status,
-    image: image
+    price: Number(price),
+    attributes: null,
+    weight: 0
   });
 
+console.log(typeof formData.price);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -44,12 +57,21 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
       [name]: value,
     }));
   };
+
+  console.log(formData.status);
+  
   
   // BACK-END SENDE DATA
 
   const dataSend = ()=>{
-    // send data
-    // (urlوارد نمایید!)
+    apiPutRequest(`/api/product/`,userToken,formData).then(res => {
+      toast({
+        title: `تغییرات اعمال شد!`,
+        status: "success",
+        position: "top",
+        isClosable: true,
+      });
+    })
   }
 
 
@@ -113,7 +135,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                 درباره
               </Box>
               <Box w="100%">
-                <textarea value={formData.name} name="name" className="w-full h-20" onChange={handleChange}></textarea>
+                <textarea value={formData.title} name="title" className="w-full h-20" onChange={handleChange}></textarea>
               </Box>
               <Text
                 className="sm:text-lg text-lg font-extrabold"
@@ -130,7 +152,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                 اطلاعات
               </Box>
               <Text className="sm:text-lg mt-1 text-md font-extrabold">
-                <textarea value={formData.caption} type="text" name="caption" onChange={handleChange} className="w-full h-32" ></textarea>
+                <textarea value={formData.description} type="text" name="description" onChange={handleChange} className="w-full h-32" ></textarea>
               </Text>
               {/* IMAGE */}
               <Box mt={12} className="text-xs">
@@ -145,7 +167,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
               <h3 className={status === true ? 'text-3xl text-green-400' : 'text-3xl text-red-400'} >
                 {status === true ? 'موجود' : 'ناموجود'}
                 <span>
-                  <input type="checkbox" value={formData.status} onChange={handleChange} className="mr-5 w-5 h-5" />
+                  <input checked={formData.status} type="checkbox" value={formData.status} onChange={handleChange} className="mr-5 w-5 h-5" />
                 </span>
               </h3>
             </Box>

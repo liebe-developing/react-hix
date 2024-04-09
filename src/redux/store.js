@@ -4,7 +4,6 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
 const rootReducer = combineReducers({ user: userSlice });
-
 const persistConfig = {
   key: "root",
   version: 1,

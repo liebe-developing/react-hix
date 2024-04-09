@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { apiGetRequest } from "../api/apiRequest";
-import { Pagination, Table } from "../components/index";
-import { Button, useDisclosure } from "@chakra-ui/react";
+import { Loading, Pagination,Table } from "../components/index";
+
 
 
 function Product() {
   
+  const [loading, setLoading] = useState(false);
 
   let counter = 1;
   const { userToken, userContent } = useOutletContext();
@@ -25,38 +26,41 @@ function Product() {
       setDataProduct(res.data.products);
       console.log(productData);
       setBoxButtons(res.data.pageCount);
+      setLoading(true)
     });
   }, [currentPage]);
 
   return (
     <div className="">
-      <Button>Click</Button>
-      <div className=" rounded-md">
-        <table className="w-[97%] mx-auto overflow-x-scroll">
-          <thead className="bg-blue-500 border-b ">
-            <tr className="text-white">
-              <th scope="col" className="text-sm font-medium  text-center py-4">
-                شمارنده
-              </th>
-              <th scope="col" className="text-sm font-medium  text-center py-4">
-                عنوان
-              </th>
-              <th scope="col"  className="text-sm font-medium  text-center py-4">
-                موجود
-              </th>
-              <th scope="col" className="text-sm  font-medium  text-center py-4">
-                لینک
-              </th>
-            </tr>
-          </thead>
-      {productData &&
-        productData.map((item, idx) => {
-          console.log(item);
-          return <Table key={idx} tableData={item} currentPage={currentPage} />;
-        })}
+      {!loading && <Loading />}
+      {loading && (
+        <div className=" rounded-md">
+          <table className="w-[97%] mx-auto overflow-x-scroll">
+            <thead className="bg-blue-500 border-b ">
+              <tr className="text-white">
+                <th scope="col" className="text-sm font-medium  text-center py-4">
+                  شمارنده
+                </th>
+                <th scope="col" className="text-sm font-medium  text-center py-4">
+                  عنوان
+                </th>
+                <th scope="col" className="text-sm font-medium  text-center py-4">
+                  موجود
+                </th>
+                <th scope="col" className="text-sm  font-medium  text-center py-4">
+                  لینک
+                </th>
+              </tr>
+            </thead>
+            {productData &&
+              productData.map((item, idx) => {
+                console.log(item);
+                return <Table key={idx} tableData={item} currentPage={currentPage} />;
+              })}
 
-        </table>
-      </div>
+          </table>
+        </div>
+      )}
       <Pagination
         currentPage={currentPage}
         boxContent={boxButtons}

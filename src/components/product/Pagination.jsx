@@ -53,8 +53,7 @@ function Pagination(props) {
     }
     return (
         <div>
-
-            <Flex flexWrap="wrap">
+            <Flex mt={3} mr={3} flexWrap="wrap">
                 {
                     pageButtons
                 }

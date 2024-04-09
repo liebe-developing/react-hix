@@ -8,7 +8,7 @@ import ProductModal from "./product/ProductModal";
 const Table = ({ tableData, currentPage }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   
-  console.log(currentPage);
+  
   const colorMode = useColorMode(); 
   console.log(tableData);
 
