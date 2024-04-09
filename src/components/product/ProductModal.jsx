@@ -34,7 +34,6 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
     title,
     id,
     url
-
   } = dataContentModal;
 
   const [formData, setFormData] = useState({
@@ -49,7 +48,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
     weight: 0
   });
 
-console.log(typeof formData.price);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -57,6 +56,10 @@ console.log(typeof formData.price);
       [name]: value,
     }));
   };
+
+  const handleChangeCecked = ()=>{
+    setFormData({ status: !formData.status });
+  }
 
   console.log(formData.status);
   
@@ -73,6 +76,8 @@ console.log(typeof formData.price);
       });
     })
   }
+
+
 
 
 
@@ -164,10 +169,16 @@ console.log(typeof formData.price);
               <Box >
                 وضعیت
               </Box>
-              <h3 className={status === true ? 'text-3xl text-green-400' : 'text-3xl text-red-400'} >
-                {status === true ? 'موجود' : 'ناموجود'}
+              <h3 className={formData.status === true ? 'text-3xl text-green-400' : 'text-3xl text-red-400'} >
+                {formData.status === true ? 'موجود' : 'ناموجود'}
                 <span>
-                  <input checked={formData.status} type="checkbox" value={formData.status} onChange={handleChange} className="mr-5 w-5 h-5" />
+                  <input
+                    name="status"
+                    checked={formData.status}
+                    type="checkbox"
+                    onChange={handleChangeCecked}
+                    className="mr-5 w-5 h-5"
+                  />
                 </span>
               </h3>
             </Box>

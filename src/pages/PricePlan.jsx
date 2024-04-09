@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 const PricePlan = () => {
   // prop
   const { userToken } = useOutletContext();
+  const [free, setFree] = useState();
   const [oneMonth, setOneMonth] = useState();
   const [sixMonth, setSixMonth] = useState();
   const [oneYear, setOneYear] = useState();
@@ -35,13 +36,16 @@ const PricePlan = () => {
     apiGetRequest("api/plan", userToken)
       .then((res) => {
         const plans = res.data.data;
-        const oneMonthPlans = plans.filter((plan) => plan.days === 30);
+        const freePlan = plans.filter((plan) => plan.price === 0 );
+        const oneMonthPlans = plans.filter((plan) => plan.days === 30 );
         const sixMonthPlans = plans.filter((plan) => plan.days === 180);
         const oneYearPlans = plans.filter((plan) => plan.days === 365);
 
+        console.log(freePlan);
         setOneMonth(oneMonthPlans);
         setSixMonth(sixMonthPlans);
         setOneYear(oneYearPlans);
+        setFree(freePlan);
       })
       .catch((error) => {
         console.log(error);
@@ -55,6 +59,9 @@ const PricePlan = () => {
         <Tabs colorScheme="purple" w="full">
           <TabList>
             <Tab w="full" fontSize="20px">
+              رایگان
+            </Tab>
+            <Tab w="full" fontSize="20px">
               ۱ ماهه
             </Tab>
             <Tab w="full" fontSize="20px">
@@ -65,6 +72,11 @@ const PricePlan = () => {
             </Tab>
           </TabList>
           <TabPanels>
+            <TabPanel>
+              <PricePlanHeading />
+              <Pricing monthPlan={free} userToken={userToken} />
+              <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
+            </TabPanel>
             <TabPanel>
               <PricePlanHeading />
               <Pricing monthPlan={oneMonth} userToken={userToken} />

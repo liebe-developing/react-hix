@@ -14,12 +14,12 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
                         <Text>{content}</Text>
                     </>
                 ) : type === 'form' ? (
-                    <div>
+                    <div className="flex flex-col">
                         {
                             content.map((item, index) => (
-                                <div key={index} className="flex w-1/2 items-center justify-between rounded-lg">
-                                    <div className="text-2xl">{item.name}</div>
-                                    <div className="text-2xl">{item.title}</div>
+                                <div key={index} className="flex bg-blue-500 shadow-lg w-1/2 items-center gap-4 p-2 odd:bg-red-300 justify-around border-2 border-blue-700 rounded-lg">
+                                    <div className="text-md">{item.name}</div>
+                                    <div className="text-md">{item.title}</div>
                                 </div>
                             ))
                         }
@@ -30,7 +30,7 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
                             
                             {
                                 content.map((item, index) => {
-                                    <>
+                                    <div key={index}>
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
                                                 <th scope="col" class="py-3 px-6">{item.title}</th>
@@ -41,7 +41,7 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
                                             <td class="py-4 px-6">{item.title}</td>
                                         </tr>
                                     </tbody>
-                                    </>
+                                    </div>
 
                                 })
                             }

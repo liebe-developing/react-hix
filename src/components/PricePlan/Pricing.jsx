@@ -16,15 +16,6 @@ import { FaCheckCircle } from "react-icons/fa";
 import { apiPostRequest } from "../../api/apiRequest";
 import { useNavigate } from "react-router-dom";
 
-const option1 = ["آپشن شماره 1", "آپشن شماره 2", "آپشن شماره 3"];
-const option2 = [
-  "آپشن شماره 1",
-  "آپشن شماره 2",
-  "آپشن شماره 3",
-  "آپشن شماره 4",
-  "آپشن شماره 5",
-  "آپشن شماره 6",
-];
 
 function PriceWrapper(props) {
   const { children } = props;
@@ -79,25 +70,37 @@ export default function Pricing({ userToken, monthPlan }) {
               price,
               title,
             } = item;
-            console.log(item);
-            if (price === 0) return;
             return (
               <PriceWrapper key={id}>
                 <Box py={4} px={12} borderBottom="1px solid #eee">
                   <Text fontWeight="500" fontSize="2xl"></Text>
                   <HStack justifyContent="center">
-                    <Text fontSize="4xl" fontWeight="900">
-                      {price / 10}
-                    </Text>
-                    <Text
-                      fontSize="3xl"
-                      fontWeight="600"
-                      fontFamily="Casablanca"
-                    >
-                      تومان
-                    </Text>
-                    <Text fontSize="xl" color="gray.500">
-                      {days / 30} ماهه
+                    {
+                      price > 0 ?
+                        <>
+                          <Text fontSize="4xl" fontWeight="900">
+                            {price / 10}
+                          </Text>
+                          <Text
+                            fontSize="3xl"
+                            fontWeight="600"
+                            fontFamily="Casablanca"
+                          >
+                            تومان
+                          </Text>
+                        </> : 
+                        <Text
+                          fontSize="3xl"
+                          fontWeight="600"
+                          fontFamily="Casablanca"
+                        >
+                          رایگان
+                        </Text>
+                    }
+                    <Text fontSize="xl" color="gray.500">{days > 30 ?
+                      ((days !== 365 ? days / 30 : 12) + 'ماهه') :
+                      days + 'روزه'
+                    }
                     </Text>
                   </HStack>
                 </Box>
@@ -118,7 +121,7 @@ export default function Pricing({ userToken, monthPlan }) {
                     </ListItem>
                     <ListItem display="flex" alignItems="center" gap={1}>
                       <ListIcon as={FaCheckCircle} color="green.500" />
-                       تعداد اپراتور: {operator_count}
+                      تعداد اپراتور: {operator_count === 999999999 ? 'نامحدود' : operator_count}
                     </ListItem>
                   </List>
                   <Box w="80%" pt={7}>

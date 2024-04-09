@@ -56,7 +56,7 @@ const Dashboard = () => {
             />
             <Stats
               title="اپراتورها"
-              value={`${getValueDashboard.operatorCount} / ${getValueDashboard.maxOperators}`}
+              value={`${getValueDashboard.operatorCount} / ${getValueDashboard.maxOperators === 999999999 ? 'نامحدود' : getValueDashboard.maxOperators}`}
             />
             <Stats
               title="محصولات"
