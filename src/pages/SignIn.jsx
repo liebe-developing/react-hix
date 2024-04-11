@@ -23,6 +23,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux/user/userSlice";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
+import Error from "../components/Error";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -60,33 +61,32 @@ const SignIn = () => {
   const handleLoginUser = (e) => {
     e.preventDefault();
 
-    try {
-      setLoading(true);
-      setError(false);
+    setLoading(true);
+    setError(false);
 
-      apiPostRequest("/api/auth/login", undefined, formData).then(function (
-        res
-      ) {
+    apiPostRequest("/api/auth/login", undefined, formData)
+      .then((res) => {
         console.log(res);
-        if (res.status === 401 || res.status === 400) {
+        if (res.status === 401) {
           setError(true);
           return;
         }
         dispatch(signInSuccess(res.data));
         setLoading(false);
         navigate("/");
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
       });
-    } catch (error) {
-      setLoading(false);
-      setError(true);
-    }
+
     setTimeout(() => {
-      setLoading(false)
+      setLoading(false);
     }, 3000);
   };
 
+  console.log(error);
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
-
   return (
     <Box position={"relative"} dir="ltr">
       <Flex
@@ -211,8 +211,8 @@ const SignIn = () => {
                   </Button>
                 </Stack>
               </Flex>
+              {error && <Error title="نام کاربری یا رمز عبور اشتباه است" />}
             </form>
-            {error && <Text>Error</Text>}
           </Box>
         </Flex>
       </Flex>

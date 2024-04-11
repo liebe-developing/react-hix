@@ -92,7 +92,7 @@ export default function Pricing({ userToken, monthPlan }) {
               price,
               title,
             } = item;
-            const persianPrice = price / 100;
+            const persianPrice = price / 10;
             return (
               <PriceWrapper key={id}>
                 <Box py={4} px={12} borderBottom="1px solid #eee">

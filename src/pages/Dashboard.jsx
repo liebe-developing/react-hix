@@ -28,7 +28,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Flex flexWrap="wrap" gap={12}>
+    <Flex flexWrap="wrap" mx={{base: 5, md: 0}} flexDir={{ base: "column", md: "row" }} gap={12}>
       <Box flex={1.2}>
         <MediaBox />
         <Flex flexWrap="wrap" justifyContent="space-between" my={8} rowGap={4}>
@@ -56,7 +56,11 @@ const Dashboard = () => {
             />
             <Stats
               title="اپراتورها"
-              value={`${getValueDashboard.operatorCount} / ${getValueDashboard.maxOperators === 999999999 ? 'نامحدود' : getValueDashboard.maxOperators}`}
+              value={`${getValueDashboard.operatorCount} / ${
+                getValueDashboard.maxOperators === 999999999
+                  ? "نامحدود"
+                  : getValueDashboard.maxOperators
+              }`}
             />
             <Stats
               title="محصولات"

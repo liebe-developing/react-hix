@@ -27,10 +27,19 @@ const MediaBox = () => {
     >
       <Box>
         <Flex flexDir="column" color="white" gap={4} maxW={500}>
-          <Heading fontSize="20px" lineHeight="33px" fontWeight={700}>
+          <Heading
+            fontSize={{ base: "13px", md: "20px" }}
+            lineHeight="33px"
+            fontWeight={700}
+          >
             هیکس دی ام در شبکه های اجتماعی
           </Heading>
-          <Text fontSize="13px" lineHeight="20px" fontWeight={500}>
+          <Text
+            fontSize={{ base: "10px", md: "13px" }}
+            lineHeight="20px"
+            fontWeight={500}
+            maxW={{ base: "240px", md: "full" }}
+          >
             هیکس دم ام را در شبکه های اجتماعی دنبال کنید تا از جدیدترین تخفیف ها
             و اطلاعیه ها با خبر شوید.
           </Text>
@@ -64,8 +73,11 @@ const MediaBox = () => {
           </HStack>
         </Flex>
       </Box>
-      <Box pos="absolute" left={0} top={0} zIndex={1}>
-        <Image src="./dashboard/Social-tree-cuate.png" />
+      <Box pos="absolute" left={0} top={{ base: 5, md: 0 }} zIndex={1}>
+        <Image
+          w={{ base: 135, md: "auto" }}
+          src="./dashboard/Social-tree-cuate.png"
+        />
       </Box>
       <Box
         pos="absolute"

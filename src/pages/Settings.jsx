@@ -6,7 +6,6 @@ import {
   Button,
   Flex,
   FormControl,
-  FormHelperText,
   FormLabel,
   Heading,
   Icon,
@@ -17,16 +16,17 @@ import {
 import { Field, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
 import { useRef, useState, useEffect } from "react";
-import { apiGetRequest, apiPostRequest, apiPutRequest } from "../api/apiRequest";
-import { useOutletContext } from 'react-router-dom'
 import {
-  useToast,
-} from "@chakra-ui/react";
+  apiGetRequest,
+  apiPutRequest,
+} from "../api/apiRequest";
+import { useOutletContext } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
 
 const Settings = () => {
   const fileInput = useRef(null);
-  const { userToken, userContent } = useOutletContext()
-  const toast = useToast()
+  const { userToken, userContent } = useOutletContext();
+  const toast = useToast();
   const [formData, setFormData] = useState({
     widgetTitle: "",
     widgetDescription: "",
@@ -39,22 +39,21 @@ const Settings = () => {
   });
 
   useEffect(() => {
-    apiGetRequest(`api/settings/${userContent.user_plan_id}`, userToken).then(res => {
-      console.log(res.data)
-      setFormData({
-        widgetTitle: res.data.data.title,
-        widgetDescription: res.data.data.caption,
-        welcomeMessage: res.data.data.welcome,
-        storeDescription: res.data.data.description,
-        widgetPosition: res.data.data.pos,
-        widgetColor: res.data.data.color,
-        iconUrl: res.data.data.icon
-      })
-    })
-
-
-  }, [])
-
+    apiGetRequest(`api/settings/${userContent.user_plan_id}`, userToken).then(
+      (res) => {
+        console.log(res.data);
+        setFormData({
+          widgetTitle: res.data.data.title,
+          widgetDescription: res.data.data.caption,
+          welcomeMessage: res.data.data.welcome,
+          storeDescription: res.data.data.description,
+          widgetPosition: res.data.data.pos,
+          widgetColor: res.data.data.color,
+          iconUrl: res.data.data.icon,
+        });
+      }
+    );
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +61,6 @@ const Settings = () => {
       ...prevState,
       [name]: value,
     }));
-   
   };
 
   const fileSelectedHandler = (e) => {
@@ -75,7 +73,11 @@ const Settings = () => {
     e.preventDefault();
     const fd = new FormData();
     formData.selectedWidgetFile &&
-      fd.append("image", formData.selectedWidgetFile, formData.selectedWidgetFile?.name);
+      fd.append(
+        "image",
+        formData.selectedWidgetFile,
+        formData.selectedWidgetFile?.name
+      );
 
     apiPutRequest("api/settings", userToken, {
       color: formData.widgetColor,
@@ -86,18 +88,20 @@ const Settings = () => {
       welcome: formData.welcomeMessage,
       explain: formData.storeDescription,
       user_plan_id: userContent.user_plan_id,
-    }).then(res => {
-      if (res.status === 200) {
-        toast({
-          title: `تایید شد!`,
-          status: "success",
-          position: "bottom",
-          isClosable: true,
-        });
-      }
-    }).catch(error => {
-      console.log(error)
     })
+      .then((res) => {
+        if (res.status === 200) {
+          toast({
+            title: `تایید شد!`,
+            status: "success",
+            position: "bottom",
+            isClosable: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -186,7 +190,9 @@ const Settings = () => {
                 >
                   انتخاب فایل
                 </Button>
-                <Text fontSize="13px">{formData.selectedWidgetFile?.name || formData.iconUrl}</Text>
+                <Text fontSize="13px">
+                  {formData.selectedWidgetFile?.name || formData.iconUrl}
+                </Text>
               </Flex>
             </Field>
             <Text fontSize="11px" color={"gray.600"}>

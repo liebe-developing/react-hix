@@ -28,7 +28,7 @@ function App() {
   }, []);
   return (
     <Routes>
-      <Route path="/" element={<RootLayout />}>
+      <Route exact path="/" element={<RootLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/report" element={<Report />} />
         <Route path="/price-plan" element={<PricePlan />} />

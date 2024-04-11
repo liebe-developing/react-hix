@@ -31,7 +31,11 @@ const Stats = ({ title, value }) => {
         <Box w="full">
           <Flex alignItems="center" justifyContent="space-between" w="full">
             <Box>
-              <Text color="#FF6D00" fontWeight="700" fontSize="40px">
+              <Text
+                color="#FF6D00"
+                fontWeight="700"
+                fontSize={{ base: "25px", md: "40px" }}
+              >
                 {value}
               </Text>
             </Box>

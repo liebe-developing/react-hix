@@ -15,8 +15,8 @@ import { apiGetRequest, apiPutRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 const Profile = () => {
-  const toast = useToast()
-  const { userToken, userContent } = useOutletContext()
+  const toast = useToast();
+  const { userToken, userContent } = useOutletContext();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -29,50 +29,68 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    apiGetRequest(`api/user/${userContent.user.id}`,userToken).then(res =>{
-      console.log(res.data.data.user)
-      const response = res.data.data.user
-     setFormData({
-       name: response.name,
-       email: response.email,
-       address: response.address,
-       numberPhone: response.mobile,
-       birth: response.birth,
-       idNumber: response.code_meli,
-       password: response.password
-     })
-    }).catch(error => {
-      console.log(error)
-    })
-  
-  }, [])
-  
+    apiGetRequest(`api/user/${userContent.user.id}`, userToken)
+      .then((res) => {
+        console.log(res.data.data.user);
+        const response = res.data.data.user;
+        setFormData({
+          name: response.name,
+          email: response.email,
+          address: response.address,
+          numberPhone: response.mobile,
+          birth: response.birth,
+          idNumber: response.code_meli,
+          password: response.password,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     apiPutRequest("api/user", userToken, {
-      name: formData.name && formData.name.trim().length > 0 ? formData.name.trim() : undefined,
-      mobile: formData.numberPhone && formData.numberPhone.trim().length > 0 ? formData.numberPhone.trim() : undefined,
-      address: formData.address && formData.address.trim().length > 0 ? formData.address.trim() : undefined,
-      email: formData.email && formData.email.trim().length > 0 ? formData.email.trim() : undefined,
+      name:
+        formData.name && formData.name.trim().length > 0
+          ? formData.name.trim()
+          : undefined,
+      mobile:
+        formData.numberPhone && formData.numberPhone.trim().length > 0
+          ? formData.numberPhone.trim()
+          : undefined,
+      address:
+        formData.address && formData.address.trim().length > 0
+          ? formData.address.trim()
+          : undefined,
+      email:
+        formData.email && formData.email.trim().length > 0
+          ? formData.email.trim()
+          : undefined,
       // password: formData.password && formData.password.trim().length > 0 ? formData.password.trim() : undefined,
-      code_meli: formData.idNumber && formData.idNumber.trim().length > 0 ? formData.idNumber.trim() : undefined,
-      birth: formData.birth && formData.birth.trim().length > 0 ? formData.birth.trim() : undefined,
-    }).then(res => {
-      if (res.status === 200) {
-        toast({
-          title: `تایید شد!`,
-          status: "success",
-          position: "bottom",
-          isClosable: true,
-        });
-      }
-    }).catch(error => {
-      console.log(error)
+      code_meli:
+        formData.idNumber && formData.idNumber.trim().length > 0
+          ? formData.idNumber.trim()
+          : undefined,
+      birth:
+        formData.birth && formData.birth.trim().length > 0
+          ? formData.birth.trim()
+          : undefined,
     })
+      .then((res) => {
+        if (res.status === 200) {
+          toast({
+            title: `بروزرسانی با موفقیت انجام شد`,
+            status: "success",
+            position: "bottom",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,7 +99,6 @@ const Profile = () => {
       [name]: value,
     }));
   };
-
 
   return (
     <Box>
@@ -149,7 +166,8 @@ const Profile = () => {
             name="email"
             onChange={handleChange}
           />
-          <Field label="آدرس"
+          <Field
+            label="آدرس"
             placeholder="آدرس خود را وارد کنید"
             value={formData.address}
             name="address"
@@ -163,7 +181,8 @@ const Profile = () => {
             name="numberPhone"
             onChange={handleChange}
           />
-          <Field label="تاریخ تولد"
+          <Field
+            label="تاریخ تولد"
             placeholder={"۱۳۷۸/۰۲/۲۲"}
             value={formData.birth}
             name="birth"
@@ -174,7 +193,7 @@ const Profile = () => {
           title="ذخیره تغییرات"
           mr={4}
           btnFn={handleSubmit}
-          />
+        />
       </form>
     </Box>
   );

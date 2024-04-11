@@ -69,7 +69,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         mb={10}
         h="10"
         alignItems="center"
-        mx="8"
+        mx="2"
         justifyContent="space-between"
       >
         <img src="/logo_hix.svg" width={150} />
@@ -77,7 +77,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       </Flex>
       {LinkItems.map((link) => {
         return userContent?.user_plan_id ? (
-          <Link key={link.name} to={link.href}>
+          <Link key={link.name} to={link.href} onClick={onClose}>
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
         ) : (
@@ -218,9 +218,12 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
       </Text>
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
-        <Flex alignItems={"center"}>
+        <Flex alignItems={"center"} zIndex={2}>
           <Text
-            className="flex items-center gap-1.5 ml-7"
+            ml={5}
+            display={{ base: "none", md: "flex" }}
+            alignItems="center"
+            gap={2}
             color={useColorModeValue("gray.600", "gray.400")}
             fontSize={{ base: "11px", md: "12.5px" }}
           >
