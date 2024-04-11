@@ -71,7 +71,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         mx="2"
         justifyContent="space-between"
       >
-        <img src="/logo_hix.svg" width={150} />
+        <img src="/logo_hix.svg" width={100} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => {
@@ -193,7 +193,7 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-       <img src="logo_hix.svg" alt="not-found" width={150} />
+       <img src="logo_hix.svg" alt="not-found" width={100} />
       </Text>
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
