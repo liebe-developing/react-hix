@@ -13,6 +13,7 @@ import {
   SixMonthPackageTable,
   PricePlanHeading,
   Pricing,
+  Loading,
 } from "../components";
 import {
   oneMonthPackage,
@@ -23,14 +24,16 @@ import {
 import { useOutletContext } from "react-router-dom";
 import { apiGetRequest } from "../api/apiRequest";
 import { useEffect, useState } from "react";
+import PricingFree from "../components/PricePlan/PricingFree";
 
 const PricePlan = () => {
   // prop
-  const { userToken } = useOutletContext();
+  const { userToken, userContent } = useOutletContext();
   const [free, setFree] = useState();
   const [oneMonth, setOneMonth] = useState();
   const [sixMonth, setSixMonth] = useState();
   const [oneYear, setOneYear] = useState();
+  const [isLoding,setisLoding] = useState(false);
 
   useEffect(() => {
     apiGetRequest("api/plan", userToken)
@@ -50,70 +53,76 @@ const PricePlan = () => {
       .catch((error) => {
         console.log(error);
       });
+      setisLoding(true)
   }, []);
 
   // console.log(oneMonth);
   return (
-    <Box>
-      <Center>
-        <Tabs colorScheme="purple" w="full">
-          <TabList>
-            {free && (
-              <Tab w="full" fontSize="20px">
-                رایگان
-              </Tab>
-            )}
-            {oneMonth && (
-              <Tab w="full" fontSize="20px">
-                ۱ ماهه
-              </Tab>
-            )}
-            {sixMonth && (
-              <Tab w="full" fontSize="20px">
-                ۶ ماهه
-              </Tab>
-            )}
-            {oneYear && (
-              <Tab w="full" fontSize="20px">
-                ۱ ساله
-              </Tab>
-            )}
-          </TabList>
-          <TabPanels>
-            {free && (
-              <TabPanel>
-                <PricePlanHeading />
-                <Pricing monthPlan={free} userToken={userToken} />
-                <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
-              </TabPanel>
-            )}
-            {oneMonth && (
-              <TabPanel>
-                <PricePlanHeading />
-                <Pricing monthPlan={oneMonth} userToken={userToken} />
-                <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
-              </TabPanel>
-            )}
+    <>
+      {!isLoding && <Loading />}
+      {isLoding && (
+        <Box>
+          <Center>
+            <Tabs colorScheme="purple" w="full">
+              <TabList>
+                {free && (
+                  <Tab w="full" fontSize="20px">
+                    رایگان
+                  </Tab>
+                )}
+                {oneMonth && (
+                  <Tab w="full" fontSize="20px">
+                    ۱ ماهه
+                  </Tab>
+                )}
+                {sixMonth && (
+                  <Tab w="full" fontSize="20px">
+                    ۶ ماهه
+                  </Tab>
+                )}
+                {oneYear && (
+                  <Tab w="full" fontSize="20px">
+                    ۱ ساله
+                  </Tab>
+                )}
+              </TabList>
+              <TabPanels>
+                {free && (
+                  <TabPanel>
+                    <PricePlanHeading />
+                    <PricingFree monthPlan={free} userToken={userToken} userContent={userContent} />
+                    <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
+                  </TabPanel>
+                )}
+                {oneMonth && (
+                  <TabPanel>
+                    <PricePlanHeading />
+                    <Pricing monthPlan={oneMonth} userToken={userToken} />
+                    <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
+                  </TabPanel>
+                )}
 
-            {sixMonth && (
-              <TabPanel>
-                <PricePlanHeading />
-                <Pricing monthPlan={sixMonth} userToken={userToken} />
-                <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
-              </TabPanel>
-            )}
+                {sixMonth && (
+                  <TabPanel>
+                    <PricePlanHeading />
+                    <Pricing monthPlan={sixMonth} userToken={userToken} />
+                    <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
+                  </TabPanel>
+                )}
 
-            {oneYear && (
-              <TabPanel>
-                <PricePlanHeading />
-                <Pricing monthPlan={oneYear} userToken={userToken} />
-                <OneYearPackageTable oneYearPackage={oneYearPackage} />
-              </TabPanel>
-            )}
-          </TabPanels>
-        </Tabs>
-      </Center>
-    </Box>
+                {oneYear && (
+                  <TabPanel>
+                    <PricePlanHeading />
+                    <Pricing monthPlan={oneYear} userToken={userToken} />
+                    <OneYearPackageTable oneYearPackage={oneYearPackage} />
+                  </TabPanel>
+                )}
+              </TabPanels>
+            </Tabs>
+          </Center>
+        </Box>
+      )}
+    </>
   );
 };
 

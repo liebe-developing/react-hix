@@ -30,9 +30,9 @@ const Table = ({ tableData }) => {
         </td>
         <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
           {status === true ? (
-            <Icon check className="bg-white text-blue-600  text-2xl inline" />
+            <IoCheckmarkDoneSharp className="bg-white text-blue-600 rounded-full MdOutlineRemoveDone text-2xl inline" />
           ) : (
-            "نبود"
+            <MdOutlineRemoveDone className="bg-white text-black rounded-full MdOutlineRemoveDone text-2xl inline" />
           )}
         </td>
         <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
