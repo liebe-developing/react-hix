@@ -16,6 +16,7 @@ import {
 } from "./pages";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
@@ -28,8 +29,9 @@ function App() {
   }, []);
   return (
     <Routes>
-      <Route exact path="/" element={<RootLayout />}>
+      <Route exact element={<RootLayout />}>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/report" element={<Report />} />
         <Route path="/price-plan" element={<PricePlan />} />
         <Route path="/Tool" element={<Tool />} />
@@ -42,7 +44,7 @@ function App() {
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      {/* <Route path="*" element={<NotFound />} /> */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

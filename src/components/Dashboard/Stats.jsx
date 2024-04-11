@@ -21,7 +21,7 @@ const Stats = ({ title, value }) => {
         h="full"
       >
         <Text
-          color="#FF6D00"
+          color="#0C2B6D"
           fontWeight="600"
           fontSize="16px"
           lineHeight="27px"

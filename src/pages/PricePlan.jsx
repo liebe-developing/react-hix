@@ -119,20 +119,4 @@ const PricePlan = () => {
 
 export default PricePlan;
 
-// <>
-//   <TabPanel>
-//     <PricePlanHeading />
-//     <Pricing oneMonth={oneMonth} userToken={userToken} />
-//     <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
-//   </TabPanel>
-//   <TabPanel>
-//     <PricePlanHeading />
-//     <Pricing />
-//     <SixMonthPackageTable sixMonthPackage={sixMonthPackage} />
-//   </TabPanel>
-//   <TabPanel>
-//     <PricePlanHeading />
-//     <Pricing />
-//     <OneYearPackageTable oneYearPackage={oneYearPackage} />
-//   </TabPanel>
-// </>
+

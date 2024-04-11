@@ -28,7 +28,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Flex flexWrap="wrap" mx={{base: 5, md: 0}} flexDir={{ base: "column", md: "row" }} gap={12}>
+    <Flex py="1" px="2" flexWrap="wrap" mx={{base: 5, md: 0}} flexDirection={{ base: "column", sm: "column",lg: "row" }} gap={12}>
       <Box flex={1.2}>
         <MediaBox />
         <Flex flexWrap="wrap" justifyContent="space-between" my={8} rowGap={4}>
@@ -47,7 +47,7 @@ const Dashboard = () => {
         {loading && <Loading />}
         {error && <Error title="مشکلی پیش آمده است" />}
         {!loading && !error && getValueDashboard && (
-          <Flex flexWrap="wrap" columnGap={8} rowGap={8} justifyContent="start">
+          <Flex flexWrap="wrap" columnGap={4} rowGap={8} justifyContent="start">
             <Stats
               title="تعداد کاربران"
               value={`${
@@ -67,6 +67,7 @@ const Dashboard = () => {
               value={`${getValueDashboard.productCount}`}
             />
             <Stats
+              
               title="روزهای باقی مانده"
               value={`${getValueDashboard.remainingDays} / ${getValueDashboard.maxDays}`}
             />

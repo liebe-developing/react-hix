@@ -1,5 +1,5 @@
 import {
-    Card, CardHeader, CardBody, CardFooter, Heading, Button, Text, Flex, Table, useColorMode,
+    Card, CardHeader, CardBody, CardFooter, Heading, Button, Text, Flex, Table, useColorMode, SimpleGrid,
 } from '@chakra-ui/react'
 import CardeCom from '../components/Card'
 
@@ -10,14 +10,14 @@ function Report() {
     const { colorMode } = useColorMode();
     return (
         <div className="flex flex-col">
-            <Flex
+            <SimpleGrid
                 border='1px' borderColor='gray.200'
-                flexWrap="wrap"
                 rounded="10px"
                 mx="10px"
                 my="10px"
                 padding="10px"
                 gap="20px"
+                columns={[2, null, 4]}
                 
             >
                 <CardeCom title="بیشترین خرید" caption="بیشترین خرید برسی کنید" button="برسی کن" />
@@ -25,7 +25,7 @@ function Report() {
                 <CardeCom title="فروش چند هفته قبل!" caption="بیشترین خرید برسی کنید" button="برسی کن" />
                 <CardeCom title="خرید چند هفته قبل!" caption="بیشترین خرید برسی کنید" button="برسی کن" />
 
-            </Flex>
+            </SimpleGrid>
             {/* TABEL CONTENT */}
 
             <div className="flex flex-col mt-3 ">
