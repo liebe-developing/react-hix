@@ -1,14 +1,14 @@
 import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Input,
-  Stack,
-  useColorMode,
-  Icon,
-  InputGroup,
-  InputRightElement,
+    Box,
+    Button,
+    Flex,
+    HStack,
+    Input,
+    Stack,
+    useColorMode,
+    Icon,
+    InputGroup,
+    InputRightElement,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
 import { Search } from "../constants/icons";
@@ -38,165 +38,211 @@ import { Message } from "../components/Chats/TypeMessage";
 // let socket;
 
 export function Chats() {
-  const [listUser, setListUser] = useState([]);
-  const [selectedChat, setSelectedChat] = useState();
-  const [selectedChatMessages, setSelectedChatMessages] = useState([]);
+    const [listUser, setListUser] = useState([]);
+    const [selectedChat, setSelectedChat] = useState();
+    const [selectedChatMessages, setSelectedChatMessages] = useState([]);
+    const [messageText, setMessageText] = useState("");
 
-  const { colorMode } = useColorMode();
+    const { colorMode } = useColorMode();
 
-  const { userToken, userContent } = useOutletContext();
-  useEffect(() => {
-    apiGetRequest(
-      `api/chat_user/?upid=${userContent.user_plan_id}`,
-      userToken
-    ).then((res) => {
-      console.log(res.data.data);
-      setListUser(res.data.data);
-    });
-  }, []);
-
-  const [cookies, setCookie] = useCookies(["sid"]);
-
-  useEffect(() => {
-   
-  }, []);
-
-  const selectUserChat = (id) => {
-    setSelectedChat(id);
-    apiGetRequest(
-      `/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`,
-      userToken
-    ).then((res) => {
-      console.log(res.data.data);
-      setSelectedChatMessages(res.data.data);
-    });
-  };
-
-  useEffect(() => {
-    apiPostRequest("/operator/chat", userToken, undefined)
-      .then((res) => {
-        console.log(res.data.sid);
-        const es = new EventSource("https://portal.hixdm.com/chat-streaming", {
-          withCredentials: true,
+    const { userToken, userContent } = useOutletContext();
+    useEffect(() => {
+        apiGetRequest(
+            `api/chat_user/?upid=${userContent.user_plan_id}`,
+            userToken
+        ).then((res) => {
+            console.log(res.data.data);
+            setListUser(res.data.data);
         });
-        es.onmessage = (event) => {
-          console.log(JSON.parse(event.data));
-        };
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    }, []);
 
-  //   console.log(cookies.name);
+    const [cookies, setCookie] = useCookies(["sid"]);
 
-  const sendMessage = () => {
-    // socket.emit("send_message", { message: "Hello" });
-    console.log("reza");
-  };
+    const selectUserChat = (id) => {
+        setSelectedChat(id);
+        apiGetRequest(
+            `/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`,
+            userToken
+        ).then((res) => {
+            console.log(res.data.data);
 
-  return (
-    <Flex
-      h="100vh"
-      flexDirection={{ base: "column", lg: "row" }}
-      gap="6px"
-      w="full"
-    >
-      <Flex
-        flexDirection="column"
-        h={{ base: "95%" }}
-        position="relative"
-        // w="30%"
-      >
-        <InputGroup boxShadow="xl">
-          <Input
+            apiPostRequest('/chat/operator/set_target', userToken, {userId: id}).then((result) => {
+              setSelectedChatMessages(res.data.data);
+            })
+        });
+    };
+
+    useEffect(() => {
+        apiPostRequest("/chat/operator", userToken, undefined)
+            .then((res) => {
+                console.log(res.data.sid);
+                const es = new EventSource(
+                    "https://portal.hixdm.com/chat/stream",
+                    {
+                        withCredentials: true,
+                    }
+                );
+                es.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+
+                    const eventType = data.event;
+                    const eventData = data.data;
+
+                    switch (eventType) {
+                        case "user_id": {
+                            console.log(`Current ChatUser ID : ${eventData}`);
+                            break;
+                        }
+                        case "send_chat": {
+                            // payam daryaft shode
+                            const message = eventData.message;
+                            break;
+                        }
+                        default: {
+                            console.log(data);
+                            break;
+                        }
+                    }
+                };
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    //   console.log(cookies.name);
+
+    const sendMessage = () => {
+        // socket.emit("send_message", { message: "Hello" });
+        apiPostRequest('/chat/operator/send_chat', userToken, {
+          message: {
+            type: 'text',
+            content: messageText
+          }
+        }).then((res) => {
+            console.log('message sent');
+            // add new message to the chat screen
+        });
+    };
+
+    return (
+        <Flex
+            h="100vh"
+            flexDirection={{ base: "column", lg: "row" }}
+            gap="6px"
             w="full"
-            placeholder="سرچ کنید"
-            _placeholder={{ color: "gray.600", fontSize: "15px" }}
-            pr={8}
-          />
-          <InputRightElement>
-            <Icon as={CiSearch} boxSize={5} cursor="pointer" />
-          </InputRightElement>
-        </InputGroup>
-        {/* <CHATS CONTENT> */}
-        <div className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar ">
-          {listUser.map((item) => {
-            console.log(item);
-            return (
-              <div key={item.id} onClick={() => selectUserChat(item.id)}>
-                <UserList {...item} />
-              </div>
-            );
-          })}
-        </div>
-      </Flex>
-
-      <Flex
-        flexDirection="column"
-        w={{ base: "sm", md: "xl", lg: "3xl" }}
-        h="full"
-        borderWidth="1px"
-        roundedTop="lg"
-        rounded="10px"
-        flexGrow="grow"
-        flex={1}
-      >
-        {listUser && (
-          <Flex
-            bg={colorMode === "light" ? "gray.300" : "gray.700"}
-            className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
-            color={colorMode === "light" ? "black" : "white"}
-          >
-            <div className="px-4 py-2 bg-blue-500 rounded-lg text-white shadow-xl">
-              چت با کاربر
-            </div>
-            <div>کاربر شماره {listUser.id}</div>
-          </Flex>
-        )}
-
-        <Stack
-          bg={colorMode === "light" ? "gray.200" : "gray.800"}
-          px={4}
-          py={8}
-          overflow="auto"
-          flex={1}
-          css={{
-            "&::-webkit-scrollbar": {
-              width: "4px",
-            },
-            "&::-webkit-scrollbar-track": {
-              width: "6px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: "#d5e3f7",
-              borderRadius: "24px",
-            },
-          }}
         >
-          <Box className="flex flex-col">
-            {selectedChat &&
-              selectedChatMessages &&
-              selectedChatMessages.map((item, index) => (
-                <Message key={index} {...item} type={item.type} />
-              ))}
-          </Box>
-        </Stack>
+            <Flex
+                flexDirection="column"
+                h={{ base: "95%" }}
+                position="relative"
+                // w="30%"
+            >
+                <InputGroup boxShadow="xl">
+                    <Input
+                        w="full"
+                        placeholder="سرچ کنید"
+                        _placeholder={{ color: "gray.600", fontSize: "15px" }}
+                        pr={8}
+                    />
+                    <InputRightElement>
+                        <Icon as={CiSearch} boxSize={5} cursor="pointer" />
+                    </InputRightElement>
+                </InputGroup>
+                {/* <CHATS CONTENT> */}
+                <div className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar ">
+                    {listUser.map((item) => {
+                        console.log(item);
+                        return (
+                            <div
+                                key={item.id}
+                                onClick={() => selectUserChat(item.id)}
+                            >
+                                <UserList {...item} />
+                            </div>
+                        );
+                    })}
+                </div>
+            </Flex>
 
-        <HStack p={4} bg={colorMode === "light" ? "gray.200" : "gray.800"}>
-          <Input
-            color={colorMode == "light" ? "black" : "white"}
-            bg="gray.500"
-            placeholder="Enter your text"
-            _placeholder={{ color: "gray.200", opacity: 1, fontWeight: "bold" }}
-          />
-          <Button onClick={sendMessage} colorScheme="blue">
-            Send
-          </Button>
-        </HStack>
-      </Flex>
-    </Flex>
-  );
+            <Flex
+                flexDirection="column"
+                w={{ base: "sm", md: "xl", lg: "3xl" }}
+                h="full"
+                borderWidth="1px"
+                roundedTop="lg"
+                rounded="10px"
+                flexGrow="grow"
+                flex={1}
+            >
+                {listUser && (
+                    <Flex
+                        bg={colorMode === "light" ? "gray.300" : "gray.700"}
+                        className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
+                        color={colorMode === "light" ? "black" : "white"}
+                    >
+                        <div className="px-4 py-2 bg-blue-500 rounded-lg text-white shadow-xl">
+                            چت با کاربر
+                        </div>
+                        <div>کاربر شماره {listUser.id}</div>
+                    </Flex>
+                )}
+
+                <Stack
+                    bg={colorMode === "light" ? "gray.200" : "gray.800"}
+                    px={4}
+                    py={8}
+                    overflow="auto"
+                    flex={1}
+                    css={{
+                        "&::-webkit-scrollbar": {
+                            width: "4px",
+                        },
+                        "&::-webkit-scrollbar-track": {
+                            width: "6px",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                            background: "#d5e3f7",
+                            borderRadius: "24px",
+                        },
+                    }}
+                >
+                    <Box className="flex flex-col">
+                        {selectedChat &&
+                            selectedChatMessages &&
+                            selectedChatMessages.map((item, index) => (
+                                <Message
+                                    key={index}
+                                    {...item}
+                                    type={item.type}
+                                />
+                            ))}
+                    </Box>
+                </Stack>
+
+                <HStack
+                    p={4}
+                    bg={colorMode === "light" ? "gray.200" : "gray.800"}
+                >
+                    <Input
+                        color={colorMode == "light" ? "black" : "white"}
+                        bg="gray.500"
+                        placeholder="Enter your text"
+                        value={messageText}
+                        onChange={(e) => setMessageText(e.target.value)}
+                        _placeholder={{
+                            color: "gray.200",
+                            opacity: 1,
+                            fontWeight: "bold",
+                        }}
+                    />
+                    <Button onClick={sendMessage} colorScheme="blue">
+                        Send
+                    </Button>
+                </HStack>
+            </Flex>
+        </Flex>
+    );
 }
 
 export default Chats;
