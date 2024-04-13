@@ -40,16 +40,16 @@ function Product() {
           <table className="w-[97%] mx-auto overflow-x-scroll">
             <thead className="bg-blue-500 border-b ">
               <tr className="text-white">
-                <th scope="col" className="text-sm font-medium  text-center py-4">
+                <th scope="col" className="text-[14px] md:text-sm font-medium  text-center py-4">
                   شمارنده
                 </th>
-                <th scope="col" className="text-sm font-medium  text-center py-4">
+                <th scope="col" className="text-[14px] md:text-sm font-medium  text-center py-4">
                   عنوان
                 </th>
-                <th scope="col" className="text-sm font-medium  text-center py-4">
+                <th scope="col" className="text-[14px] md:text-sm font-medium  text-center py-4">
                   موجود
                 </th>
-                <th scope="col" className="text-sm  font-medium  text-center py-4">
+                <th scope="col" className="text-[14px]  md:text-sm font-medium  text-center py-4">
                   لینک
                 </th>
               </tr>

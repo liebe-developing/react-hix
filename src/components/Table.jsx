@@ -22,20 +22,20 @@ const Table = ({ tableData }) => {
         className="border-b cursor-pointer hover:bg-gray-100"
         onClick={onOpen}
       >
-        <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
+        <td className="text-center py-4 whitespace-nowrap text-[14px] md:text-md font-medium ">
           {id}
         </td>
-        <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
+        <td className="text-center py-4 whitespace-nowrap text-[14px] md:text-md font-medium ">
           {title}
         </td>
-        <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
+        <td className="text-center py-4 whitespace-nowrap text-[14px] md:text-md font-medium ">
           {status === true ? (
             <IoCheckmarkDoneSharp className="bg-white text-blue-600 rounded-full MdOutlineRemoveDone text-2xl inline" />
           ) : (
             <MdOutlineRemoveDone className="bg-white text-black rounded-full MdOutlineRemoveDone text-2xl inline" />
           )}
         </td>
-        <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">
+        <td className="text-center py-4 whitespace-nowrap text-[14px] md:text-md font-medium ">
           <a href={url} className="text-blue-500">
             لینک
           </a>
