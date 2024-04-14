@@ -38,11 +38,12 @@ const SignUp = () => {
     mobile: "",
     password: "",
     restpass: "",
+    website: ""
   });
 
   const toast = useToast();
   const navigate = useNavigate();
-  const { name, email, mobile, password, restpass } = formData;
+  const { name, email, mobile, password, restpass,website } = formData;
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
 
@@ -61,7 +62,6 @@ const SignUp = () => {
   const handleRegisterUser = (e) => {
     e.preventDefault();
 
-    
 
     try {
       setLoading(true);
@@ -247,6 +247,19 @@ const SignUp = () => {
                       </Button>
                     </InputLeftElement>
                   </InputGroup>
+                  <FormControl id="email" mt={4} isRequired>
+                    <FormLabel>وبسایت خود را وارد نماید!</FormLabel>
+                    <Input
+                      px="16px"
+                      required
+                      minLength={7}
+                      type="text"
+                      name="website"
+                      value={website}
+                      onChange={handleChange}
+                      placeholder=".../www.***.ir/com"
+                    />
+                  </FormControl>
                 </FormControl>
                 <Stack spacing={3} mt={6}>
                   <Button

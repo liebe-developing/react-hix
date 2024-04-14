@@ -95,8 +95,25 @@ export default function Pricing({ userToken, monthPlan }) {
             const persianPrice = price / 10;
             return (
               <PriceWrapper key={id}>
-                <Box py={4} px={12} borderBottom="1px solid #eee">
-                  <Text fontWeight="500" fontSize="2xl"></Text>
+                <Box py={4} px={12}  borderBottom="1px solid #eee">
+                  {/* Discount UI START */}
+                  {price ? (
+                    <Box position="relative" h={9} display="flex" >
+                      <span className="absolute w-[2px] h-9 bg-red-300 -top-1 right-10 rotate-12 "></span>
+                      <Text opacity=".5">
+                        {persianTools.digitsEnToFa(
+                          persianTools.addCommas(300000000)
+                        )}
+                      </Text>
+                      <Text opacity=".5" mr="10px" w={14} h={7} p="1" rounded={10} bg="#f34f">
+                        %30 <span></span>
+                      </Text>
+                      <Text opacity=".5" mr={2}>
+                        تخفیف
+                      </Text>
+                    </Box>
+                  ) : null }
+                  {/* Discount UI END */}
                   <HStack justifyContent="center">
                     {price > 0 ? (
                       <>
