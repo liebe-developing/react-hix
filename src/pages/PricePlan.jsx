@@ -24,7 +24,6 @@ import {
 import { useOutletContext } from "react-router-dom";
 import { apiGetRequest } from "../api/apiRequest";
 import { useEffect, useState } from "react";
-import PricingFree from "../components/PricePlan/PricingFree";
 
 const PricePlan = () => {
   // prop
@@ -33,7 +32,7 @@ const PricePlan = () => {
   const [oneMonth, setOneMonth] = useState();
   const [sixMonth, setSixMonth] = useState();
   const [oneYear, setOneYear] = useState();
-  const [isLoding,setisLoding] = useState(false);
+  const [isLoding, setisLoding] = useState(false);
 
   useEffect(() => {
     apiGetRequest("api/plan", userToken)
@@ -44,7 +43,6 @@ const PricePlan = () => {
         const sixMonthPlans = plans.filter((plan) => plan.days === 180);
         const oneYearPlans = plans.filter((plan) => plan.days === 365);
 
-        console.log(freePlan);
         setOneMonth(oneMonthPlans);
         setSixMonth(sixMonthPlans);
         setOneYear(oneYearPlans);
@@ -53,7 +51,7 @@ const PricePlan = () => {
       .catch((error) => {
         console.log(error);
       });
-      setisLoding(true)
+    setisLoding(true);
   }, []);
 
   // console.log(oneMonth);
@@ -90,7 +88,11 @@ const PricePlan = () => {
                 {free && (
                   <TabPanel>
                     <PricePlanHeading />
-                    <PricingFree monthPlan={free} userToken={userToken} userContent={userContent} />
+                    <Pricing
+                      monthPlan={free}
+                      userToken={userToken}
+                      userContent={userContent}
+                    />
                     <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
                   </TabPanel>
                 )}
@@ -127,5 +129,3 @@ const PricePlan = () => {
 };
 
 export default PricePlan;
-
-

@@ -23,6 +23,7 @@ const RootLayout = () => {
 
     apiGetRequest("api/user_plan/current", userToken)
       .then((res) => {
+        console.log(res.data);
         setuser(res.data.data);
         if (!res.data.data.plan) {
           navigate("/price-plan");

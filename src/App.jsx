@@ -14,19 +14,19 @@ import {
   Report,
   Product,
 } from "./pages";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+/* import { useSelector } from "react-redux";
+import { useEffect } from "react"; */
 import NotFound from "./pages/NotFound";
 
 function App() {
-  const userToken = useSelector((state) => state?.user?.currentUser?.token);
+  /* const userToken = useSelector((state) => state?.user?.currentUser?.token);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!userToken) {
       navigate("/sign-in");
     }
-  }, []);
+  }, []); */
   return (
     <Routes>
       <Route exact element={<RootLayout />}>

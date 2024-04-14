@@ -32,6 +32,7 @@ to {transform: translateY(-60px)}
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -68,11 +69,11 @@ const SignIn = () => {
       .then((res) => {
         console.log(res);
         if (res.status === 401) {
-          setError(true);
+          setIsAuthorized(false);
           return;
         }
         dispatch(signInSuccess(res.data));
-        setLoading(false);
+        -setLoading(false);
         navigate("/");
       })
       .catch(() => {
@@ -85,7 +86,6 @@ const SignIn = () => {
     }, 3000);
   };
 
-  console.log(error);
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
   return (
     <Box position={"relative"} dir="ltr">
@@ -211,7 +211,10 @@ const SignIn = () => {
                   </Button>
                 </Stack>
               </Flex>
-              {error && <Error title="نام کاربری یا رمز عبور اشتباه است" />}
+              {!isAuthorized && (
+                <Error title="نام کاربری یا رمز عبور اشتباه است" />
+              )}
+              {error && <Error title="مشکلی پیش آمده است" />}
             </form>
           </Box>
         </Flex>
