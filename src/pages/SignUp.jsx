@@ -38,12 +38,12 @@ const SignUp = () => {
     mobile: "",
     password: "",
     restpass: "",
-    website: ""
+    business_url: "",
   });
 
   const toast = useToast();
   const navigate = useNavigate();
-  const { name, email, mobile, password, restpass,website } = formData;
+  const { name, email, mobile, password, restpass, business_url } = formData;
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
 
@@ -61,7 +61,6 @@ const SignUp = () => {
 
   const handleRegisterUser = (e) => {
     e.preventDefault();
-
 
     try {
       setLoading(true);
@@ -104,7 +103,7 @@ const SignUp = () => {
       });
     }
     setTimeout(() => {
-      setLoading(false)
+      setLoading(false);
     }, 3000);
   };
 
@@ -247,17 +246,17 @@ const SignUp = () => {
                       </Button>
                     </InputLeftElement>
                   </InputGroup>
-                  <FormControl id="email" mt={4} isRequired>
-                    <FormLabel>وبسایت خود را وارد نماید!</FormLabel>
+                  <FormControl id="url" mt={4}>
+                    <FormLabel> آدرس وبسایت (اختیاری) </FormLabel>
                     <Input
                       px="16px"
                       required
                       minLength={7}
                       type="text"
-                      name="website"
-                      value={website}
+                      name="business_url"
+                      value={business_url}
                       onChange={handleChange}
-                      placeholder=".../www.***.ir/com"
+                      placeholder="https://www.example.ir"
                     />
                   </FormControl>
                 </FormControl>

@@ -8,7 +8,7 @@ const PricePlanHeading = () => {
       p="10px 20px"
       w="fit-content"
       fontFamily="Casablanca"
-      mb={14}
+      mb={2}
       mt={10}
     >
       مقایسه امکانات بسته ها

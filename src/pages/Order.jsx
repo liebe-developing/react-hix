@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
-import { useToast, Avatar, Input, Button, Flex, Box } from "@chakra-ui/react";
+import {
+  useToast,
+  Avatar,
+  Input,
+  Button,
+  Flex,
+  Box,
+  Text,
+} from "@chakra-ui/react";
 import * as persianTools from "@persian-tools/persian-tools";
 
 function Order() {
@@ -26,7 +34,6 @@ function Order() {
         console.log(error);
       });
   }, [discountChecked]);
-  console.log(dataApiInvoiceSetUi);
 
   const sendShopping = (event) => {
     event.preventDefault();
@@ -52,6 +59,7 @@ function Order() {
         discountChecked && acceptedPercent && discount.trim().length > 0
           ? discount
           : undefined,
+      FormData,
     })
       .then((res) => {
         window.location.href = res.data.paymentUrl;
@@ -94,6 +102,8 @@ function Order() {
       });
   };
 
+  const discountPrice =
+    (dataApiInvoiceSetUi?.plan?.price * (100 - acceptedPercent)) / 100;
   return (
     <section className="flex items-center justify-center h-auto my-10">
       {dataApiInvoiceSetUi && (
@@ -126,6 +136,16 @@ function Order() {
                   )}{" "}
                   ریال
                 </h3>
+                <Text
+                  opacity=".5"
+                  textDecoration="line-through"
+                  fontSize="13px"
+                >
+                  {persianTools.digitsEnToFa(
+                    persianTools.addCommas(dataApiInvoiceSetUi.plan.oldPrice)
+                  )}{" "}
+                  ریال
+                </Text>
               </Flex>
               {/* <h5 className="my-5">کد تخفیف :</h5> */}
               <form>
@@ -150,11 +170,9 @@ function Order() {
                   <h5 className="text-md mt-5 mb-2">قیمت نهایی:</h5>
                   <h3 className="text-lg font-bold text-gray-600 border-orange-500">
                     {acceptedPercent
-                      ? (persianTools.digitsEnToFa(
-                          persianTools.addCommas(dataApiInvoiceSetUi.plan.price)
-                        ) *
-                          (100 - acceptedPercent)) /
-                        100
+                      ? persianTools.digitsEnToFa(
+                          persianTools.addCommas(discountPrice)
+                        )
                       : persianTools.digitsEnToFa(
                           persianTools.addCommas(dataApiInvoiceSetUi.plan.price)
                         )}{" "}

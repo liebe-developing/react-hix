@@ -6,16 +6,16 @@ body {
   box-sizing: 0;
 }
 
-
 @font-face {
-	font-family: "IRANSans";
-	font-style: normal;
-	font-weight: 700;
+  font-family: "IRANSans";
+  font-style: normal;
+  font-weight: 700;
   /* PeydaWebFaNum-Light.woff2 */
-	src: url('./fonts/PEYDA/MAIN/woff2/PeydaWebFaNum-SemiBold.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
-		 url('./fonts/PEYDA/MAIN/woff/PeydaWebFaNum-SemiBold.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+  src: url("./fonts/PEYDA/MAIN/woff2/PeydaWebFaNum-SemiBold.woff2")
+      format("woff2"),
+    /* FF39+,Chrome36+, Opera24+*/
+      url("./fonts/PEYDA/MAIN/woff/PeydaWebFaNum-SemiBold.woff") format("woff"); /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
 }
-
 
 @font-face {
   font-family: "Casablanca";
@@ -33,14 +33,14 @@ body {
 }
 
 @layer utilities {
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
-      }
-     /* Hide scrollbar for IE, Edge and Firefox */
-      .no-scrollbar {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
-    }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
 /* LOCAL -- END  */

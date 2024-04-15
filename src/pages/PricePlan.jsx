@@ -62,7 +62,7 @@ const PricePlan = () => {
         <Box>
           <Center>
             <Tabs colorScheme="purple" w="full">
-              <TabList>
+              <TabList maxW="70%" mx="auto">
                 {free && (
                   <Tab w="full" fontSize="20px">
                     رایگان
