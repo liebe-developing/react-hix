@@ -1,4 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react"
+import { split } from "postcss/lib/list";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 
@@ -10,7 +11,7 @@ function Pagination(props) {
     }
     const pageButtons = [];
     for (let i = 1; i <= boxContent; i++) {
-        if (Math.abs(i - currentPage) > 3 && Math.abs(i - boxContent) > 3 && Math.abs(i - 1) > 3) {
+        if (Math.abs(i - currentPage) > 1 && Math.abs(i - boxContent) > 1 && Math.abs(i - 1) > 1) {
             if (pageButtons[pageButtons.length - 1] != '___')
                 pageButtons.push('___');
             continue;
@@ -25,32 +26,33 @@ function Pagination(props) {
                 {i}
             </Button>
         )
-        const firstSplit = pageButtons.indexOf('___');
-        const lastSplit = pageButtons.lastIndexOf('___')
+    }
 
-        if (firstSplit > 0 && lastSplit > 0) {
-            // flash e samte rast
-            pageButtons[firstSplit] = <IoIosArrowBack className="mt-3" />
-            // flash e samte chap
-            pageButtons[lastSplit] = <IoIosArrowBack className="mt-3 inline-flex bg-red-400" />
+    let count = 0;
+    let splits = [];
+    pageButtons.forEach((v, i) => {
+        if (v === '___') {
+            count++;
+            splits.push(i);
+        }
+    });
+
+    if (count == 1) {
+        if ((pageButtons.length-1)/2 >= splits[0] && currentPage != 1) {
+            pageButtons[splits[0]] = <IoIosArrowForward className="mt-3" />
+
         }
         else {
-            if (firstSplit > 0) {
-                if (Math.abs(i - boxContent) <= 3) {
-                    // flash e samte rast
-                    pageButtons[firstSplit] = <IoIosArrowForward className="mt-3 inline-flex" />
-                } else {
-                    //flash e samte chap
-                    pageButtons[firstSplit] = <IoIosArrowBack className="mt-3 inline-flex" />
+            pageButtons[splits[0]] = <IoIosArrowBack className="mt-3" />
 
-                }
-            }
-            if (lastSplit > 0) {
-                // flash e samte chap
-                pageButtons[lastSplit] = <IoIosArrowForward className="mt-3 inline-flex " />
-            }
         }
+
     }
+    if (count == 2) {
+        pageButtons[splits[0]] = <IoIosArrowForward className="mt-3" />
+        pageButtons[splits[1]] = <IoIosArrowBack className="mt-3" />
+    }
+
     return (
         <div>
             <Flex mt={3} mr={3} flexWrap="wrap">

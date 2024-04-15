@@ -20,14 +20,12 @@ import { FaCheckCircle } from "react-icons/fa";
 import { apiPostRequest } from "../../api/apiRequest";
 import { useNavigate } from "react-router-dom";
 import * as persianTools from "@persian-tools/persian-tools";
-import { useState } from "react";
 
 function PriceWrapper(props) {
   const { children } = props;
 
   return (
     <Box
-      
       mb={4}
       shadow="base"
       borderWidth="1px"
@@ -58,7 +56,7 @@ export default function Pricing({ userToken, monthPlan }) {
           isClosable: false,
         });
         setTimeout(() => {
-          navigate("/order", {
+          navigate("/dashboard/order", {
             state: {
               invoiceId: res.data.data.id,
             },

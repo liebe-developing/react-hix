@@ -11,7 +11,6 @@ const Table = ({ tableData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const colorMode = useColorMode();
-  console.log(tableData);
 
   const createData = (item) => {
     const { id, title, brand, description, image, price, status, url } = item;

@@ -22,9 +22,7 @@ function Product() {
       userToken
     ).then((res) => {
       // current page
-      console.log(res.data.products);
       setDataProduct(res.data.products);
-      console.log(productData);
       setBoxButtons(res.data.pageCount);
       setLoading(true)
     });
@@ -56,7 +54,6 @@ function Product() {
             </thead>
             {productData &&
               productData.map((item, idx) => {
-                console.log(item);
                 return <Table key={idx} tableData={item} currentPage={currentPage} />;
               })}
 
