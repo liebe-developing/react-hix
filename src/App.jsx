@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import {
   Dashboard,
@@ -19,12 +19,12 @@ import { useEffect } from "react";
 import NotFound from "./pages/NotFound";
 
 function App() {
-  const userToken = useSelector((state) => state?.user?.currentUser?.token);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!userToken) {
-      navigate("/dashboard/sign-in");
+    if (location.pathname === "/") {
+      navigate("/dashboard");
     }
   }, []);
   return (

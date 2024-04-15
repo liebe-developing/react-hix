@@ -18,6 +18,7 @@ import Loading from "./Loading";
 import Error from "./Error";
 import Table from "./Table";
 import ProductModal from "./product/ProductModal";
+import CreateProductModal from "./product/CreateProductModal";
 
 export {
   SidebarWithHeader,
@@ -40,4 +41,5 @@ export {
   Error,
   ProductModal,
   Table,
+  CreateProductModal,
 };

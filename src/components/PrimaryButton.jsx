@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 
 /* eslint-disable react/prop-types */
-const PrimaryButton = ({ title, type, btnFn, ...rest }) => {
+const PrimaryButton = ({ title, type, btnFn, children, ...rest }) => {
   return (
     <Button
       display="flex"
@@ -20,7 +20,7 @@ const PrimaryButton = ({ title, type, btnFn, ...rest }) => {
       onClick={btnFn}
       {...rest}
     >
-      {title}
+      {title || children}
     </Button>
   );
 };

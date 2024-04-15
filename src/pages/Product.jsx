@@ -1,13 +1,33 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { apiGetRequest } from "../api/apiRequest";
-import { Loading, Pagination,Table } from "../components/index";
-
-
+import {
+  CreateProductModal,
+  Loading,
+  Pagination,
+  Table,
+} from "../components/index";
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { FaPlus, FaInfo, FaInfoCircle } from "react-icons/fa";
+import { IoIosInformationCircle } from "react-icons/io";
 
 function Product() {
-  
   const [loading, setLoading] = useState(false);
+  const {
+    isOpen: isOpenCreateProductModal,
+    onOpen: onOpenCreateProductModal,
+    onClose: onCloseCreateProductModal,
+  } = useDisclosure();
 
   let counter = 1;
   const { userToken, userContent } = useOutletContext();
@@ -24,7 +44,7 @@ function Product() {
       // current page
       setDataProduct(res.data.products);
       setBoxButtons(res.data.pageCount);
-      setLoading(true)
+      setLoading(true);
     });
   }, [currentPage]);
 
@@ -32,31 +52,57 @@ function Product() {
     <div className="">
       {!loading && <Loading />}
       {loading && (
-        <div className=" rounded-md">
-          <h3 className="my-3 mr-5 bg-red-400 text-white inline-block p-2 rounded-xl shadow-2xl border-black border-2"
-          >برای دیدن جزئیات  بیشتر روی فیلد آیتم ها کلیک فرمایید!</h3>
-          <table className="w-[97%] mx-auto overflow-x-scroll">
+        <div className="w-[97%] mx-auto rounded-md">
+          <Flex justifyContent="space-between" alignItems="center" mb={5}>
+            <Button
+              leftIcon={<FaPlus />}
+              colorScheme="purple"
+              onClick={onOpenCreateProductModal}
+            >
+              اضافه کردن محصول
+            </Button>
+            <Box>
+              <Alert status="info" rounded="lg">
+                <AlertIcon />
+                برای دیدن جزئیات بیشتر روی فیلد آیتم ها کلیک فرمایید!
+              </Alert>
+            </Box>
+          </Flex>
+          <table className="w-full overflow-x-scroll">
             <thead className="bg-blue-500 border-b ">
               <tr className="text-white">
-                <th scope="col" className="text-[14px] md:text-sm font-medium  text-center py-4">
+                <th
+                  scope="col"
+                  className="text-[14px] md:text-sm font-medium  text-center py-4"
+                >
                   شمارنده
                 </th>
-                <th scope="col" className="text-[14px] md:text-sm font-medium  text-center py-4">
+                <th
+                  scope="col"
+                  className="text-[14px] md:text-sm font-medium  text-center py-4"
+                >
                   عنوان
                 </th>
-                <th scope="col" className="text-[14px] md:text-sm font-medium  text-center py-4">
+                <th
+                  scope="col"
+                  className="text-[14px] md:text-sm font-medium  text-center py-4"
+                >
                   موجود
                 </th>
-                <th scope="col" className="text-[14px]  md:text-sm font-medium  text-center py-4">
+                <th
+                  scope="col"
+                  className="text-[14px]  md:text-sm font-medium  text-center py-4"
+                >
                   لینک
                 </th>
               </tr>
             </thead>
             {productData &&
               productData.map((item, idx) => {
-                return <Table key={idx} tableData={item} currentPage={currentPage} />;
+                return (
+                  <Table key={idx} tableData={item} currentPage={currentPage} />
+                );
               })}
-
           </table>
         </div>
       )}
@@ -66,7 +112,10 @@ function Product() {
         productData={productData}
         setCurrentPage={setCurrentPage}
       />
-
+      <CreateProductModal
+        isOpen={isOpenCreateProductModal}
+        onClose={onCloseCreateProductModal}
+      />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
   Box,
-  Stack,
   HStack,
   Text,
   VStack,
@@ -10,7 +9,6 @@ import {
   ListItem,
   ListIcon,
   Button,
-  Spinner,
   Heading,
   useToast,
   Flex,
@@ -32,6 +30,7 @@ function PriceWrapper(props) {
       alignSelf={{ base: "center", lg: "flex-start" }}
       borderColor={useColorModeValue("gray.200", "gray.500")}
       borderRadius={"xl"}
+      w="full"
     >
       {children}
     </Box>
@@ -73,7 +72,7 @@ export default function Pricing({ userToken, monthPlan }) {
         });
       });
   };
-  console.log(monthPlan);
+
   return (
     <Box py={0} m="0 auto" mx={10}>
       <SimpleGrid
@@ -82,7 +81,7 @@ export default function Pricing({ userToken, monthPlan }) {
         justify="center"
         spacing={{ base: 4, lg: 5 }}
         py={0}
-        mx={20}
+        mx={{ base: 0, md: 20 }}
         columns={[1, null, 2]}
       >
         {monthPlan &&
@@ -102,8 +101,8 @@ export default function Pricing({ userToken, monthPlan }) {
             const persianPrice = price / 10;
             const persianOldPrice = oldPrice / 10;
             return (
-              <PriceWrapper key={id} boxShadow="xl" >
-                <Box py={4} px={12} borderBottom="1px solid #eee" >
+              <PriceWrapper key={id} boxShadow="xl">
+                <Box py={4} px={12} borderBottom="1px solid #eee">
                   {/* Discount UI START */}
                   {price ? (
                     <Box
@@ -113,36 +112,35 @@ export default function Pricing({ userToken, monthPlan }) {
                       alignItems="center"
                       justifyContent="center"
                     >
-                     
-                      <Text opacity="1" fontSize="2xl" className="line-through mx-2 decoration-2 decoration-red-500" fontWeight="900">
+                      <Text
+                        opacity="1"
+                        fontSize="2xl"
+                        className="line-through mx-2 decoration-2 decoration-red-500"
+                        fontWeight="900"
+                      >
                         {persianTools.digitsEnToFa(
                           persianTools.addCommas(persianOldPrice)
                         )}{" "}
-                        
                       </Text>
-                      <Text opacity="1"
-                        fontSize="2xl"
-                        fontWeight="900">تومان</Text>
+                      <Text opacity="1" fontSize="2xl" fontWeight="900">
+                        تومان
+                      </Text>
                     </Box>
                   ) : null}
                   {/* Discount UI END */}
-                  <HStack justifyContent="center" >
+                  <HStack justifyContent="center">
                     {price > 0 ? (
                       <>
                         <Text fontSize="20px" opacity="0.8">
                           {persianTools.digitsEnToFa(
                             persianTools.addCommas(persianPrice)
                           )}{" "}
-                         
                         </Text>
-                        <Text fontSize={18}>
-                          تومان
-                        </Text>
+                        <Text fontSize={18}>تومان</Text>
                       </>
                     ) : (
                       <Text
-                     
-                        fontSize="3xl"
+                        fontSize={"3xl"}
                         fontWeight="600"
                         fontFamily="Casablanca"
                       >
@@ -157,6 +155,7 @@ export default function Pricing({ userToken, monthPlan }) {
                   </HStack>
                 </Box>
                 <VStack
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
                   bg={useColorModeValue("gray.50", "gray.800")}
                   py={2}
                   borderBottomRadius={"xl"}
@@ -165,7 +164,12 @@ export default function Pricing({ userToken, monthPlan }) {
                     {title}
                   </Heading>
                   <List spacing={3} textAlign="start" px={12}>
-                    <ListItem display="flex" alignItems="center" gap={1}>
+                    <ListItem
+                      display="flex"
+                      alignItems="center"
+                      gap={1}
+                      fontSize={{ base: "13px", md: "16px" }}
+                    >
                       <ListIcon as={FaCheckCircle} color="green.500" />
                       تعداد مکالمه:{" "}
                       {gift_chat_count !== 0 ? (
@@ -179,7 +183,12 @@ export default function Pricing({ userToken, monthPlan }) {
                         chat_count
                       )}
                     </ListItem>
-                    <ListItem display="flex" alignItems="center" gap={1}>
+                    <ListItem
+                      display="flex"
+                      alignItems="center"
+                      gap={1}
+                      fontSize={{ base: "13px", md: "16px" }}
+                    >
                       <ListIcon as={FaCheckCircle} color="green.500" />
                       آپلود فایل تا:{" "}
                       {gift_file_size_limit !== 0 ? (
@@ -193,7 +202,12 @@ export default function Pricing({ userToken, monthPlan }) {
                         <Text>{file_size_limit} مگابایت</Text>
                       )}
                     </ListItem>
-                    <ListItem display="flex" gap={1} alignItems="center">
+                    <ListItem
+                      display="flex"
+                      gap={1}
+                      alignItems="center"
+                      fontSize={{ base: "13px", md: "16px" }}
+                    >
                       <ListIcon as={FaCheckCircle} color="green.500" />
                       <Flex gap={2}>
                         <Text>تعداد اپراتور:</Text>

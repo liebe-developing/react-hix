@@ -62,24 +62,24 @@ const PricePlan = () => {
         <Box>
           <Center>
             <Tabs colorScheme="purple" w="full">
-              <TabList maxW="70%" mx="auto">
+              <TabList maxW={{ base: "full", md: "70%" }} mx="auto">
                 {free && (
-                  <Tab w="full" fontSize="20px">
+                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
                     رایگان
                   </Tab>
                 )}
                 {oneMonth && (
-                  <Tab w="full" fontSize="20px">
+                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
                     ۱ ماهه
                   </Tab>
                 )}
                 {sixMonth && (
-                  <Tab w="full" fontSize="20px">
+                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
                     ۶ ماهه
                   </Tab>
                 )}
                 {oneYear && (
-                  <Tab w="full" fontSize="20px">
+                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
                     ۱ ساله
                   </Tab>
                 )}
