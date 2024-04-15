@@ -48,7 +48,7 @@ const SignIn = () => {
   const { email, password } = formData;
 
   useEffect(() => {
-    userToken && navigate("/");
+    userToken && navigate("/dashboard");
   }, []);
 
   const handleChange = (e) => {
@@ -74,7 +74,7 @@ const SignIn = () => {
         }
         dispatch(signInSuccess(res.data));
         -setLoading(false);
-        navigate("/");
+        navigate("/dashboard");
       })
       .catch(() => {
         setLoading(false);

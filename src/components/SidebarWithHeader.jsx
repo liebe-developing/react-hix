@@ -41,13 +41,13 @@ import { BsCalendarCheck } from "react-icons/bs";
 import { apiPostRequest } from "../api/apiRequest";
 
 const LinkItems = [
-  { name: "داشبورد", icon: GoHome, href: "/" },
-  { name: "گزارش ها", icon: ImStatsDots, href: "/report" },
-  { name: "محصولات", icon: FaRegFolder, href: "/product" },
-  { name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
-  { name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
-  { name: "پروفایل", icon: FaRegUser, href: "/profile" },
-  { name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
+  { name: "داشبورد", icon: GoHome, href: "/dashboard" },
+  { name: "گزارش ها", icon: ImStatsDots, href: "/dashboard/report" },
+  { name: "محصولات", icon: FaRegFolder, href: "/dashboard/product" },
+  { name: "چت اپراتور", icon: FaTelegramPlane, href: "/dashboard/chats" },
+  { name: "تنظیمات", icon: IoSettingsOutline, href: "/dashboard/settings" },
+  { name: "پروفایل", icon: FaRegUser, href: "/dashboard/profile" },
+  { name: "راه اندازی", icon: IoCodeSlash, href: "/dashboard/tool" },
 ];
 
 const SidebarContent = ({ onClose, userContent, ...rest }) => {
@@ -85,7 +85,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
           </NavItem>
         );
       })}
-      <Link to="/price-plan">
+      <Link to="/dashboard/price-plan">
         <Box
           mt={2}
           boxShadow={"2xl"}
@@ -160,7 +160,7 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
     apiPostRequest("/api/auth/logout")
       .then(() => {
         localStorage.clear();
-        window.open((window.location.href = "/sign-in"), "_blank");
+        window.open((window.location.href = "/dashboard/sign-in"), "_blank");
       })
       .catch((err) => {
         console.log(err);

@@ -9,8 +9,11 @@ import {
   Flex,
   Box,
   Text,
+  Select,
 } from "@chakra-ui/react";
 import * as persianTools from "@persian-tools/persian-tools";
+import Field from "../components/Field";
+import isValidURL from "../services/ErrorHandling/validate ";
 
 function Order() {
   const toast = useToast();
@@ -23,8 +26,21 @@ function Order() {
   const [dataApiInvoiceSetUi, setDataApiInvoiceSetUi] = useState();
   const [acceptedPercent, setAcceptedPercent] = useState();
   const btnDis = useRef();
+  const [formData,setFormData] = useState({
+    businessUrl : "",
+    productCountLimit: "L500",
+    categoryCountLimit: "L20"
+  })
+  
 
-  console.log(location.state.invoiceId);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   useEffect(() => {
     apiGetRequest(`api/invoice/${location.state.invoiceId}`, userToken)
       .then((res) => {
@@ -37,6 +53,16 @@ function Order() {
 
   const sendShopping = (event) => {
     event.preventDefault();
+    if (!isValidURL(formData.businessUrl.trim())){
+      toast({
+        title: ` لطفا آدرس وبسایت وارد نمایید!`,
+        status: "warning",
+        position: "bottom",
+        isClosable: false,
+      });
+      return;
+    } 
+
     if (!checked) {
       toast({
         title: ` لطفا شرایط را بپذیرد!`,
@@ -47,14 +73,11 @@ function Order() {
       return;
     }
 
-    toast({
-      title: `درحال انتقال به درگاه پرداخت!`,
-      status: "success",
-      position: "top-right",
-      isClosable: false,
-    });
     apiPostRequest("api/invoice/pay", userToken, {
       id: location.state.invoiceId,
+      businessUrl: formData.businessUrl.trim(),
+      productCountLimit: formData.productCountLimit,
+      categoryCountLimit: formData.categoryCountLimit,
       discountCode:
         discountChecked && acceptedPercent && discount.trim().length > 0
           ? discount
@@ -62,6 +85,13 @@ function Order() {
       FormData,
     })
       .then((res) => {
+        toast({
+          title: res.data.free ? `پرداخت موفق! در حال بروزرسانی!` : `درحال انتقال به درگاه پرداخت!`,
+          status: "success",
+          position: "top-right",
+          isClosable: false,
+        });
+
         window.location.href = res.data.paymentUrl;
       })
       .catch((error) => {
@@ -69,6 +99,8 @@ function Order() {
       });
   };
 
+
+  
   const discountHandler = (event) => {
     event.preventDefault();
     apiPostRequest("api/discount", userToken, { discountCode: discount })
@@ -101,6 +133,8 @@ function Order() {
         console.log(erorr);
       });
   };
+
+  
 
   const discountPrice =
     (dataApiInvoiceSetUi?.plan?.price * (100 - acceptedPercent)) / 100;
@@ -148,6 +182,29 @@ function Order() {
                 </Text>
               </Flex>
               {/* <h5 className="my-5">کد تخفیف :</h5> */}
+              <form>
+                <label htmlFor="businessUrl">آدرس وبسایت:</label>
+                <Field value={formData.businessUrl} placeholder="https://example.com" style={{border: "1px solid gray"}} id="businessUrl" name="businessUrl" onChange={handleChange} />
+                <label htmlFor="productCountLimit" className="mb-2 inline-block">تعداد محصولات:</label>
+                <Select name="productCountLimit" onChange={handleChange}
+                  value={formData.productCountLimit} style={{ paddingRight: '30px', cursor: 'pointer', border: "1px solid gray" }}  id="productCountLimit">
+                  <option value='L500'>کمتر از 500 عدد</option>
+                  <option value='L1000'>کمتر از 1000 عدد</option>
+                  <option value='L2000'>کمتر از 2000 عدد</option>
+                  <option value='L3000'>کمتر از 3000 عدد</option>
+                  <option value='L5000'>کمتر از 5000 عدد</option>
+                  <option value='M5000'>بیشتر از 5000 عدد</option>
+                </Select>
+                {/* CONTENT SECTION 2 */}
+                <label htmlFor="categoryCountLimit" className="my-2 inline-block" >تعداد دسته ها:</label>
+                <Select name="categoryCountLimit" onChange={handleChange} value={formData.categoryCountLimit} style={{ paddingRight: '30px', cursor: 'pointer', border: "1px solid gray" }} id="categoryCountLimit">
+                  <option value='L20'>کمتر از 20 عدد</option>
+                  <option value='L50'>کمتر از 50 عدد</option>
+                  <option value='L100'>کمتر از 100 عدد</option>
+                  <option value='M100'>بیشتر از 100 عدد</option>
+                </Select>
+              </form>
+              <hr className="bg-black border-2 mt-5" />
               <form>
                 <Flex gap={2} my={4}>
                   <Input

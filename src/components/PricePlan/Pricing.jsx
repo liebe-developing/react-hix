@@ -27,6 +27,7 @@ function PriceWrapper(props) {
 
   return (
     <Box
+      
       mb={4}
       shadow="base"
       borderWidth="1px"
@@ -103,8 +104,8 @@ export default function Pricing({ userToken, monthPlan }) {
             const persianPrice = price / 10;
             const persianOldPrice = oldPrice / 10;
             return (
-              <PriceWrapper key={id} boxShadow="xl">
-                <Box py={4} px={12} borderBottom="1px solid #eee">
+              <PriceWrapper key={id} boxShadow="xl" >
+                <Box py={4} px={12} borderBottom="1px solid #eee" >
                   {/* Discount UI START */}
                   {price ? (
                     <Box
@@ -114,28 +115,35 @@ export default function Pricing({ userToken, monthPlan }) {
                       alignItems="center"
                       justifyContent="center"
                     >
-                      <span className="absolute w-[2px] h-[90px] bg-red-500 right-40 rotate-[80deg]"></span>
-                      <Text opacity="1" fontSize="2xl" fontWeight="900">
+                     
+                      <Text opacity="1" fontSize="2xl" className="line-through mx-2 decoration-2 decoration-red-500" fontWeight="900">
                         {persianTools.digitsEnToFa(
                           persianTools.addCommas(persianOldPrice)
                         )}{" "}
-                        تومان
+                        
                       </Text>
+                      <Text opacity="1"
+                        fontSize="2xl"
+                        fontWeight="900">تومان</Text>
                     </Box>
                   ) : null}
                   {/* Discount UI END */}
-                  <HStack justifyContent="center">
+                  <HStack justifyContent="center" >
                     {price > 0 ? (
                       <>
-                        <Text fontSize="xl" opacity="0.8">
+                        <Text fontSize="20px" opacity="0.8">
                           {persianTools.digitsEnToFa(
                             persianTools.addCommas(persianPrice)
                           )}{" "}
+                         
+                        </Text>
+                        <Text fontSize={18}>
                           تومان
                         </Text>
                       </>
                     ) : (
                       <Text
+                     
                         fontSize="3xl"
                         fontWeight="600"
                         fontFamily="Casablanca"

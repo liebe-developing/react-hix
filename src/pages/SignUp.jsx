@@ -48,7 +48,7 @@ const SignUp = () => {
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
 
   useEffect(() => {
-    userToken && navigate("/");
+    userToken && navigate("/dashboard");
   }, []);
 
   const handleChange = (e) => {
@@ -91,7 +91,7 @@ const SignUp = () => {
           isClosable: true,
         });
         setLoading(false);
-        navigate("/sign-in");
+        navigate("/dashboard/sign-in");
       }
     } catch (error) {
       setError(true);
