@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { apiGetRequest } from "../api/apiRequest";
-import { SidebarWithHeader } from "../components";
+import { Loader, SidebarWithHeader } from "../components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const RootLayout = () => {
   const [user, setuser] = useState();
-  const [hsAuth, setHsAuth] = useState(false);
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
 
@@ -33,7 +32,7 @@ const RootLayout = () => {
   }, []);
 
   return (
-    user && (
+    !user ? <Loader /> : (
       <SidebarWithHeader
         userContent={user}
         userAuth={userToken}

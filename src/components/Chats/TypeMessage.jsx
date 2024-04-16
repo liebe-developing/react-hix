@@ -1,7 +1,12 @@
+import { Flex, Text } from "@chakra-ui/react";
+
 export const Message = ({ type, content, is_user_message, created_at }) => {
+    console.log(type);
+    console.log(content);
     return (
         <Flex
-            p={4}
+            p={3}
+            my={2}
             bg={is_user_message ? 'blue.500' : 'gray.100'}
             color={is_user_message ? 'white' : 'gray.600'}
             borderRadius="lg"

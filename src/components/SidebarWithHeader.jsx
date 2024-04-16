@@ -39,6 +39,7 @@ import DarkModeButton from "./DarkModeButton";
 import { GrUpgrade } from "react-icons/gr";
 import { BsCalendarCheck } from "react-icons/bs";
 import { apiPostRequest } from "../api/apiRequest";
+import { useState } from "react";
 
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/dashboard" },
@@ -71,7 +72,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         mx="2"
         justifyContent="space-between"
       >
-        <img src="/logo_hix.svg" width={100} />
+        <img src="/logo_hix.svg" width={130} className="mr-6 mt-6" />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => {
@@ -193,7 +194,7 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-       <img src="logo_hix.svg" alt="not-found" width={100} />
+        <img src="logo_hix.svg" className="hidden md:static" alt="not-found" width={100} />
       </Text>
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
@@ -304,12 +305,13 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} userContent={userContent} />
       <Box mr={{ base: 0, md: 60 }} p="1">
-        <Outlet
-          context={{
-            userToken,
-            userContent,
-          }}
-        />
+        
+          <Outlet
+            context={{
+              userToken,
+              userContent,
+            }}
+          />
       </Box>
     </Box>
   );

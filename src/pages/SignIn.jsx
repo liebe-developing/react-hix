@@ -184,7 +184,7 @@ const SignIn = () => {
                     <Link to="/reset-password">
                       <Text color={"blue.400"}>فراموشی رمز عبور</Text>
                     </Link>
-                    <Link to="/sign-up">
+                    <Link to="/dashboard/sign-up">
                       <Text color={"blue.400"}>ثبت نام</Text>
                     </Link>
                   </Stack>

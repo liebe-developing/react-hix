@@ -26,6 +26,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
   const { userToken, userContent } = useOutletContext();
   const toast = useToast();
 
+
   const {
     description,
     image,
@@ -80,8 +81,6 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
       });
     })
   }
-
-
 
 
   return (

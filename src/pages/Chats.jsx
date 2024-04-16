@@ -20,22 +20,6 @@ import { useOutletContext } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Message } from "../components/Chats/TypeMessage";
 
-// const Message = ({ text, actor }) => {
-//     return (
-//         <Flex
-//             p={4}
-//             bg={actor === 'user' ? 'blue.500' : 'gray.100'}
-//             color={actor === 'user' ? 'white' : 'gray.600'}
-//             borderRadius="lg"
-//             w="fit-content"
-//             alignSelf={actor === 'user' ? 'flex-end' : 'flex-start'}
-//         >
-//             <Text>{text}</Text>
-//         </Flex>
-//     );
-// };
-
-// let socket;
 
 export function Chats() {
     const [listUser, setListUser] = useState([]);
@@ -114,20 +98,25 @@ export function Chats() {
 
     const sendMessage = () => {
         // socket.emit("send_message", { message: "Hello" });
+        const currentLength = selectedChatMessages.length;
+        setSelectedChatMessages([...selectedChatMessages, {type: "text", content: messageText}]);
         apiPostRequest('/chat/operator/send_chat', userToken, {
           message: {
             type: 'text',
             content: messageText
-          }
+          },
+          user_plan_id: userContent.user_plan_id
         }).then((res) => {
-            console.log('message sent');
-            // add new message to the chat screen
+            
+        }).catch(() => {
+            setSelectedChatMessages(selectedChatMessages.filter((v, i) => i != currentLength));
         });
+        setMessageText("");
     };
 
     return (
         <Flex
-            h="100vh"
+            h={{ base: "130vh" ,md: "100vh"}}
             flexDirection={{ base: "column", lg: "row" }}
             gap="6px"
             w="full"
@@ -167,8 +156,8 @@ export function Chats() {
 
             <Flex
                 flexDirection="column"
-                w={{ base: "sm", md: "xl", lg: "3xl" }}
-                h="full"
+                w={{ base: "100%", md: "99%", lg: "3xl" }}
+                h={{base: "70%",lg: "100%"}}
                 borderWidth="1px"
                 roundedTop="lg"
                 rounded="10px"
@@ -190,8 +179,8 @@ export function Chats() {
 
                 <Stack
                     bg={colorMode === "light" ? "gray.200" : "gray.800"}
-                    px={4}
-                    py={8}
+                    px={2}
+                    py={2}
                     overflow="auto"
                     flex={1}
                     css={{
@@ -214,7 +203,7 @@ export function Chats() {
                                 <Message
                                     key={index}
                                     {...item}
-                                    type={item.type}
+                                    type={item.type.toLocaleLowerCase()}
                                 />
                             ))}
                     </Box>

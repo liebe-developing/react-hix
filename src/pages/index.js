@@ -10,6 +10,7 @@ import Profile from "./Profile";
 import Settings from "./Settings";
 import Report from "./Report";
 import Product from "./Product";
+import Footer from "../components/Footer";
 export {
   PricePlan,
   Dashboard,
@@ -22,5 +23,6 @@ export {
   Profile,
   Settings,
   Report,
-  Product
+  Product,
+  Footer
 };

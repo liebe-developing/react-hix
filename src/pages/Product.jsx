@@ -53,7 +53,7 @@ function Product() {
       {!loading && <Loading />}
       {loading && (
         <div className="w-[97%] mx-auto rounded-md">
-          <Flex justifyContent="space-between" alignItems="center" mb={5}>
+          <Flex justifyContent="space-between" gap={4} alignItems="center" mb={5}>
             <Button
               leftIcon={<FaPlus />}
               colorScheme="purple"
@@ -62,7 +62,7 @@ function Product() {
               اضافه کردن محصول
             </Button>
             <Box>
-              <Alert status="info" rounded="lg">
+              <Alert fontSize={{ base: '11px', sm:'14px'}} status="info" rounded="lg">
                 <AlertIcon />
                 برای دیدن جزئیات بیشتر روی فیلد آیتم ها کلیک فرمایید!
               </Alert>
@@ -73,25 +73,25 @@ function Product() {
               <tr className="text-white">
                 <th
                   scope="col"
-                  className="text-[14px] md:text-sm font-medium  text-center py-4"
+                  className="text-[10px] md:text-sm font-medium  text-center py-4"
                 >
                   شمارنده
                 </th>
                 <th
                   scope="col"
-                  className="text-[14px] md:text-sm font-medium  text-center py-4"
+                  className="text-[10px] md:text-sm font-medium  text-center py-4"
                 >
                   عنوان
                 </th>
                 <th
                   scope="col"
-                  className="text-[14px] md:text-sm font-medium  text-center py-4"
+                  className="text-[10px]  md:text-sm font-medium  text-center py-4"
                 >
                   موجود
                 </th>
                 <th
                   scope="col"
-                  className="text-[14px]  md:text-sm font-medium  text-center py-4"
+                  className="text-[10px]  md:text-sm font-medium  text-center py-4"
                 >
                   لینک
                 </th>

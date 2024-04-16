@@ -7,20 +7,19 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
   SimpleGrid,
-  Flex,
-  Text,
   Spinner,
 } from "@chakra-ui/react";
 import PrimaryButton from "../PrimaryButton";
 import Field from "../Field";
 import { useRef, useState } from "react";
 import { apiPostRequest } from "../../api/apiRequest";
+import { useToast } from "@chakra-ui/react";
+import { useOutletContext } from "react-router-dom";
 
 const CreateProductModal = ({ isOpen, onClose }) => {
-  const fileInput = useRef(null);
-
+  const toast = useToast()
+  const { userToken, userContent } = useOutletContext();
   const [productFormData, setProductFormData] = useState({
     url: "",
     title: "",
@@ -34,17 +33,6 @@ const CreateProductModal = ({ isOpen, onClose }) => {
   });
   const [loading, setLoading] = useState(false);
 
-  const {
-    url,
-    title,
-    description,
-    image,
-    price,
-    attributes,
-    weight,
-    brand,
-    category_title,
-  } = productFormData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,26 +42,42 @@ const CreateProductModal = ({ isOpen, onClose }) => {
     }));
   };
 
-  const fileSelectedHandler = (e) => {
-    setProductFormData({
-      image: e.target.files[0],
-    });
-  };
-
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
 
     setLoading(true);
 
-    apiPostRequest("/api/product", undefined, productFormData)
+    apiPostRequest(`/api/product/`, userToken, {
+      url: productFormData.url,
+      title:       productFormData.title,
+      description:       productFormData.description,
+      image:       productFormData.image,
+      price:       productFormData.price,
+      attributes:       productFormData.attributes,
+      user_plan_id: userContent.user_plan_id,
+      weight:       productFormData.weight,
+      brand:       productFormData.brand,
+      category_title:       productFormData.category_title,
+})
       .then(function (res) {
-        console.log(res);
+        toast({
+          title: `ذخیره با موفقعیت انجام شد!`,
+          status: "success",
+          position: "bottom",
+          isClosable: true,
+        });
 
         setLoading(false);
       })
       .catch((error) => {
-        setLoading(false);
-        console.log(error);
+        toast({
+          title: `فلید ها را درست وارد نمایید!`,
+          status: "error",
+          position: "bottom",
+          isClosable: true,
+        });
+        setLoading(false)
+
       });
   };
 
@@ -88,7 +92,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
             <SimpleGrid columns={[1, null, 2]} spacing={6}>
               <Field
                 label="عنوان"
-                value={title}
+                value={productFormData.title}
                 placeholder="عنوان محصول"
                 style={{ border: "1px solid gray" }}
                 name="title"
@@ -96,7 +100,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
               <Field
                 label="توضیحات"
-                value={description}
+                value={productFormData.description}
                 placeholder="توضیحات درباره محصول"
                 style={{ border: "1px solid gray" }}
                 name="description"
@@ -104,7 +108,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
               <Field
                 label="قیمت"
-                value={price}
+                value={productFormData.price}
                 placeholder="قیمت محصول"
                 style={{ border: "1px solid gray" }}
                 name="price"
@@ -112,7 +116,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
               <Field
                 label="ویژگی ها"
-                value={attributes}
+                value={productFormData.attributes}
                 placeholder="ویژگی های محصول"
                 style={{ border: "1px solid gray" }}
                 name="attributes"
@@ -120,7 +124,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
               <Field
                 label="وزن"
-                value={weight}
+                value={productFormData.weight}
                 placeholder="وزن محصول"
                 style={{ border: "1px solid gray" }}
                 name="weight"
@@ -128,7 +132,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
               <Field
                 label="برند"
-                value={brand}
+                value={productFormData.brand}
                 placeholder="برند محصول"
                 style={{ border: "1px solid gray" }}
                 name="brand"
@@ -136,7 +140,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
               <Field
                 label="دسته بندی"
-                value={category_title}
+                value={productFormData.category_title}
                 placeholder="دسته بندی محصول"
                 style={{ border: "1px solid gray" }}
                 name="category_title"
@@ -144,7 +148,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
               <Field
                 label="URL"
-                value={url}
+                value={productFormData.url}
                 placeholder="آدرس اینترنتی محصول"
                 style={{ border: "1px solid gray" }}
                 name="url"
@@ -152,25 +156,13 @@ const CreateProductModal = ({ isOpen, onClose }) => {
               />
 
               <Field
-                label="عکس محصول"
-                type="file"
-                display="none"
-                accept=".png, .jpeg"
-                onChange={fileSelectedHandler}
-                reference={fileInput}
-              >
-                <Flex alignItems="center" gap={5} mb={2}>
-                  <Button
-                    size="sm"
-                    variant="solid"
-                    colorScheme="whatsapp"
-                    onClick={() => fileInput.current.click()}
-                  >
-                    انتخاب فایل
-                  </Button>
-                  <Text fontSize="13px">{image?.name || image}</Text>
-                </Flex>
-              </Field>
+                label="عکس محصول (url وارد نمایید!)"
+                value={productFormData.image}
+                placeholder="آدرس اینترنتی محصول"
+                style={{ border: "1px solid gray" }}
+                name="image"
+                onChange={handleChange}
+              />
             </SimpleGrid>
           </ModalBody>
 
@@ -185,7 +177,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
                   size="lg"
                 />
               ) : (
-                "ذخیره محصول"
+                "! ثبت محصول"
               )}
             </PrimaryButton>
           </ModalFooter>
@@ -196,3 +188,9 @@ const CreateProductModal = ({ isOpen, onClose }) => {
 };
 
 export default CreateProductModal;
+
+// const fileSelectedHandler = (e) => {
+//   setProductFormData({
+//     image: e.target.files[0],
+//   });
+// };

@@ -348,7 +348,7 @@ function Order() {
                     onChange={(e) => setChecked(e.target.checked)}
                     className="me-1 w-4 h-4 "
                   />
-                  <label>قوانین!</label>
+                  <label> قوانین را میپذیرم!</label>
                 </h3>
                 <Button
                   type="submit"
