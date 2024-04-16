@@ -75,14 +75,14 @@ export default function Pricing({ userToken, monthPlan }) {
 
   return (
     <Box py={0} m="0 auto" mx={10}>
-      <SimpleGrid
-        direction={{ base: "column", md: "row" }}
+      <Flex
+        direction={{ base: "column", lg: "row" }}
         textAlign="center"
-        justify="center"
+        gap={10}
         spacing={{ base: 4, lg: 5 }}
         py={0}
-        mx={{ base: 0, md: 20 }}
-        columns={[1, null, 2]}
+        mx={{ base: 0, md: 10 }}
+        columns={[1, 1, 1,2]}
       >
         {monthPlan &&
           monthPlan.map((item) => {
@@ -220,9 +220,10 @@ export default function Pricing({ userToken, monthPlan }) {
                   <Box w="80%" pt={7}>
                     <Button
                       onClick={() => sendRouteOrderHandler(id)}
-                      w="full"
+                      w={price > 0 ? "100%" : "260px"}
                       colorScheme="red"
                       variant="outline"
+                      _hover={{ bg: "purple.50", shadow: "outline"}}
                     >
                       خرید
                     </Button>
@@ -231,7 +232,7 @@ export default function Pricing({ userToken, monthPlan }) {
               </PriceWrapper>
             );
           })}
-      </SimpleGrid>
+      </Flex>
     </Box>
   );
 }

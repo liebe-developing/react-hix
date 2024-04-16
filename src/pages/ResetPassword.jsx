@@ -152,7 +152,7 @@ const ResetPassword = () => {
                     fontSize={"13px"}
                   >
                     <Text color={"gray.700"}>حساب کاربری دارید؟</Text>
-                    <Link to="/sign-in">
+                    <Link to="/dashboard/sign-in">
                       <Text color={"blue.400"}>ورود</Text>
                     </Link>
                   </Flex>
