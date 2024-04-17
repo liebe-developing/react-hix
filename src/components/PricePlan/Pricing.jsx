@@ -24,13 +24,15 @@ function PriceWrapper(props) {
 
   return (
     <Box
+      
       mb={4}
       shadow="base"
       borderWidth="1px"
       alignSelf={{ base: "center", lg: "flex-start" }}
       borderColor={useColorModeValue("gray.200", "gray.500")}
       borderRadius={"xl"}
-      w="full"
+      w="50%"
+      mx="auto"
     >
       {children}
     </Box>
@@ -101,8 +103,8 @@ export default function Pricing({ userToken, monthPlan }) {
             const persianPrice = price / 10;
             const persianOldPrice = oldPrice / 10;
             return (
-              <PriceWrapper key={id} boxShadow="xl">
-                <Box py={4} px={12} borderBottom="1px solid #eee">
+              <PriceWrapper key={id} boxShadow="xl" >
+                <Box py={4} px={12} borderBottom="1px solid #eee" >
                   {/* Discount UI START */}
                   {price ? (
                     <Box
@@ -128,7 +130,7 @@ export default function Pricing({ userToken, monthPlan }) {
                     </Box>
                   ) : null}
                   {/* Discount UI END */}
-                  <HStack justifyContent="center">
+                  <HStack justifyContent="center" >
                     {price > 0 ? (
                       <>
                         <Text fontSize="20px" opacity="0.8">
