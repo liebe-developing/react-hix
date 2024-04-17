@@ -1,7 +1,7 @@
 import {
     Card, CardHeader, CardBody, CardFooter, Heading, Button, Text, Flex, Table, useColorMode, SimpleGrid,
 } from '@chakra-ui/react'
-import CardeCom from '../components/Card'
+import { CardeCom } from '../components';
 
 
 function Report() {
@@ -117,7 +117,7 @@ function Report() {
                                             فروشگا ها
                                         </td>
                                         <td className="text-sm  font-light text-center py-4 whitespace-nowrap">
-                                            چند لحظه بعد
+                                            چند لحظه قبل
                                         </td>
                                     </tr>
                                 </tbody>

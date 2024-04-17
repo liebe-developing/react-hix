@@ -5,13 +5,15 @@ import {
 } from '@chakra-ui/react'
 import { FaShoppingBasket } from "react-icons/fa";
 import { FaArrowTrendDown } from "react-icons/fa6";
-import { FaArrowTrendUp } from "react-icons/fa6";
 
 function CardeCom({ title, caption, button, img }) {
     return (
         <Card
-        shadow="md"
-        display="flex">
+        transition="0.30s"
+            cursor="pointer"
+            _hover={{ shadow: "2xl" }}
+            shadow="md"
+            display="flex">
             <CardHeader>
                 <Heading size='md'>
                     <FaShoppingBasket className='text-5xl p-3 bg-blue-700 rounded-full

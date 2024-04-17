@@ -38,7 +38,7 @@ const MediaBox = () => {
             fontSize={{ base: "10px", md: "13px" }}
             lineHeight="20px"
             fontWeight={500}
-            maxW={{ base: "240px", md: "full" }}
+            maxW={{ base: "240px", md: "72%" }}
           >
             هیکس دم ام را در شبکه های اجتماعی دنبال کنید تا از جدیدترین تخفیف ها
             و اطلاعیه ها با خبر شوید.

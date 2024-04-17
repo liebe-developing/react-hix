@@ -12,7 +12,7 @@ import PopularClients from "./Dashboard/PopularClients";
 import PrimaryButton from "./PrimaryButton";
 import Field from "./Field";
 import UserList from "./Chats/UserList";
-import CardeCom from "./Card";
+import CardeCom from "./report/CardCom";
 import Pagination from "./product/Pagination";
 import Loading from "./Loading";
 import Error from "./Error";
