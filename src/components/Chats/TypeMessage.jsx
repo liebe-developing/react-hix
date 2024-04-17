@@ -1,12 +1,11 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 export const Message = ({ type, content, is_user_message, created_at }) => {
-    console.log(type);
-    console.log(content);
+
     return (
         <Flex
-            p={3}
-            my={2}
+            p={2}
+            my={3}
             bg={is_user_message ? 'blue.500' : 'gray.100'}
             color={is_user_message ? 'white' : 'gray.600'}
             borderRadius="lg"
@@ -16,7 +15,11 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
             {
                 type === 'text' ? (
                     <>
-                        <Text>{content}</Text>
+                        <Text className="relative">{content}
+                            <span className="text-[9px] absolute -bottom-[27px] -left-1 text-black">{new Date(created_at).toLocaleTimeString("fa-IR", {
+                                hour12: false
+                            })} </span>
+                        </Text>
                     </>
                 ) : type === 'form' ? (
                     <div className="flex flex-col">
@@ -31,7 +34,7 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
                     </div>
                 ) : (
                     <div>
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table class="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 border-2">
                             
                             {
                                 content.map((item, index) => {

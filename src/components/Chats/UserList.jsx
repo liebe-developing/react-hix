@@ -1,6 +1,7 @@
 // Chats.jsx
 import { Flex, Avatar } from "@chakra-ui/react";
 import { CircleCheck } from "../../constants/icons";
+import { Message } from "./TypeMessage";
 
 function UserList({ name, id, email }) {
   const uiHandler = () => {
