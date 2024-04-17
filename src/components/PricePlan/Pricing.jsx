@@ -220,10 +220,14 @@ export default function Pricing({ userToken, monthPlan }) {
                   <Box w="80%" pt={7}>
                     <Button
                       onClick={() => sendRouteOrderHandler(id)}
-                      w={price > 0 ? "100%" : "260px"}
-                      colorScheme="red"
+                      w={price > 0 ? "90%" : "260px"}
+                      colorScheme="#000"
+                      color="#ffff"
+                      bg="#48BA06"
+                     
                       variant="outline"
-                      _hover={{ bg: "purple.50", shadow: "outline"}}
+                      fontSize={{base: "sm",md:"x-large"}}
+                      _hover={{ bg: "orange.200", color: "#697A6F", shadow:"xl" }}
                     >
                       خرید
                     </Button>

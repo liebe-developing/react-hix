@@ -8,7 +8,7 @@ function NotFound() {
         <img src="/404er.svg" alt="not-found" width={400} height={400} />
         <Button>
             <Link to="/dashboard">
-                  برگشت به داشبور
+                  برگشت به داشبورد
            </Link>
         </Button>
     </div>

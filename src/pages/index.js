@@ -11,6 +11,8 @@ import Settings from "./Settings";
 import Report from "./Report";
 import Product from "./Product";
 import Footer from "../components/Footer";
+import Rules from "./Rules";
+
 export {
   PricePlan,
   Dashboard,
@@ -24,5 +26,6 @@ export {
   Settings,
   Report,
   Product,
-  Footer
+  Footer,
+  Rules
 };

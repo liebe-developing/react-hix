@@ -58,11 +58,12 @@ function Product() {
               leftIcon={<FaPlus />}
               colorScheme="purple"
               onClick={onOpenCreateProductModal}
+              shadow="lg"
             >
               اضافه کردن محصول
             </Button>
             <Box>
-              <Alert fontSize={{ base: '11px', sm:'14px'}} status="info" rounded="lg">
+              <Alert shadow="md" fontSize={{ base: '11px', sm:'14px'}} status="info" rounded="lg">
                 <AlertIcon />
                 برای دیدن جزئیات بیشتر روی فیلد آیتم ها کلیک فرمایید!
               </Alert>
