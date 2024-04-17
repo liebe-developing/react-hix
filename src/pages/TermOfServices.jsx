@@ -2,7 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { rulesData } from "../constants";
 
 
-export default function Rules() {
+export default function TermOfServices() {
     return (
         <Box className="flex flex-col items-center justify-start gap-6 mt-2 w-full">
             <Text fontSize="x-large" className="drop-shadow-xl" >

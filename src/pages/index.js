@@ -11,7 +11,7 @@ import Settings from "./Settings";
 import Report from "./Report";
 import Product from "./Product";
 import Footer from "../components/Footer";
-import Rules from "./Rules";
+import TermOfServices from "./TermOfServices";
 
 export {
   PricePlan,
@@ -27,5 +27,5 @@ export {
   Report,
   Product,
   Footer,
-  Rules
+  TermOfServices
 };

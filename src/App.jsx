@@ -14,7 +14,7 @@ import {
   Report,
   Product,
   Footer,
-  Rules,
+  TermOfServices,
 } from "./pages";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -44,7 +44,7 @@ function App() {
           <Route path="/dashboard/chats" element={<Chats />} />
           <Route path="/dashboard/profile" element={<Profile />} />
           <Route path="/dashboard/settings" element={<Settings />} />
-          <Route path="/dashboard/rules" element={<Rules />} />
+          <Route path="/dashboard/termofservices" element={<TermOfServices />} />
         </Route>
         <Route path="/dashboard/sign-in" element={<SignIn />} />
         <Route path="/dashboard/sign-up" element={<SignUp />} />
