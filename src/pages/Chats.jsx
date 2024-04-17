@@ -80,6 +80,7 @@ export function Chats() {
                         case "send_chat": {
                             // payam daryaft shode
                             const message = eventData.message;
+                            setSelectedChatMessages([...selectedChatMessages, message]);
                             break;
                         }
                         default: {
@@ -164,18 +165,21 @@ export function Chats() {
                 flexGrow="grow"
                 flex={1}
             >
-                {listUser && (
-                    <Flex
-                        bg={colorMode === "light" ? "gray.300" : "gray.700"}
-                        className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
-                        color={colorMode === "light" ? "black" : "white"}
-                    >
-                        <div className="px-4 py-2 bg-blue-500 rounded-lg text-white shadow-xl">
-                            چت با کاربر
-                        </div>
-                        <div>کاربر شماره {listUser.id}</div>
-                    </Flex>
-                )}
+                <Flex
+                    bg={colorMode === "light" ? "gray.300" : "gray.700"}
+                    className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
+                    color={colorMode === "light" ? "black" : "white"}
+                >
+
+                    <div className="px-4 py-2 bg-blue-500 rounded-lg text-white shadow-xl">
+                        چت با کاربر
+                    </div>
+                {selectedChat && (
+                    <>
+                        <div>کاربر شماره {selectedChat}</div>
+                        </>
+                    )}
+                </Flex>
 
                 <Stack
                     bg={colorMode === "light" ? "gray.200" : "gray.800"}
