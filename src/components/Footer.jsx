@@ -17,10 +17,10 @@ export default function Footer() {
      </div>
       
       <div className="">
-        <Link to="/dashboard/rules" className='text-gray-800 underline underline-offset-4 decoration-blue-700'>
+        <Link to="/dashboard/termofservices" className='text-gray-800 underline underline-offset-4 decoration-blue-700'>
           قوانین
         </Link>
-        <Link to="/dashboard/rules" className='text-gray-800 mx-3 underline underline-offset-4 decoration-blue-700'>
+        <Link to="/dashboard" className='text-gray-800 mx-3 underline underline-offset-4 decoration-blue-700'>
           صفحه اصلی
         </Link>
       </div>
