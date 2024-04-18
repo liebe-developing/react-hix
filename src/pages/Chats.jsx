@@ -9,11 +9,12 @@ import {
   Icon,
   InputGroup,
   InputRightElement,
+  Text,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
 import { Search } from "../constants/icons";
 import { UserList } from "../components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
 // import io from "socket.io-client";
@@ -32,6 +33,7 @@ export function Chats() {
   const [selectedChatMessages, setSelectedChatMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
 
+
   const { colorMode } = useColorMode();
 
 
@@ -41,7 +43,6 @@ export function Chats() {
       `api/chat_user/?upid=${userContent.user_plan_id}`,
       userToken
     ).then((res) => {
-      console.log(res.data.data);
       setListUser(res.data.data);
     });
   }, []);
@@ -49,7 +50,7 @@ export function Chats() {
   const [cookies, setCookie] = useCookies(["sid"]);
 
   const selectUserChat = (userId) => {
-    if(!socket) return;
+    if (!socket) return;
     socket.emit("operator:target", { userId })
     setSelectedChat(userId);
     apiGetRequest(
@@ -83,7 +84,7 @@ export function Chats() {
             if (!message.created_at) message.created_at = new Date();
             if (message.is_user_message === undefined) message.is_user_message = true;
 
-            setSelectedChatMessages([message, ...selectedChatMessages]);
+            setSelectedChatMessages((pState) => [...pState, message]);
           });
 
           socket.on("operator:send", (data) => {
@@ -91,45 +92,41 @@ export function Chats() {
             message.rid = crypto.randomUUID();
             if (!message.created_at) message.created_at = new Date();
             if (message.is_user_message === undefined) message.is_user_message = false;
-            setSelectedChatMessages([message, ...selectedChatMessages]);
+
+            setSelectedChatMessages((pState) => [...pState, message]);
           });
         });
 
         socket.connect()
       })
-      .catch((error) => {
-        console.log(error);
-      });
-    console.log("true");
   }, []);
 
-  //   console.log(cookies.name);
 
   const sendMessage = (evnet) => {
     // socket.emit("send_message", { message: "Hello" });
     const currentLength = selectedChatMessages.length;
     setSelectedChatMessages([
-      ...selectedChatMessages,
       { type: "text", content: messageText, created_at: new Date() },
+      ...selectedChatMessages,
     ]);
 
     socket
-      .emitWithAck("operator:send", {
+      .emit("operator:send", {
         message: {
           type: "text",
           content: messageText,
         },
         user_plan_id: userContent.user_plan_id,
       })
-      .catch((err) => {
-        setSelectedChatMessages(
-          selectedChatMessages.filter((v, i) => i != currentLength)
-        );
-      });
 
     setMessageText("");
-    console.log(selectedChatMessages);
   };
+
+  const chatBoxRef = useRef();
+
+  useEffect(() => {
+    chatBoxRef.current?.scrollIntoView({ behaviour: "smooth" })
+  }, [selectedChatMessages])
 
   return (
     <Flex
@@ -158,7 +155,6 @@ export function Chats() {
         {/* <CHATS CONTENT> */}
         <div className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar ">
           {listUser.map((item) => {
-            console.log(item);
             return (
               <div key={item.id} onClick={() => selectUserChat(item.id)}>
                 <UserList {...item} />
@@ -213,13 +209,68 @@ export function Chats() {
           }}
         >
           <Box className="flex flex-col">
-            {selectedChat && selectedChatMessages && selectedChatMessages.map((item, index) => (
-              <Message
-                key={index}
-                {...item}
-                type={item.type.toLocaleLowerCase()}
-              />
-            ))}
+            {selectedChat && selectedChatMessages && selectedChatMessages.map((item, index, items) => {
+              const { content, is_user_message, created_at } = item;
+              const type = item.type.toLocaleLowerCase();
+              return (
+                <Flex
+                  p={2}
+                  my={3}
+                  ref={index === items.length - 1 ? chatBoxRef : undefined}
+                  bg={is_user_message ? 'blue.500' : 'gray.100'}
+                  color={is_user_message ? 'white' : 'gray.600'}
+                  borderRadius="lg"
+                  w="fit-content"
+                  alignSelf={is_user_message ? 'flex-end' : 'flex-start'}
+                >
+                  {
+                    type === 'text' || content.lenght > 0 ? (
+                      <>
+                        <Text className="relative">{content}
+                          <span className="text-[9px] absolute -bottom-[27px] -left-1 text-black">{new Date(created_at).toLocaleTimeString("fa-IR", {
+                            hour12: false
+                          })} </span>
+                        </Text>
+                      </>
+                    ) : type === 'form' ? (
+                      <div className="flex flex-col">
+                        {
+                          content.map((item, index) => (
+                            <div key={index} className="flex bg-blue-500 shadow-lg w-1/2 items-center gap-4 p-2 odd:bg-red-300 justify-around border-2 border-blue-700 rounded-lg">
+                              <div className="text-md">{item.name}</div>
+                              <div className="text-md">{item.title}</div>
+                            </div>
+                          ))
+                        }
+                      </div>
+                    ) : (
+                      <div>
+                        <table class="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 border-2">
+
+                          {
+                            content.map((item, index) => (
+                              <div key={index}>
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                  <tr>
+                                    <th scope="col" class="py-3 px-6">{item.title}</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="odd:bg-white even:bg-slate-50">
+                                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="py-4 px-6">{item.title}</td>
+                                  </tr>
+                                </tbody>
+                              </div>
+
+                            ))
+                          }
+                        </table>
+                      </div>
+                    )
+                  }
+                </Flex>
+              )
+            })}
           </Box>
         </Stack>
 

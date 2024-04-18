@@ -3,14 +3,10 @@ import {  Avatar } from "@chakra-ui/react";
 import { CircleCheck } from "../../constants/icons";
 import { Message } from "./TypeMessage";
 
-function UserList({ name, id,mes,email}) {
-  const uiHandler = () => {
-    <Message text={email} />;
-  };
+function UserList({ name, id,mes}) {
   return (
     <div
       className="flex items-center gap-3 mt-4 p-2 cursor-pointer border-b-2 border-gray-300"
-      onClick={uiHandler}
     >
       <Avatar src="/avatar.webp" name={name} className="w-10 h-10 mt-3" />
       <div className="flex flex-col gap-1">
