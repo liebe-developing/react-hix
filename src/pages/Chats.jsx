@@ -20,6 +20,7 @@ import { useOutletContext } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Message } from "../components/Chats/TypeMessage";
 import { Socket, io } from "socket.io-client";
+import { randomInt } from "mathjs";
 
 /**
  * @type {Socket} socket
@@ -32,6 +33,7 @@ export function Chats() {
   const [messageText, setMessageText] = useState("");
 
   const { colorMode } = useColorMode();
+
 
   const { userToken, userContent } = useOutletContext();
   useEffect(() => {
@@ -46,47 +48,59 @@ export function Chats() {
 
   const [cookies, setCookie] = useCookies(["sid"]);
 
-  const selectUserChat = async (userId) => {
-    socket.emitWithAck("operator:target", { userId }).then((ack) => {
-      setSelectedChat(userId);
-      apiGetRequest(
-        `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
-        userToken
-      ).then((res) => {
-        setSelectedChatMessages(res.data.data);
-      });
+  const selectUserChat = (userId) => {
+    if(!socket) return;
+    socket.emit("operator:target", { userId })
+    setSelectedChat(userId);
+    apiGetRequest(
+      `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
+      userToken
+    ).then((res) => {
+      setSelectedChatMessages(res.data.data);
     });
   };
 
   useEffect(() => {
     apiPostRequest("/chat/operator", userToken, undefined)
       .then((res) => {
-        console.log(res.data.sid);
+        if (socket && socket.connected) {
+          socket.disconnect();
+          socket = undefined;
+        }
+
         socket = io("https://portal.hixdm.com", {
           path: "/chat/socket",
           withCredentials: true,
         });
 
         socket.on("connect", () => {
-          console.log("Connected to chat server");
-
           socket.on("chat:id", (data) => {
-            console.log(data.userId);
           });
 
           socket.on("widget:send", (data) => {
             const { message } = data;
-            setSelectedChatMessages([...selectedChatMessages, message]);
+            message.rid = crypto.randomUUID();
+            if (!message.created_at) message.created_at = new Date();
+            if (message.is_user_message === undefined) message.is_user_message = true;
+
+            setSelectedChatMessages([message, ...selectedChatMessages]);
           });
 
           socket.on("operator:send", (data) => {
-            setSelectedChatMessages([...selectedChatMessages, data.message]);
+            const { message } = data;
+            message.rid = crypto.randomUUID();
+            if (!message.created_at) message.created_at = new Date();
+            if (message.is_user_message === undefined) message.is_user_message = false;
+            setSelectedChatMessages([message, ...selectedChatMessages]);
           });
         });
+
+        socket.connect()
       })
       .catch((error) => {
         console.log(error);
       });
+    console.log("true");
   }, []);
 
   //   console.log(cookies.name);
@@ -128,7 +142,7 @@ export function Chats() {
         flexDirection="column"
         h={{ base: "95%" }}
         position="relative"
-        // w="30%"
+      // w="30%"
       >
         <InputGroup boxShadow="xl">
           <Input
@@ -199,15 +213,13 @@ export function Chats() {
           }}
         >
           <Box className="flex flex-col">
-            {selectedChat &&
-              selectedChatMessages &&
-              selectedChatMessages.map((item, index) => (
-                <Message
-                  key={index}
-                  {...item}
-                  type={item.type.toLocaleLowerCase()}
-                />
-              ))}
+            {selectedChat && selectedChatMessages && selectedChatMessages.map((item, index) => (
+              <Message
+                key={index}
+                {...item}
+                type={item.type.toLocaleLowerCase()}
+              />
+            ))}
           </Box>
         </Stack>
 

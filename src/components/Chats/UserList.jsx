@@ -3,9 +3,9 @@ import {  Avatar } from "@chakra-ui/react";
 import { CircleCheck } from "../../constants/icons";
 import { Message } from "./TypeMessage";
 
-function UserList({ name, id,mes}) {
+function UserList({ name, id,mes,email}) {
   const uiHandler = () => {
-    <Message text={id} />;
+    <Message text={email} />;
   };
   return (
     <div

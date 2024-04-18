@@ -37,7 +37,7 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
                         <table class="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 border-2">
                             
                             {
-                                content.map((item, index) => {
+                                content.map((item, index) => (
                                     <div key={index}>
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
@@ -51,7 +51,7 @@ export const Message = ({ type, content, is_user_message, created_at }) => {
                                     </tbody>
                                     </div>
 
-                                })
+                                ))
                             }
                         </table>
                     </div>
