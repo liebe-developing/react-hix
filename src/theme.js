@@ -5,6 +5,7 @@ const theme = extendTheme({
     initialColorMode: "light",
     useSystemColorMode: false,
   },
+  
   styles: {
     global: () => ({
       body: {

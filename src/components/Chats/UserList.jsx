@@ -1,9 +1,9 @@
 // Chats.jsx
-import { Flex, Avatar } from "@chakra-ui/react";
+import {  Avatar } from "@chakra-ui/react";
 import { CircleCheck } from "../../constants/icons";
 import { Message } from "./TypeMessage";
 
-function UserList({ name, id, email }) {
+function UserList({ name, id,mes}) {
   const uiHandler = () => {
     <Message text={email} />;
   };
@@ -15,12 +15,15 @@ function UserList({ name, id, email }) {
       <Avatar src="/avatar.webp" name={name} className="w-10 h-10 mt-3" />
       <div className="flex flex-col gap-1">
         <h3 className="font-bold text-sm tracking-tight my-1">
+         <span className="mx-2">{id}</span>
           {name}
           <span>
-            <CircleCheck className="text-red-600 inline text-xl mr-10" />
+            <CircleCheck  className="text-red-600 inline text-xl mr-10" />
           </span>
+          
         </h3>
-        <p className="text-xs text-gray-600">اخرین متن میتونید دریافت ...</p>
+        {/* //TODO: */}
+        <p className="text-xs text-gray-600">{mes}</p>
       </div>
     </div>
   );
