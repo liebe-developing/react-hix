@@ -19,11 +19,12 @@ import { useOutletContext } from "react-router-dom";
 // import io from "socket.io-client";
 import { useCookies } from "react-cookie";
 import { Message } from "../components/Chats/TypeMessage";
+import { Socket, io } from "socket.io-client";
 
 /**
- * @type {EventSource} es
+ * @type {Socket} socket
  */
-let es = {};
+let socket;
 export function Chats() {
     const [listUser, setListUser] = useState([]);
     const [selectedChat, setSelectedChat] = useState();
@@ -45,17 +46,15 @@ export function Chats() {
 
     const [cookies, setCookie] = useCookies(["sid"]);
 
-    const selectUserChat = (id) => {
-        setSelectedChat(id);
-        apiGetRequest(
-            `/api/chat_messages/user/${id}?upid=${userContent.user_plan_id}`,
-            userToken
-        ).then((res) => {
-            console.log(res.data.data);
-
-            apiPostRequest('/chat/operator/set_target', userToken, { userId: id }).then((result) => {
+    const selectUserChat = async (userId) => {
+        socket.emitWithAck("operator:target", { userId }).then((ack) => {
+            setSelectedChat(userId);
+            apiGetRequest(
+                `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
+                userToken
+            ).then((res) => {
                 setSelectedChatMessages(res.data.data);
-            })
+            });
         });
     };
 
@@ -63,45 +62,33 @@ export function Chats() {
         apiPostRequest("/chat/operator", userToken, undefined)
             .then((res) => {
                 console.log(res.data.sid);
-                es = new EventSource(
-                    "https://portal.hixdm.com/chat/stream",
-                    {
-                        withCredentials: true,
-                    }
-                );
-                es.addEventListener('status', e => {
-                    console.log(e);
-                })
-                es.addEventListener('message', event => {
-                    console.log(data);
+                socket = io("https://portal.hixdm.com", {
+                    path: "chat/socket",
+                    withCredentials: true,
+                });
 
-                    const data = JSON.parse(event.data);
+                socket.on("connect", () => {
+                    console.log("Connected to chat server");
 
-                    const eventType = data.event;
-                    const eventData = data.data;
+                    socket.on("id", (data) => {
+                        console.log(data.id);
+                    });
 
+                    socket.on("widget:send", (data) => {
+                        const { message } = data;
+                        setSelectedChatMessages([
+                            ...selectedChatMessages,
+                            message,
+                        ]);
+                    });
 
-                    switch (eventType) {
-                        case "user_id": {
-                            console.log(`Current ChatUser ID : ${eventData}`);
-                            break;
-                        }
-                        case "send_chat": {
-                            // payam daryaft shode
-                            const message = eventData.message;
-                            setSelectedChatMessages([...selectedChatMessages, message]);
-                            break;
-                        }
-                        default: {
-                            console.log(data);
-                            break;
-                        }
-                    }
-                })
-                es.addEventListener('error', error => {
-                    console.log(error);
-                })
-
+                    socket.on("operator:send", (data) => {
+                        setSelectedChatMessages([
+                            ...selectedChatMessages,
+                            data.message,
+                        ]);
+                    });
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -113,21 +100,27 @@ export function Chats() {
     const sendMessage = (evnet) => {
         // socket.emit("send_message", { message: "Hello" });
         const currentLength = selectedChatMessages.length;
-        setSelectedChatMessages([...selectedChatMessages, { type: "text", content: messageText, created_at: new Date() }]);
+        setSelectedChatMessages([
+            ...selectedChatMessages,
+            { type: "text", content: messageText, created_at: new Date() },
+        ]);
 
-        apiPostRequest('/chat/operator/send_chat', userToken, {
-            message: {
-                type: 'text',
-                content: messageText
-            },
-            user_plan_id: userContent.user_plan_id
-        }).then((res) => {
+        socket
+            .emitWithAck("operator:send", {
+                message: {
+                    type: "text",
+                    content: messageText,
+                },
+                user_plan_id: userContent.user_plan_id,
+            })
+            .catch((err) => {
+                setSelectedChatMessages(
+                    selectedChatMessages.filter((v, i) => i != currentLength)
+                );
+            });
 
-        }).catch(() => {
-            setSelectedChatMessages(selectedChatMessages.filter((v, i) => i != currentLength));
-        });
         setMessageText("");
-        console.log(selectedChatMessages)
+        console.log(selectedChatMessages);
     };
 
     return (
@@ -141,7 +134,7 @@ export function Chats() {
                 flexDirection="column"
                 h={{ base: "95%" }}
                 position="relative"
-            // w="30%"
+                // w="30%"
             >
                 <InputGroup boxShadow="xl">
                     <Input
@@ -185,7 +178,6 @@ export function Chats() {
                     className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
                     color={colorMode === "light" ? "black" : "white"}
                 >
-
                     <div className="px-4 py-2 bg-blue-500 rounded-lg text-white shadow-xl">
                         چت با کاربر
                     </div>
@@ -219,7 +211,6 @@ export function Chats() {
                         {selectedChat &&
                             selectedChatMessages &&
                             selectedChatMessages.map((item, index) => (
-
                                 <Message
                                     key={index}
                                     {...item}
@@ -245,10 +236,8 @@ export function Chats() {
                             fontWeight: "bold",
                         }}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter')
-                                sendMessage();
-                        }
-                        }
+                            if (e.key === "Enter") sendMessage();
+                        }}
                     />
                     <Button onClick={sendMessage} colorScheme="blue">
                         Send
