@@ -16,12 +16,14 @@ import {
   keyframes,
   Spinner,
   useToast,
+  FormHelperText,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
+import { Error } from "../components";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -29,7 +31,11 @@ to {transform: translateY(-60px)}
 `;
 
 const SignUp = () => {
+  const mobileInput = useRef(null);
+
+  const [passwordLengthError, setPasswordLengthError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -53,6 +59,10 @@ const SignUp = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let priceNum = mobileInput.current.value;
+    if (priceNum.length > 11) {
+      return false;
+    }
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -73,8 +83,19 @@ const SignUp = () => {
           title: `فیلد رمز باهم برابر نیست!`,
           status: "error",
           position: "top-right",
-          isClosable: true,
         });
+        setLoading(false);
+      } else if (
+        formData.password.length <= 4 ||
+        formData.password.length >= 16
+      ) {
+        toast({
+          title: `رمز عبور باید بین 3 تا 16 کاراکتر باشد`,
+          status: "error",
+          position: "top-right",
+        });
+        setLoading(false);
+        return;
       } else {
         apiPostRequest("/api/auth/register", undefined, formData).then(
           function (res) {
@@ -108,6 +129,7 @@ const SignUp = () => {
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
+
   return (
     <Box position={"relative"} dir="ltr">
       <Flex
@@ -115,7 +137,7 @@ const SignUp = () => {
         flexDir={{ base: "column-reverse", md: "row" }}
         spacing={{ base: 10, lg: 10 }}
         minH={"100vh"}
-        bgImage="login-register-bg.webp"
+        bgImage="/login-register-bg.webp"
         bgRepeat="no-repeat"
         bgSize="cover"
         bgPosition="center"
@@ -182,6 +204,8 @@ const SignUp = () => {
                 <FormControl id="email" isRequired>
                   <FormLabel>موبایل</FormLabel>
                   <Input
+                    ref={mobileInput}
+                    maxLength={11}
                     px="16px"
                     type="number"
                     name="mobile"
@@ -218,6 +242,9 @@ const SignUp = () => {
                       </Button>
                     </InputLeftElement>
                   </InputGroup>
+                  <FormHelperText fontSize="12px">
+                    حداقل 3 و حداکثر 16 کاراکتر مجاز است.
+                  </FormHelperText>
                 </FormControl>
                 <FormControl id="password" isRequired>
                   <FormLabel>تکرار رمز عبور</FormLabel>
@@ -228,17 +255,19 @@ const SignUp = () => {
                       onChange={handleChange}
                       px="16px"
                       pr={4}
-                      type={showPassword ? "text" : "password"}
+                      type={showRepeatPassword ? "text" : "password"}
                       placeholder="********"
                     />
                     <InputLeftElement h={"full"}>
                       <Button
                         variant={"ghost"}
                         onClick={() =>
-                          setShowPassword((showPassword) => !showPassword)
+                          setShowRepeatPassword(
+                            (showRepeatPassword) => !showRepeatPassword
+                          )
                         }
                       >
-                        {showPassword ? (
+                        {showRepeatPassword ? (
                           <Icon as={FaEye} />
                         ) : (
                           <Icon as={FaEyeSlash} />
@@ -246,19 +275,18 @@ const SignUp = () => {
                       </Button>
                     </InputLeftElement>
                   </InputGroup>
-                  <FormControl id="url" mt={4}>
-                    <FormLabel> آدرس وبسایت (اختیاری) </FormLabel>
-                    <Input
-                      px="16px"
-                      required
-                      minLength={7}
-                      type="text"
-                      name="business_url"
-                      value={business_url}
-                      onChange={handleChange}
-                      placeholder="https://www.example.ir"
-                    />
-                  </FormControl>
+                </FormControl>
+                <FormControl id="url" mt={4}>
+                  <FormLabel> آدرس وبسایت (اختیاری) </FormLabel>
+                  <Input
+                    px="16px"
+                    minLength={7}
+                    type="text"
+                    name="business_url"
+                    value={business_url}
+                    onChange={handleChange}
+                    placeholder="https://www.example.ir"
+                  />
                 </FormControl>
                 <Stack spacing={3} mt={6}>
                   <Button

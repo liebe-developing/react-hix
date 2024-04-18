@@ -69,7 +69,7 @@ const ResetPassword = () => {
         flexDir={{ base: "column-reverse", md: "row" }}
         spacing={{ base: 10, lg: 10 }}
         minH={"100vh"}
-        bgImage="login-register-bg.webp"
+        bgImage="/login-register-bg.webp"
         bgRepeat="no-repeat"
         bgSize="cover"
         bgPosition="center"

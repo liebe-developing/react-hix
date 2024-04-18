@@ -13,9 +13,6 @@ import {
   Box,
   Button,
   Flex,
-  Heading,
-  Icon,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { FaPlus, FaInfo, FaInfoCircle } from "react-icons/fa";
@@ -42,6 +39,7 @@ function Product() {
       userToken
     ).then((res) => {
       // current page
+      console.log(res);
       setDataProduct(res.data.products);
       setBoxButtons(res.data.pageCount);
       setLoading(true);
@@ -53,7 +51,12 @@ function Product() {
       {!loading && <Loading />}
       {loading && (
         <div className="w-[97%] mx-auto rounded-md">
-          <Flex justifyContent="space-between" gap={4} alignItems="center" mb={5}>
+          <Flex
+            justifyContent="space-between"
+            gap={4}
+            alignItems="center"
+            mb={5}
+          >
             <Button
               leftIcon={<FaPlus />}
               colorScheme="purple"
@@ -63,7 +66,12 @@ function Product() {
               اضافه کردن محصول
             </Button>
             <Box>
-              <Alert shadow="md" fontSize={{ base: '11px', sm:'14px'}} status="info" rounded="lg">
+              <Alert
+                shadow="md"
+                fontSize={{ base: "11px", sm: "14px" }}
+                status="info"
+                rounded="lg"
+              >
                 <AlertIcon />
                 برای دیدن جزئیات بیشتر روی فیلد آیتم ها کلیک فرمایید!
               </Alert>

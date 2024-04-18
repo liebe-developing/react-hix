@@ -22,13 +22,17 @@ const Field = ({
   value,
   reference,
   name,
+  onKeyDown,
+  maxLength,
   children,
+  isRequired,
+  defaultValue,
   ...rest
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <FormControl>
+    <FormControl isRequired={isRequired}>
       <FormLabel fontSize="14px">{label}</FormLabel>
       <InputGroup>
         <Input
@@ -37,9 +41,12 @@ const Field = ({
           pr={4}
           _placeholder={{ fontSize: "12px" }}
           onChange={onChange}
+          maxLength={maxLength}
           value={value}
           name={name}
+          defaultValue={defaultValue}
           accept={accept}
+          onKeyDown={onKeyDown}
           ref={reference}
           {...rest}
         />

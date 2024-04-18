@@ -40,6 +40,7 @@ import { GrUpgrade } from "react-icons/gr";
 import { BsCalendarCheck } from "react-icons/bs";
 import { apiPostRequest } from "../api/apiRequest";
 import { useState } from "react";
+import Footer from "./Footer";
 
 const LinkItems = [
   { name: "داشبورد", icon: GoHome, href: "/dashboard" },
@@ -194,7 +195,12 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        <img src="logo_hix.svg" className="hidden md:static" alt="not-found" width={100} />
+        <img
+          src="logo_hix.svg"
+          className="hidden md:static"
+          alt="not-found"
+          width={100}
+        />
       </Text>
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
@@ -305,13 +311,13 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} userContent={userContent} />
       <Box mr={{ base: 0, md: 60 }} p="1">
-        
-          <Outlet
-            context={{
-              userToken,
-              userContent,
-            }}
-          />
+        <Outlet
+          context={{
+            userToken,
+            userContent,
+          }}
+        />
+        {/* <Footer /> */}
       </Box>
     </Box>
   );

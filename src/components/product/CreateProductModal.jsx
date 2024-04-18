@@ -16,9 +16,13 @@ import { useRef, useState } from "react";
 import { apiPostRequest } from "../../api/apiRequest";
 import { useToast } from "@chakra-ui/react";
 import { useOutletContext } from "react-router-dom";
+import { numberToWords } from "@persian-tools/persian-tools";
+import InputForm from "./InputForm";
 
 const CreateProductModal = ({ isOpen, onClose }) => {
-  const toast = useToast()
+  const priceNumInput = useRef(null);
+
+  const toast = useToast();
   const { userToken, userContent } = useOutletContext();
   const [productFormData, setProductFormData] = useState({
     url: "",
@@ -33,9 +37,12 @@ const CreateProductModal = ({ isOpen, onClose }) => {
   });
   const [loading, setLoading] = useState(false);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let priceNum = priceNumInput.current.value;
+    if (priceNum.length == 17) {
+      return false;
+    }
     setProductFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -48,125 +55,65 @@ const CreateProductModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     apiPostRequest(`/api/product/`, userToken, {
-      url: productFormData.url,
-      title:       productFormData.title,
-      description:       productFormData.description,
-      image:       productFormData.image,
-      price:       productFormData.price,
-      attributes:       productFormData.attributes,
+      ...productFormData,
       user_plan_id: userContent.user_plan_id,
-      weight:       productFormData.weight,
-      brand:       productFormData.brand,
-      category_title:       productFormData.category_title,
-})
+    })
       .then(function (res) {
+        if (res.status === 200) {
+          window.location.reload();
+        }
         toast({
           title: `ذخیره با موفقعیت انجام شد!`,
           status: "success",
           position: "bottom",
-          isClosable: true,
+          isClosable: false,
         });
 
         setLoading(false);
+        setProductFormData({
+          url: "",
+          title: "",
+          description: "",
+          image: "",
+          price: "",
+          attributes: "",
+          weight: "",
+          brand: "",
+          category_title: "",
+        });
       })
       .catch((error) => {
+        console.log(error);
         toast({
-          title: `فلید ها را درست وارد نمایید!`,
+          title: `خطایی رخ داده است!`,
           status: "error",
           position: "bottom",
-          isClosable: true,
+          isClosable: false,
         });
-        setLoading(false)
-
+        setLoading(false);
       });
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="4xl"
+      isCentered
+    >
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={handleSubmitNewProduct}>
           <ModalHeader textAlign="left">محصول جدید</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <SimpleGrid columns={[1, null, 2]} spacing={6}>
-              <Field
-                label="عنوان"
-                value={productFormData.title}
-                placeholder="عنوان محصول"
-                style={{ border: "1px solid gray" }}
-                name="title"
-                onChange={handleChange}
-              />
-              <Field
-                label="توضیحات"
-                value={productFormData.description}
-                placeholder="توضیحات درباره محصول"
-                style={{ border: "1px solid gray" }}
-                name="description"
-                onChange={handleChange}
-              />
-              <Field
-                label="قیمت"
-                value={productFormData.price}
-                placeholder="قیمت محصول"
-                style={{ border: "1px solid gray" }}
-                name="price"
-                onChange={handleChange}
-              />
-              <Field
-                label="ویژگی ها"
-                value={productFormData.attributes}
-                placeholder="ویژگی های محصول"
-                style={{ border: "1px solid gray" }}
-                name="attributes"
-                onChange={handleChange}
-              />
-              <Field
-                label="وزن"
-                value={productFormData.weight}
-                placeholder="وزن محصول"
-                style={{ border: "1px solid gray" }}
-                name="weight"
-                onChange={handleChange}
-              />
-              <Field
-                label="برند"
-                value={productFormData.brand}
-                placeholder="برند محصول"
-                style={{ border: "1px solid gray" }}
-                name="brand"
-                onChange={handleChange}
-              />
-              <Field
-                label="دسته بندی"
-                value={productFormData.category_title}
-                placeholder="دسته بندی محصول"
-                style={{ border: "1px solid gray" }}
-                name="category_title"
-                onChange={handleChange}
-              />
-              <Field
-                label="URL"
-                value={productFormData.url}
-                placeholder="آدرس اینترنتی محصول"
-                style={{ border: "1px solid gray" }}
-                name="url"
-                onChange={handleChange}
-              />
-
-              <Field
-                label="عکس محصول (url وارد نمایید!)"
-                value={productFormData.image}
-                placeholder="آدرس اینترنتی محصول"
-                style={{ border: "1px solid gray" }}
-                name="image"
-                onChange={handleChange}
+            <SimpleGrid columns={[1, null, 2]} spacing={6} mb={5}>
+              <InputForm
+                handleChange={handleChange}
+                productFormData={productFormData}
+                priceNumInput={priceNumInput}
               />
             </SimpleGrid>
-          </ModalBody>
-
-          <ModalFooter dir="ltr">
             <PrimaryButton type="submit">
               {loading ? (
                 <Spinner
@@ -177,10 +124,10 @@ const CreateProductModal = ({ isOpen, onClose }) => {
                   size="lg"
                 />
               ) : (
-                "! ثبت محصول"
+                "ثبت محصول"
               )}
             </PrimaryButton>
-          </ModalFooter>
+          </ModalBody>
         </form>
       </ModalContent>
     </Modal>

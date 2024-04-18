@@ -15,196 +15,174 @@ import {
   useColorModeValue,
   Button,
   useToast,
+  Input,
+  SimpleGrid,
+  Heading,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { apiPostRequest, apiPutRequest } from "../../api/apiRequest";
-
+import Field from "../Field";
+import { numberToWords } from "@persian-tools/persian-tools";
+import InputForm from "./InputForm";
 
 const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
-  
   const { userToken, userContent } = useOutletContext();
   const toast = useToast();
 
-
   const {
+    url,
+    title,
     description,
     image,
     price,
-    status,
-    title,
+    attributes,
+    weight,
+    brand,
+    category_title,
     id,
-    url
+    status,
   } = dataContentModal;
 
-  const [formData, setFormData] = useState({
+  const [productFormData, setProductFormData] = useState({
     id: id,
     url: url,
     title: title,
     description: description,
     image: image,
+    brand: brand,
     status: status,
-    price: Number(price),
-    attributes: null,
-    weight: 0
+    price: price,
+    category_title: category_title,
+    attributes: attributes,
+    weight: weight,
   });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
+    setProductFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const handleChangeCecked = ()=>{
-    setFormData({ status: !formData.status });
-  }
-  
+  const handleChangeCecked = () => {
+    setProductFormData({ status: !productFormData.status });
+  };
+
   // BACK-END SENDE DATA
 
-  const dataSend = ()=>{
-    apiPutRequest(`/api/product/`,userToken,formData).then(res => {
-      toast({
-        title: `تغییرات اعمال شد!`,
-        status: "success",
-        position: "top",
-        isClosable: true,
+  const dataSend = () => {
+    apiPutRequest(`/api/product/`, userToken, productFormData)
+      .then((res) => {
+        console.log(res.data);
+        toast({
+          title: `تغییرات اعمال شد!`,
+          status: "success",
+          position: "top",
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: `خطایی رخ داده است!`,
+          status: "error",
+          position: "top",
+          isClosable: true,
+        });
       });
-    }).catch(error => {
-      toast({
-        title: `خطایی رخ داده است!`,
-        status: "error",
-        position: "top",
-        isClosable: true,
-      });
-    })
-  }
-
+  };
 
   return (
-    (dataContentModal && <Modal
-      onClose={onClose}
-      isOpen={isOpen}
-      size="4xl"
-      isCentered
-      scrollBehavior={""}
-    >
-      <ModalOverlay />
-      <ModalContent mx={4} rounded="xl">
-        <ModalCloseButton />
-        <ModalBody
-          // h="200px"
-          css={{
-            "&::-webkit-scrollbar": {
-              width: "4px",
-            },
-            "&::-webkit-scrollbar-track": {
-              width: "6px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: useColorModeValue("#d3d3d3", "#4f5765"),
-              borderRadius: "24px",
-            },
-          }}
-          mt={10}
-          px={0}
-          pb={0}
-          className="pl-[1px] relative"
-        >
-          <Flex className="w-full max-sm:flex-col max-sm:px-4 mx-2  py-2 relative ">
-            <Box
-              h={{ base: 350, md: 540 }}
-              minW={{ base: "auto", md: 400 }}
-              maxW={{ base: "auto", md: 400 }}
-              className="group sm:sticky top-0 max-sm:mb-3 right-0"
-              
+    dataContentModal && (
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        size="6xl"
+        isCentered
+        scrollBehavior={"inside"}
+      >
+        <ModalOverlay />
+        <ModalContent mx={4} rounded="xl">
+          <ModalCloseButton />
+          <ModalBody
+            // h="200px"
+            css={{
+              "&::-webkit-scrollbar": {
+                width: "4px",
+              },
+              "&::-webkit-scrollbar-track": {
+                width: "6px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: useColorModeValue("#d3d3d3", "#4f5765"),
+                borderRadius: "24px",
+              },
+            }}
+            mt={10}
+            px={0}
+            pb={0}
+            className="pl-[1px] relative"
+          >
+            <Flex
+              gap={4}
+              w="full"
+              h="full"
+              justifyContent="center"
+              alignItems="start"
             >
-              <img w="full" h="full"  src={image} className="shadow-sm mix-blend-normal object-contain h-[200px] mx-auto block" />
-              <Box mt={2} className="text-md">
-                اعمال کد تخفیف
-              </Box>
-              <Text className="sm:text-lg mt-1 text-md font-extrabold">
-                <input type="text" className="border-green-300 border-2 rounded-xl " />
-              </Text>
-              <Link state={dataContentModal} className="max-sm:mb-20">
-                <Button
-                  title="مشاهده جزئیات"
-                  pos={{ base: "", md: "absolute" }}
-                  bottom="0"
-                  color={useColorModeValue("#22c35e", "green.300")}
-                  rounded
-                  onClick={dataSend}
-                  w="full"
-                  _groupHover={{ opacity: 1 }}
-                  className="max-sm:rounded-xl group-hover:transition group-hover:duration-500 ease-in-out "
-                >
-                  ذخیره
-                </Button>
-              </Link>
-            </Box>
-            <Box className=" mx-4 max-sm:mt-14">
-              <Box>
-                درباره
-              </Box>
-              <Box w="100%">
-                <textarea value={formData.title} name="title" className="w-full h-20 text-sm px-2 leading-7"
-                 onChange={handleChange}></textarea>
-              </Box>
-              <Text
-                className="sm:text-lg text-lg font-extrabold"
-                color={useColorModeValue("#22c35e", "green.300")}
-                mt={2}
+              <Box
+                flex={1}
+                h={{ base: 350, md: "full" }}
+                // minW={{ base: "auto", md: 400 }}
+                // className="group sm:sticky top-0 max-sm:mb-3 right-0"
               >
-                <span className="mx-5">قیمت<input type="number" name="price" 
-                onChange={handleChange}
-                className="mx-5 border-2" value={formData.price} /></span>
-              </Text>
-              <UnorderedList className="my-4">ویژگی ها</UnorderedList>
-
-              <Box mt={5} className="text-xs">
-                اطلاعات
-              </Box>
-              <Text className="sm:text-lg mt-1  font-extrabold">
-                <textarea value={formData.description} type="text" name="description" onChange={handleChange}
-                  className="w-full h-32 text-sm leading-7" ></textarea>
-              </Text>
-              {/* IMAGE */}
-              <Box mt={12} className="text-xs">
-                عکس 
-              </Box>
-              <Text className="sm:text-lg mt-1 text-md font-extrabold">
-                <textarea value={formData.image} type="text" name="image" onChange={handleChange} className="w-full h-20 text-sm" >
-                </textarea>
-              </Text>
-              <Box >
-                وضعیت
-              </Box>
-              <h3 className={formData.status === true ? 'text-3xl text-green-400' : 'text-3xl text-red-400'} >
-                {formData.status === true ? 'موجود' : 'ناموجود'}
-                <span>
-                  <input
-                    name="status"
-                    checked={formData.status}
-                    type="checkbox"
-                    onChange={handleChangeCecked}
-                    className="mr-6 w-7 h-7 cursor-pointer"
+                {image && (
+                  <Image
+                    w="full"
+                    h="full"
+                    objectFit="cover"
+                    name={title}
+                    src={image}
+                    loading="lazy"
+                    // className="shadow-sm mix-blend-normal object-contain mx-auto block"
                   />
-                </span>
-              </h3>
-            </Box>
-          </Flex>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+                )}
+              </Box>
+              <Box flex={1.5} mx={5}>
+                <SimpleGrid mb={5} columns={[1, null, 2]} spacing={5}>
+                  <InputForm
+                    handleChange={handleChange}
+                    productFormData={productFormData}
+                  />
+                </SimpleGrid>
+
+                <Checkbox
+                  className={`
+                    ${
+                      status === true
+                        ? "text-3xl text-green-400"
+                        : "text-3xl text-red-400"
+                    }
+                  `}
+                  name="status"
+                  checked={status}
+                  type="checkbox"
+                  onChange={handleChangeCecked}
+                >
+                  {status === true ? "موجود" : "ناموجود"}
+                </Checkbox>
+              </Box>
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     )
   );
 };
 
 export default ProductModal;
-
-
 
 //  content data
 // attributes: ""

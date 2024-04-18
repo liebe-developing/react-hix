@@ -24,14 +24,13 @@ function PriceWrapper(props) {
 
   return (
     <Box
-      
       mb={4}
       shadow="base"
       borderWidth="1px"
       alignSelf={{ base: "center", lg: "flex-start" }}
       borderColor={useColorModeValue("gray.200", "gray.500")}
       borderRadius={"xl"}
-      w="50%"
+      w={{ base: "full", md: "50%" }}
       mx="auto"
     >
       {children}
@@ -84,7 +83,7 @@ export default function Pricing({ userToken, monthPlan }) {
         spacing={{ base: 4, lg: 5 }}
         py={0}
         mx={{ base: 0, md: 10 }}
-        columns={[1, 1, 1,2]}
+        columns={[1, 1, 1, 2]}
       >
         {monthPlan &&
           monthPlan.map((item) => {
@@ -103,8 +102,8 @@ export default function Pricing({ userToken, monthPlan }) {
             const persianPrice = price / 10;
             const persianOldPrice = oldPrice / 10;
             return (
-              <PriceWrapper key={id} boxShadow="xl" >
-                <Box py={4} px={12} borderBottom="1px solid #eee" >
+              <PriceWrapper key={id} boxShadow="xl">
+                <Box py={4} px={12} borderBottom="1px solid #eee">
                   {/* Discount UI START */}
                   {price ? (
                     <Box
@@ -130,7 +129,7 @@ export default function Pricing({ userToken, monthPlan }) {
                     </Box>
                   ) : null}
                   {/* Discount UI END */}
-                  <HStack justifyContent="center" >
+                  <HStack justifyContent="center">
                     {price > 0 ? (
                       <>
                         <Text fontSize="20px" opacity="0.8">
@@ -226,10 +225,13 @@ export default function Pricing({ userToken, monthPlan }) {
                       colorScheme="#000"
                       color="#ffff"
                       bg="#48BA06"
-                     
                       variant="outline"
-                      fontSize={{base: "sm",md:"x-large"}}
-                      _hover={{ bg: "orange.200", color: "#697A6F", shadow:"xl" }}
+                      fontSize={{ base: "sm", md: "x-large" }}
+                      _hover={{
+                        bg: "orange.200",
+                        color: "#697A6F",
+                        shadow: "xl",
+                      }}
                     >
                       خرید
                     </Button>

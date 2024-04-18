@@ -21,7 +21,7 @@ const Stats = ({ title, value }) => {
         h="full"
       >
         <Text
-          color="#0C2B6D"
+          color={useColorModeValue("#0C2B6D", "4px 4px 0px 0px #00000036")}
           fontWeight="600"
           fontSize="16px"
           lineHeight="27px"
@@ -34,7 +34,7 @@ const Stats = ({ title, value }) => {
               <Text
                 color="#FF6D00"
                 fontWeight="700"
-                fontSize={{ base: "25px", md: "40px" }}
+                fontSize={{ base: "20px", md: "30px" }}
               >
                 {value}
               </Text>

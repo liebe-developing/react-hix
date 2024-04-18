@@ -15,6 +15,7 @@ import {
   Icon,
   keyframes,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -34,6 +35,8 @@ const SignIn = () => {
   const [error, setError] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -65,6 +68,16 @@ const SignIn = () => {
     setLoading(true);
     setError(false);
 
+    if (formData.password.length <= 4 || formData.password.length >= 16) {
+      toast({
+        title: `رمز عبور باید بین 3 تا 16 کاراکتر باشد`,
+        status: "error",
+        position: "top-right",
+      });
+      setLoading(false);
+      return;
+    }
+
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {
         console.log(res);
@@ -94,7 +107,7 @@ const SignIn = () => {
         flexDir={{ base: "column-reverse", md: "row" }}
         spacing={{ base: 10, lg: 10 }}
         minH={"100vh"}
-        bgImage="login-register-bg.webp"
+        bgImage="/login-register-bg.webp"
         bgRepeat="no-repeat"
         bgSize="cover"
         bgPosition="center"
@@ -181,7 +194,7 @@ const SignIn = () => {
                     justify={"space-between"}
                     fontSize={"14px"}
                   >
-                    <Link to="/reset-password">
+                    <Link to="/dashboard/reset-password">
                       <Text color={"blue.400"}>فراموشی رمز عبور</Text>
                     </Link>
                     <Link to="/dashboard/sign-up">
