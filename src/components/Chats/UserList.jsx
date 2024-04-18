@@ -5,7 +5,7 @@ import { Message } from "./TypeMessage";
 
 function UserList({ name, id,mes}) {
   const uiHandler = () => {
-    <Message text={email} />;
+    <Message text={id} />;
   };
   return (
     <div

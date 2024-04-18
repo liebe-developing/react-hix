@@ -111,7 +111,7 @@ function Report() {
                                         className="border-b">
                                         <td className="text-center py-4 whitespace-nowrap text-sm font-medium ">5</td>
                                         <td className="text-sm  font-light text-center py-4 whitespace-nowrap">
-                                            Larry the Bird
+                                            اخرین خرید
                                         </td>
                                         <td className="text-sm  font-light text-center py-4 whitespace-nowrap">
                                             فروشگا ها
