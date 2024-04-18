@@ -10,8 +10,9 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
-const NavlinkBox = ({ icon, title, desc }) => {
+const NavlinkBox = ({ icon, title, desc,link }) => {
   return (
     <Box
       w={{ base: "full", md: "300px" }}
@@ -25,11 +26,13 @@ const NavlinkBox = ({ icon, title, desc }) => {
     >
       <Flex alignItems="center" w="full" justifyContent="space-between">
         <HStack spacing={2}>
-          <Image
-            src={icon}
-            transition="all 0.3s ease-in-out"
-            _groupHover={{ transform: "scale(1.1)" }}
-          />
+          <Link to={link}>
+            <Image
+              src={icon}
+              transition="all 0.3s ease-in-out"
+              _groupHover={{ transform: "scale(1.1)" }}
+            />
+          </Link>
           <VStack spacing={1} align="start">
             <Text
               color={useColorModeValue("#303030", "white")}
