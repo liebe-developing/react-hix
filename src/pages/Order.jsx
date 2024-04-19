@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import {
   useToast,
@@ -348,7 +348,13 @@ function Order() {
                     onChange={(e) => setChecked(e.target.checked)}
                     className="me-1 w-4 h-4 "
                   />
-                  <label> قوانین را میپذیرم!</label>
+                  <label> قوانین را میپذیرم! 
+                    <span className="mr-3 text-blue-600 hover:underline underline-offset-4">
+                      <Link to="/dashboard/termofservices">
+                        قوانین
+                      </Link>
+                    </span> 
+                  </label>
                 </h3>
                 <Button
                   type="submit"
