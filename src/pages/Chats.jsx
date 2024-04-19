@@ -278,7 +278,7 @@ export function Chats() {
           <Input
             color={colorMode == "light" ? "black" : "white"}
             bg="gray.500"
-            placeholder="Enter your text"
+            placeholder="تایپ کردن پیام.."
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             _placeholder={{
@@ -291,7 +291,7 @@ export function Chats() {
             }}
           />
           <Button onClick={sendMessage} colorScheme="blue">
-            Send
+            ارسال
           </Button>
         </HStack>
       </Flex>
