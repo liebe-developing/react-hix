@@ -25,7 +25,7 @@ import {
 } from "@chakra-ui/react";
 import { Field, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
-import { useRef, useState, useId } from "react";
+import { useRef, useState, useId, useEffect } from "react";
 import {
   apiGetRequest,
   apiPostRequest,
@@ -67,7 +67,7 @@ const Settings = () => {
     userContent.plan.gift_operator_count + userContent.plan.operator_count
   );
 
-  /* useEffect(() => {
+  useEffect(() => {
     apiGetRequest(`api/settings/${userContent.user_plan_id}`, userToken).then(
       (res) => {
         console.log(res.data);
@@ -82,7 +82,7 @@ const Settings = () => {
         });
       }
     );
-  }, []); */
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,7 +115,7 @@ const Settings = () => {
       title: formData.widgetTitle,
       caption: formData.widgetDescription,
       pos: formData.widgetPosition,
-      icon: formData.iconUrl,
+      icon: formData.selectedWidgetFile || formData.iconUrl,
       welcome: formData.welcomeMessage,
       explain: formData.storeDescription,
       user_plan_id: userContent.user_plan_id,
