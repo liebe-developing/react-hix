@@ -1,8 +1,13 @@
 import { Box, Text } from "@chakra-ui/react";
 import { rulesData } from "../constants";
+import { useEffect } from "react";
 
 
 export default function TermOfServices() {
+    useEffect(() => {
+        window.scroll(0, 0);
+    }, []);
+    
     return (
         <Box className="flex flex-col items-center justify-start gap-6 mt-2 w-full">
             <Text fontSize="x-large" className="drop-shadow-xl" >
