@@ -2,7 +2,6 @@
 import { Avatar, Box, Flex, Heading, Switch, Text } from "@chakra-ui/react";
 import { CircleCheck } from "../../constants/icons";
 import { Message } from "./TypeMessage";
-import { boolean } from "mathjs";
 import { apiPostRequest } from "../../api/apiRequest";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
