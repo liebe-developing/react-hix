@@ -55,13 +55,17 @@ export default function Pricing({ userToken, monthPlan }) {
           position: "bottom-left",
           isClosable: false,
         });
-        setTimeout(() => {
-          navigate("/dashboard/order", {
-            state: {
-              invoiceId: res.data.data.id,
-            },
-          });
-        }, 1000);
+       if(res.data.data.id) {
+         setTimeout(() => {
+           navigate("/dashboard/order", {
+             state: {
+               invoiceId: res.data.data.id,
+             },
+           });
+         }, 1000);
+       }else {
+        return;
+       }
       })
       .catch((error) => {
         console.log(error);
