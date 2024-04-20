@@ -62,7 +62,7 @@ function Tool() {
 
 
       {/* < bottom content about > */}
-      <div className="flex flex-col md:flex-row mt-20">
+      <div className="flex flex-col md:justify-between md:flex-row mt-20">
         {/* LEFT */}
         <div className="relative  py-10 px-4">
           <span className="absolute right-3 p-2 -top-6 bg-blue-400 rounded-sm shadow-md">
@@ -72,7 +72,7 @@ function Tool() {
             مستندات سامانه
           </h2>
           <h4>
-            توسعه دهندگان می توانند برای ایجاد تعامل بیشتر هیکس با سایت خود، از مستندات ابزارک و نیزمستندات API استفاده کنند.
+           سامانه در حال بروزرسانی است!
           </h4>
         </div>
         {/* RGIHT */}
@@ -81,7 +81,7 @@ function Tool() {
             <MesIcon className="text-3xl text-white" />
           </span>
           <h2 className="text-primary mb-4">
-            صفحه اختصاصی گفتگو
+            صفحه اختصاصی هیکس
           </h2>
           <h4>
             توسعه دهندگان می توانند برای ایجاد تعامل بیشتر هیکس با سایت خود، از مستندات ابزارک و نیزمستندات API استفاده کنند.

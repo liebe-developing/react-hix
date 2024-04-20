@@ -163,8 +163,8 @@ export function Chats() {
         >
           {listUser.map((item) => {
             return (
-              <div key={item.id} onClick={() => selectUserChat(item.id)}>
-                <UserList {...item} />
+              <div key={item.id}>
+                <UserList {...item} loadFunc={() => selectUserChat(item.id)} />
               </div>
             );
           })}

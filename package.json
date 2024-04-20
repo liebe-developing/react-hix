@@ -16,6 +16,7 @@
     "@persian-tools/persian-tools": "^3.5.2",
     "@reduxjs/toolkit": "^2.2.2",
     "axios": "^1.6.8",
+    "base64-arraybuffer": "^1.0.2",
     "framer-motion": "^11.0.15",
     "html-formatter": "^0.1.9",
     "react": "^18.2.0",

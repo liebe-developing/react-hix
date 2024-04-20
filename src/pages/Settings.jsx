@@ -36,6 +36,7 @@ import { useToast } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import { BiWindowClose } from "react-icons/bi";
 import { IoCloseCircle } from "react-icons/io5";
+import { encode } from "base64-arraybuffer";
 
 const Settings = () => {
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,7 @@ const Settings = () => {
     widgetDescription: "",
     welcomeMessage: "",
     storeDescription: "",
-    widgetPosition: 0,
+    widgetPosition: "1",
     widgetColor: "",
     iconUrl: "",
     selectedWidgetFile: null,
@@ -70,7 +71,7 @@ const Settings = () => {
   useEffect(() => {
     apiGetRequest(`api/settings/${userContent.user_plan_id}`, userToken).then(
       (res) => {
-        console.log(res.data);
+        console.log(res.data.data.pos);
         setFormData({
           widgetTitle: res.data.data.title,
           widgetDescription: res.data.data.caption,
@@ -92,34 +93,41 @@ const Settings = () => {
     }));
   };
 
-  const fileSelectedHandler = (e) => {
+  const fileSelectedHandler = async (e) => {
+    const reader = new FileReader();
+    const waitForFilePromise = new Promise(resolve => {
+      reader.onload = async (e) => {
+        const text = (e.target.result);
+        resolve(encode(text))
+      }
+    })
+    reader.readAsArrayBuffer(e.target.files[0])
+    const imageBase64 = await waitForFilePromise;
+    console.log(imageBase64);
     setFormData({
-      selectedWidgetFile: e.target.files[0],
+      ...formData,
+      selectedWidgetFile: { name: e.target.files[0].name, data: imageBase64 },
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const fd = new FormData();
-    formData.selectedWidgetFile &&
-      fd.append(
-        "image",
-        formData.selectedWidgetFile,
-        formData.selectedWidgetFile?.name
-      );
 
     setLoading(true);
+    console.log(formData.widgetColor);
 
-    apiPutRequest("api/settings", userToken, {
+    const updatedBody = {
       color: formData.widgetColor,
       title: formData.widgetTitle,
       caption: formData.widgetDescription,
       pos: formData.widgetPosition,
-      icon: formData.selectedWidgetFile || formData.iconUrl,
+      icon: (formData.selectedWidgetFile && formData.selectedWidgetFile.name && formData.selectedWidgetFile.data) ? formData.selectedWidgetFile : formData.iconUrl,
       welcome: formData.welcomeMessage,
       explain: formData.storeDescription,
       user_plan_id: userContent.user_plan_id,
-    })
+    };
+    console.log(updatedBody)
+    apiPutRequest("api/settings", userToken, updatedBody)
       .then((res) => {
         if (res.status === 200) {
           toast({
@@ -135,6 +143,7 @@ const Settings = () => {
         setLoading(false);
         console.log(error);
       });
+      console.log(formData.widgetPosition)
   };
 
   const handleCollectingOperatorEmail = () => {
@@ -155,9 +164,8 @@ const Settings = () => {
       userContent.plan.operator_count + userContent.plan.gift_operator_count
     ) {
       toast({
-        title: `شما حداکثر مجاز به اضافه کردن ${
-          userContent.plan.operator_count + userContent.plan.gift_operator_count
-        } تعداد اپراتور هستید.`,
+        title: `شما حداکثر مجاز به اضافه کردن ${userContent.plan.operator_count + userContent.plan.gift_operator_count
+          } تعداد اپراتور هستید.`,
         status: "error",
         position: "top-right",
       });
@@ -288,7 +296,8 @@ const Settings = () => {
             >
               <Flex alignItems="center" gap={5} mb={2}>
                 <Button
-                  size="sm"
+                  size={100}
+                  padding={2}
                   variant="solid"
                   colorScheme="purple"
                   onClick={() => fileInput.current.click()}
@@ -298,6 +307,9 @@ const Settings = () => {
                 <Text fontSize="13px">
                   {formData.selectedWidgetFile?.name || formData.iconUrl}
                 </Text>
+                {formData.iconUrl && <img  src={formData.iconUrl} 
+                  style={{ border: "1px solid yellow", boxShadow:"6px 6px 12px #bebebe ,-6px -6px 12px #ffffff"}}
+                className="rounded-full w-20 h-20 shadow-2xl " />}
               </Flex>
             </Field>
             <Text fontSize="11px" color={"gray.600"}>
