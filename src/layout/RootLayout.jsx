@@ -14,7 +14,7 @@ const RootLayout = () => {
   // checked auth for token all page
   const chekAuth = async () => {
     if (!userToken) {
-      navigate("/dashboard/sign-in");
+      navigate("/sign-in");
     }
   };
   useEffect(() => {
@@ -25,7 +25,7 @@ const RootLayout = () => {
         console.log(res.data);
         setuser(res.data.data);
         if (!res.data.data.plan) {
-          navigate("/dashboard/price-plan");
+          navigate("/price-plan");
         }
       })
       .catch((error) => console.log(error));

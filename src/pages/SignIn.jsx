@@ -51,7 +51,7 @@ const SignIn = () => {
   const { email, password } = formData;
 
   useEffect(() => {
-    userToken && navigate("/dashboard");
+    userToken && navigate("/");
   }, []);
 
   const handleChange = (e) => {
@@ -87,7 +87,7 @@ const SignIn = () => {
         }
         dispatch(signInSuccess(res.data));
         setLoading(false);
-        navigate("/dashboard");
+        navigate("/");
       })
       .catch(() => {
         setLoading(false);
@@ -194,10 +194,10 @@ const SignIn = () => {
                     justify={"space-between"}
                     fontSize={"14px"}
                   >
-                    <Link to="/dashboard/reset-password">
+                    <Link to="/reset-password">
                       <Text color={"blue.400"}>فراموشی رمز عبور</Text>
                     </Link>
-                    <Link to="/dashboard/sign-up">
+                    <Link to="/sign-up">
                       <Text color={"blue.400"}>ثبت نام</Text>
                     </Link>
                   </Stack>

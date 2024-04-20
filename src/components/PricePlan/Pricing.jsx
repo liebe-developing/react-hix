@@ -56,7 +56,7 @@ export default function Pricing({ userToken, monthPlan }) {
           isClosable: false,
         });
         setTimeout(() => {
-          navigate("/dashboard/order", {
+          navigate("/order", {
             state: {
               invoiceId: res.data.data.id,
             },

@@ -112,7 +112,7 @@ const SignUp = () => {
           isClosable: true,
         });
         setLoading(false);
-        navigate("/dashboard/sign-in");
+        navigate("/sign-in");
       }
     } catch (error) {
       setError(true);
@@ -316,7 +316,7 @@ const SignUp = () => {
                     fontSize={"13px"}
                   >
                     <Text color={"gray.700"}>حساب کاربری دارید؟</Text>
-                    <Link to="/dashboard/sign-in">
+                    <Link to="/sign-in">
                       <Text color={"blue.400"}>ورود</Text>
                     </Link>
                   </Flex>

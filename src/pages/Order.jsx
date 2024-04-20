@@ -350,7 +350,7 @@ function Order() {
                   />
                   <label> قوانین را میپذیرم! 
                     <span className="mr-3 text-blue-600 hover:underline underline-offset-4">
-                      <Link to="/dashboard/termofservices">
+                      <Link to="/termofservices">
                         قوانین
                       </Link>
                     </span> 

@@ -76,7 +76,7 @@ const MediaBox = () => {
       <Box pos="absolute" left={0} top={{ base: 5, md: 0 }} zIndex={1}>
         <Image
           w={{ base: 135, md: "auto" }}
-          src="./dashboard/Social-tree-cuate.png"
+          src="/dashboard/Social-tree-cuate.png"
         />
       </Box>
       <Box
@@ -89,7 +89,7 @@ const MediaBox = () => {
         // transform="rotate(-180deg)"
       >
         <Image
-          src="./dashboard/Intersect.svg"
+          src="/dashboard/Intersect.svg"
           height="full"
           objectFit="cover"
         />
@@ -104,7 +104,7 @@ const MediaBox = () => {
         w="full"
       >
         <Image
-          src="./dashboard/Intersect2.svg"
+          src="/dashboard/Intersect2.svg"
           height="full"
           objectFit="cover"
         />

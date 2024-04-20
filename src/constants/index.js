@@ -390,8 +390,8 @@ const oneYearPackage = [
 ];
 
 const fistNavlinkData = [
-  { title: "گزارش ها", desc: "آنالیزها و گزارش ها", icon: reports, link: "/dashboard/report" },
-  { title: "محصولات", desc: "محصولات کسب و کار", icon: products, link: "/dashboard/product" },
+  { title: "گزارش ها", desc: "آنالیزها و گزارش ها", icon: reports, link: "/report" },
+  { title: "محصولات", desc: "محصولات کسب و کار", icon: products, link: "/product" },
   { title: "دستورات", icon: orders },
   {
     title: "اینستاگرام",

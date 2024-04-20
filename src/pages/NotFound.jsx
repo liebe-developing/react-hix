@@ -7,7 +7,7 @@ function NotFound() {
     <div className="w-full h-screen grid place-items-center">
         <img src="/404er.svg" alt="not-found" width={400} height={400} />
         <Button>
-            <Link to="/dashboard">
+            <Link to="/">
                   برگشت به داشبورد
            </Link>
         </Button>
