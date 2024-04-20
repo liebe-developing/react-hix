@@ -33,8 +33,8 @@ to {transform: translateY(-60px)}
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
-  const [isAuthorized, setIsAuthorized] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(true);
 
   const toast = useToast();
 
@@ -86,7 +86,7 @@ const SignIn = () => {
           return;
         }
         dispatch(signInSuccess(res.data));
-        -setLoading(false);
+        setLoading(false);
         navigate("/dashboard");
       })
       .catch(() => {

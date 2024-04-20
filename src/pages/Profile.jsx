@@ -101,7 +101,7 @@ const Profile = () => {
   };
 
   return (
-    <Box>
+    <Box mx={5}>
       <Heading
         fontSize="28px"
         borderRadius="10px"

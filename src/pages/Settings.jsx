@@ -2,6 +2,7 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
+  Badge,
   Box,
   Button,
   Flex,
@@ -9,24 +10,43 @@ import {
   FormLabel,
   Heading,
   Icon,
+  IconButton,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Select,
   SimpleGrid,
+  Spinner,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Field, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useId } from "react";
 import {
   apiGetRequest,
+  apiPostRequest,
   apiPutRequest,
 } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
+import { FaPlus } from "react-icons/fa";
+import { BiWindowClose } from "react-icons/bi";
+import { IoCloseCircle } from "react-icons/io5";
 
 const Settings = () => {
-  const fileInput = useRef(null);
-  const { userToken, userContent } = useOutletContext();
-  const toast = useToast();
+  const [loading, setLoading] = useState(false);
+  const [loadingOpEmails, setLoadingOpEmails] = useState(false);
+  const [operatorEmailField, setOperatorEmailField] = useState({
+    name: "",
+    opId: "",
+  });
+
+  const [operators, setOperators] = useState([]);
+
   const [formData, setFormData] = useState({
     widgetTitle: "",
     widgetDescription: "",
@@ -38,7 +58,16 @@ const Settings = () => {
     selectedWidgetFile: null,
   });
 
-  useEffect(() => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const fileInput = useRef(null);
+  const { userToken, userContent } = useOutletContext();
+  const toast = useToast();
+
+  console.log(
+    userContent.plan.gift_operator_count + userContent.plan.operator_count
+  );
+
+  /* useEffect(() => {
     apiGetRequest(`api/settings/${userContent.user_plan_id}`, userToken).then(
       (res) => {
         console.log(res.data);
@@ -53,7 +82,7 @@ const Settings = () => {
         });
       }
     );
-  }, []);
+  }, []); */
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -79,6 +108,8 @@ const Settings = () => {
         formData.selectedWidgetFile?.name
       );
 
+    setLoading(true);
+
     apiPutRequest("api/settings", userToken, {
       color: formData.widgetColor,
       title: formData.widgetTitle,
@@ -97,28 +128,102 @@ const Settings = () => {
             position: "bottom",
             isClosable: true,
           });
+          setLoading(false);
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
       });
   };
 
+  const handleCollectingOperatorEmail = () => {
+    let re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (!operatorEmailField) {
+      toast({
+        title: `ابتدا ایمیل وارد کنید`,
+        status: "error",
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (
+      operators.length >=
+      userContent.plan.operator_count + userContent.plan.gift_operator_count
+    ) {
+      toast({
+        title: `شما حداکثر مجاز به اضافه کردن ${
+          userContent.plan.operator_count + userContent.plan.gift_operator_count
+        } تعداد اپراتور هستید.`,
+        status: "error",
+        position: "top-right",
+      });
+    } else if (re.test(operatorEmailField.name)) {
+      operatorEmailField.opId = crypto.randomUUID();
+
+      setOperators((prevState) => [...prevState, operatorEmailField]);
+      setOperatorEmailField({ name: "" });
+    } else {
+      toast({
+        title: `لطفا ایمیل با فرمت صحیح وارد کنید`,
+        status: "error",
+        position: "top-right",
+      });
+    }
+  };
+
+  const handleRemoveOperatorEmail = (opId) => {
+    const newEmails = operators.filter((operator) => operator.opId !== opId);
+    setOperators(newEmails);
+  };
+
+  const handleSavingOperatorEmail = () => {
+    setLoadingOpEmails(true);
+
+    apiPostRequest("/api/auth/login", undefined, formData)
+      .then((res) => {
+        console.log(res);
+
+        setLoadingOpEmails(false);
+      })
+      .catch(() => {
+        setLoadingOpEmails(false);
+      });
+
+    setTimeout(() => {
+      setLoadingOpEmails(false);
+    }, 3000);
+  };
+
   return (
-    <Box>
-      <Flex alignItems="start" flexDir="column" gap={3}>
-        <Heading
-          fontSize="28px"
-          borderRadius="10px"
-          w="fit-content"
-          fontFamily="Casablanca"
-          mt={5}
+    <Box mx={5}>
+      <Flex alignItems="center" justifyContent="space-between" gap={3}>
+        <Box>
+          <Heading
+            fontSize="28px"
+            borderRadius="10px"
+            w="fit-content"
+            fontFamily="Casablanca"
+            mt={5}
+          >
+            تنظیمات
+          </Heading>
+          <Text color="#000" opacity={0.5}>
+            تنظیمات حساب خود را مدیریت کنید
+          </Text>
+        </Box>
+        <Button
+          leftIcon={<FaPlus />}
+          colorScheme="purple"
+          onClick={onOpen}
+          shadow="lg"
+          maxW="fit-content"
         >
-          تنظیمات
-        </Heading>
-        <Text color="#000" opacity={0.5}>
-          تنظیمات حساب خود را مدیریت کنید
-        </Text>
+          اضافه کردن اپراتور
+        </Button>
       </Flex>
 
       <form onSubmit={handleSubmit}>
@@ -185,7 +290,7 @@ const Settings = () => {
                 <Button
                   size="sm"
                   variant="solid"
-                  colorScheme="whatsapp"
+                  colorScheme="purple"
                   onClick={() => fileInput.current.click()}
                 >
                   انتخاب فایل
@@ -209,12 +314,111 @@ const Settings = () => {
           </Flex>
         </SimpleGrid>
         <PrimaryButton
-          title="ذخیره تغییرات"
+          title={
+            loading ? (
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="orange.200"
+                color="orange.500"
+                size="lg"
+              />
+            ) : (
+              "ذخیره تغییرات"
+            )
+          }
           mr={4}
           type="submit"
           isDisabled={formData.selectedWidgetFile?.size > 1000000}
         />
       </form>
+
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        size="md"
+        isCentered
+        scrollBehavior={"inside"}
+      >
+        <ModalOverlay />
+        <ModalContent mx={4} rounded="xl">
+          <ModalHeader textAlign="left">اپراتور جدید</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex alignItems="center" position="relative">
+              <Field
+                placeholder="ایمیل  اپراتور"
+                borderTopLeftRadius={0}
+                borderBottomLeftRadius={0}
+                value={operatorEmailField.name}
+                type="email"
+                name={"operatorEmailField"}
+                onChange={(e) =>
+                  setOperatorEmailField({ name: e.target.value })
+                }
+              />
+              <IconButton
+                borderTopRightRadius={0}
+                borderBottomRightRadius={0}
+                colorScheme="purple"
+                icon={<FaPlus />}
+                onClick={handleCollectingOperatorEmail}
+              />
+            </Flex>
+            <Flex
+              alignItems="center"
+              flexDir="row"
+              gap={3}
+              flexWrap="wrap"
+              w="full"
+              mt={6}
+            >
+              {operators &&
+                operators.map((operator) => (
+                  <Badge
+                    key={operator.opId}
+                    variant="solid"
+                    colorScheme="teal"
+                    display="flex"
+                    alignItems="center"
+                    gap={0.5}
+                    py={1}
+                  >
+                    {operator.name}
+                    <Icon
+                      onClick={() => handleRemoveOperatorEmail(operator.opId)}
+                      _hover={{ color: "red.100" }}
+                      cursor="pointer"
+                      boxSize={4}
+                      as={IoCloseCircle}
+                    />
+                  </Badge>
+                ))}
+            </Flex>
+            {operators.length > 0 && (
+              <Button
+                mt={10}
+                w="full"
+                mb={4}
+                colorScheme="purple"
+                onClick={handleSavingOperatorEmail}
+              >
+                {loadingOpEmails ? (
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="purple.200"
+                    color="purple.400"
+                    size="lg"
+                  />
+                ) : (
+                  "ثبت"
+                )}
+              </Button>
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
