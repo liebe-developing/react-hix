@@ -172,7 +172,7 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
         apiPostRequest("/api/auth/logout")
             .then(() => {
                 localStorage.clear();
-                window.location.replace("/dashboard");
+                window.location.replace("/");
                 // window.open((window.location.href = "/dashboard"), "_blank");
             })
             .catch((err) => {

@@ -86,11 +86,11 @@ const SignUp = () => {
         });
         setLoading(false);
       } else if (
-        formData.password.length <= 4 ||
-        formData.password.length >= 16
+        formData.password.length < 6 ||
+        formData.password.length > 16
       ) {
         toast({
-          title: `رمز عبور باید بین 3 تا 16 کاراکتر باشد`,
+          title: `رمز عبور باید بین 6 تا 16 کاراکتر باشد`,
           status: "error",
           position: "top-right",
         });
@@ -98,21 +98,36 @@ const SignUp = () => {
         return;
       } else {
         apiPostRequest("/api/auth/register", undefined, formData).then(
-          function (res) {
-            if (res.status === 500 || res.status === 400) {
-              setError(true);
-              return;
-            }
+          (res) => {
+
+            toast({
+              title: `پروفایل شما با موفقیت ساخته شد`,
+              status: "success",
+              position: "top-right",
+              isClosable: true,
+            });
+            setLoading(false);
+            navigate("/sign-in");
           }
-        );
-        toast({
-          title: `پروفایل شما با موفقیت ساخته شد`,
-          status: "success",
-          position: "top-right",
-          isClosable: true,
+        ).catch((err) => {
+          setError(true);
+          setLoading(false);
+
+          setFormData((pState) => {
+            return {
+              ...pState,
+              password: "",
+              restpass: ""
+            }
+          })
+
+          toast({
+            title: `اطلاعات وارد شده صحیح نمی باشد.`,
+            status: "error",
+            position: "top-right",
+            isClosable: true,
+          });
         });
-        setLoading(false);
-        navigate("/sign-in");
       }
     } catch (error) {
       setError(true);

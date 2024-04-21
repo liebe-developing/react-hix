@@ -68,9 +68,9 @@ const SignIn = () => {
     setLoading(true);
     setError(false);
 
-    if (formData.password.length <= 4 || formData.password.length >= 16) {
+    if (formData.password.length < 6 || formData.password.length > 16) {
       toast({
-        title: `رمز عبور باید بین 3 تا 16 کاراکتر باشد`,
+        title: `رمز عبور باید بین 6 تا 16 کاراکتر باشد`,
         status: "error",
         position: "top-right",
       });
@@ -81,15 +81,22 @@ const SignIn = () => {
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {
         console.log(res);
-        if (res.status === 401) {
-          setIsAuthorized(false);
-          return;
-        }
+        
         dispatch(signInSuccess(res.data));
         setLoading(false);
         navigate("/");
       })
       .catch(() => {
+        if (res.status === 401) {
+          setIsAuthorized(false);
+          return;
+        }
+
+        setFormData({
+          email: "",
+          password: ""
+        })
+
         setLoading(false);
         setError(true);
       });
