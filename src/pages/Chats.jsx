@@ -227,12 +227,13 @@ export function Chats() {
             },
           }}
         >
-          {chatLoading ? <div className="w-full h-full flex items-center justify-center"><Spinner size='xl'  /></div> :
+          {chatLoading ? <div className="w-full h-full flex items-center justify-center"><Spinner size='xl' /></div> :
             <Box className="flex flex-col">
               {selectedChat &&
                 selectedChatMessages &&
                 selectedChatMessages.map((item, index, items) => {
                   const { content, is_user_message, created_at } = item;
+                  console.log(item)
                   const type = item.type.toLocaleLowerCase();
                   return (
                     <Flex
@@ -244,10 +245,10 @@ export function Chats() {
                       // color={is_user_message ? "white" : "gray.600"}
                       // borderRadius="lg"
                       w="fit-content"
-                      maxW={"45%"}
+                      maxW={"85%"}
                       alignSelf={is_user_message ? "flex-end" : "flex-start"}
                     >
-                      {type === "text" || content.length > 0 ? (
+                      {type === "text" ? (
                         <Flex
                           flexDir="column"
                           gap={2}
@@ -276,7 +277,7 @@ export function Chats() {
                         </Flex>
                       ) : type === "form" ? (
                         <div className="flex flex-col">
-                          {content.map((item) => (
+                          {JSON.parse(content).items.map((item) => (
                             <div
                               key={item.id}
                               className="flex bg-blue-500 shadow-lg w-1/2 items-center gap-4 p-2 odd:bg-red-300 justify-around border-2 border-blue-700 rounded-lg"
@@ -286,24 +287,34 @@ export function Chats() {
                             </div>
                           ))}
                         </div>
-                      ) : (
-                        <div>
-                          <table className="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 border-2">
-                            {content.map((item, index) => (
-                              <div key={index}>
+                  ) : (
+                            <div className="">
+                              <table className="text-sm text-gray-500 dark:text-gray-400 border-2 text-center">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                   <tr>
                                     <th scope="col" className="py-3 px-6">
-                                      {item.title}
+                                      نام
+                                    </th>
+                                    <th scope="col" className="py-3 px-6">
+                                      لینک
+                                    </th>
+                                    <th scope="col" className="py-3 px-6">
+                                      قیمت
+                                    </th>
+                                    <th scope="col" className="py-3 px-6">
+                                      تصویر
                                     </th>
                                   </tr>
                                 </thead>
-                                <tbody className="odd:bg-white even:bg-slate-50">
+                                {JSON.parse(content).items.map((item, index) => (
+                                  <tbody className="odd:bg-white even:bg-slate-50" key={index}>
                                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td className="py-4 px-6">{item.title}</td>
+                                    <td className="py-2 px-2">{item.title}</td>                                 
+                                    <td className="py-2 px-2">{item.url}</td>
+                                    <td className="py-2 px-2">{item.price}</td>
+                                    <td className="py-2">{<img src={item.image} width={50} height={50} alt="Product Image"/>}</td>
                                   </tr>
                                 </tbody>
-                              </div>
                             ))}
                           </table>
                         </div>

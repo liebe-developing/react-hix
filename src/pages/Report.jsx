@@ -3,27 +3,25 @@ import {
 } from '@chakra-ui/react'
 import { CardeCom } from '../components';
 
-
 function Report() {
     // const even = new EventSource()
     // even.
     const { colorMode } = useColorMode();
     return (
         <div className="flex flex-col">
-            <SimpleGrid
+                <SimpleGrid
                 border='1px' borderColor='gray.200'
                 rounded="10px"
                 mx="10px"
                 my="10px"
                 padding="10px"
                 gap="20px"
-                columns={[2, null, 4]}
-                
+                columns={[2, null, 2]}
+
             >
-                <CardeCom title="بیشترین خرید" caption="بیشترین خرید برسی کنید" button="برسی کن" />
-                <CardeCom title="محصولات" caption="بیشترین محصولات برسی کنید" button="برسی کن" />
-                <CardeCom title="فروش چند هفته قبل!" caption="بیشترین خرید برسی کنید" button="برسی کن" />
-                <CardeCom title="خرید چند هفته قبل!" caption="بیشترین خرید برسی کنید" button="برسی کن" />
+                <CardeCom sum="3" title="تعداد چت" discount="6" />
+                <CardeCom sum="0" title="تعداد محصولات" discount="10" />
+
 
             </SimpleGrid>
             {/* TABEL CONTENT */}
