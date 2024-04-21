@@ -14,6 +14,7 @@ import {
   IconButton,
   useColorModeValue,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
 import { Search } from "../constants/icons";
@@ -36,6 +37,7 @@ export function Chats() {
   const [selectedChat, setSelectedChat] = useState();
   const [selectedChatMessages, setSelectedChatMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
 
   const toast = useToast();
   const { colorMode } = useColorMode();
@@ -53,7 +55,9 @@ export function Chats() {
   const [cookies, setCookie] = useCookies(["sid"]);
 
   const selectUserChat = (userId) => {
-    if (!socket) return;
+    if (!socket || chatLoading) return;
+
+    setChatLoading(true);
     socket.emit("operator:target", { userId });
     setSelectedChat(userId);
     apiGetRequest(
@@ -61,6 +65,8 @@ export function Chats() {
       userToken
     ).then((res) => {
       setSelectedChatMessages(res.data.data);
+    }).finally(() => {
+      setChatLoading(false);
     });
   };
   function checkForSpace(ch) {
@@ -79,7 +85,7 @@ export function Chats() {
       });
 
       socket.on("connect", () => {
-        socket.on("chat:id", (data) => {});
+        socket.on("chat:id", (data) => { });
 
         socket.on("widget:send", (data) => {
           console.log(1);
@@ -221,90 +227,92 @@ export function Chats() {
             },
           }}
         >
-          <Box className="flex flex-col">
-            {selectedChat &&
-              selectedChatMessages &&
-              selectedChatMessages.map((item, index, items) => {
-                const { content, is_user_message, created_at } = item;
-                const type = item.type.toLocaleLowerCase();
-                return (
-                  <Flex
-                    key={item.id}
-                    p={1}
-                    my={0}
-                    ref={index === items.length - 1 ? chatBoxRef : undefined}
-                    // bg={is_user_message ? "blue.500" : "gray.100"}
-                    // color={is_user_message ? "white" : "gray.600"}
-                    // borderRadius="lg"
-                    w="fit-content"
-                    maxW={"45%"}
-                    alignSelf={is_user_message ? "flex-end" : "flex-start"}
-                  >
-                    {type === "text" || content.length > 0 ? (
-                      <Flex
-                        flexDir="column"
-                        gap={2}
-                        alignItems={is_user_message ? "end" : "start"}
-                      >
-                        <Text
-                          minW={{ base: "", md: "70" }}
-                          textAlign={is_user_message ? "left" : "right"}
-                          bg={is_user_message ? "gray.200" : "purple"}
-                          color={is_user_message ? "black" : "white"}
-                          fontSize="16px"
-                          padding={"15px"}
-                          borderRadius={
-                            is_user_message
-                              ? "50px 50px 50px 0"
-                              : "20px 20px 0 20px"
-                          }
+          {chatLoading ? <div className="w-full h-full flex items-center justify-center"><Spinner size='xl'  /></div> :
+            <Box className="flex flex-col">
+              {selectedChat &&
+                selectedChatMessages &&
+                selectedChatMessages.map((item, index, items) => {
+                  const { content, is_user_message, created_at } = item;
+                  const type = item.type.toLocaleLowerCase();
+                  return (
+                    <Flex
+                      key={item.id}
+                      p={1}
+                      my={0}
+                      ref={index === items.length - 1 ? chatBoxRef : undefined}
+                      // bg={is_user_message ? "blue.500" : "gray.100"}
+                      // color={is_user_message ? "white" : "gray.600"}
+                      // borderRadius="lg"
+                      w="fit-content"
+                      maxW={"45%"}
+                      alignSelf={is_user_message ? "flex-end" : "flex-start"}
+                    >
+                      {type === "text" || content.length > 0 ? (
+                        <Flex
+                          flexDir="column"
+                          gap={2}
+                          alignItems={is_user_message ? "end" : "start"}
                         >
-                          {content}
-                        </Text>
-                        <Text fontSize="11px" color="gray-500">
-                          {new Date(created_at).toLocaleTimeString("fa-IR", {
-                            hour12: false,
-                          })}{" "}
-                        </Text>
-                      </Flex>
-                    ) : type === "form" ? (
-                      <div className="flex flex-col">
-                        {content.map((item) => (
-                          <div
-                            key={item.id}
-                            className="flex bg-blue-500 shadow-lg w-1/2 items-center gap-4 p-2 odd:bg-red-300 justify-around border-2 border-blue-700 rounded-lg"
+                          <Text
+                            minW={{ base: "", md: "70" }}
+                            textAlign={is_user_message ? "left" : "right"}
+                            bg={is_user_message ? "gray.200" : "purple"}
+                            color={is_user_message ? "black" : "white"}
+                            fontSize="16px"
+                            padding={"15px"}
+                            borderRadius={
+                              is_user_message
+                                ? "50px 50px 50px 0"
+                                : "20px 20px 0 20px"
+                            }
                           >
-                            <div className="text-md">{item.name}</div>
-                            <div className="text-md">{item.title}</div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div>
-                        <table className="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 border-2">
-                          {content.map((item, index) => (
-                            <div key={index}>
-                              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                  <th scope="col" className="py-3 px-6">
-                                    {item.title}
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody className="odd:bg-white even:bg-slate-50">
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                  <td className="py-4 px-6">{item.title}</td>
-                                </tr>
-                              </tbody>
+                            {content}
+                          </Text>
+                          <Text fontSize="11px" color="gray-500">
+                            {new Date(created_at).toLocaleTimeString("fa-IR", {
+                              hour12: false,
+                            })}{" "}
+                          </Text>
+                        </Flex>
+                      ) : type === "form" ? (
+                        <div className="flex flex-col">
+                          {content.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex bg-blue-500 shadow-lg w-1/2 items-center gap-4 p-2 odd:bg-red-300 justify-around border-2 border-blue-700 rounded-lg"
+                            >
+                              <div className="text-md">{item.name}</div>
+                              <div className="text-md">{item.title}</div>
                             </div>
                           ))}
-                        </table>
-                      </div>
-                    )}
-                  </Flex>
-                );
-              })}
-          </Box>
+                        </div>
+                      ) : (
+                        <div>
+                          <table className="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 border-2">
+                            {content.map((item, index) => (
+                              <div key={index}>
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                  <tr>
+                                    <th scope="col" className="py-3 px-6">
+                                      {item.title}
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody className="odd:bg-white even:bg-slate-50">
+                                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td className="py-4 px-6">{item.title}</td>
+                                  </tr>
+                                </tbody>
+                              </div>
+                            ))}
+                          </table>
+                        </div>
+                      )}
+                    </Flex>
+                  );
+                })}
+            </Box>
+          }
         </Stack>
 
         <HStack
