@@ -81,17 +81,18 @@ const SignIn = () => {
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {
         console.log(res);
-        
+
         dispatch(signInSuccess(res.data));
         setLoading(false);
         navigate("/");
       })
-      .catch(() => {
-        if (res.status === 401) {
-          setIsAuthorized(false);
-          return;
-        }
-
+      .catch((err) => {
+        setIsAuthorized(false);
+        toast({
+          title: `اطلاعات وارد شده صحیح نمی باشد!`,
+          status: "error",
+          position: "top-right",
+        });
         setFormData({
           email: "",
           password: ""
