@@ -68,9 +68,9 @@ const SignIn = () => {
     setLoading(true);
     setError(false);
 
-    if (formData.password.length < 6 || formData.password.length > 16) {
+    if (formData.password.length < 4 || formData.password.length > 16) {
       toast({
-        title: `رمز عبور باید بین 6 تا 16 کاراکتر باشد`,
+        title: `رمز عبور باید بین 4 تا 16 کاراکتر باشد`,
         status: "error",
         position: "top-right",
       });
@@ -81,21 +81,21 @@ const SignIn = () => {
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {
         console.log(res);
-        
+
         dispatch(signInSuccess(res.data));
         setLoading(false);
         navigate("/");
       })
-      .catch(() => {
-        if (res.status === 401) {
+      .catch((err) => {
+        if (err.status === 401) {
           setIsAuthorized(false);
           return;
         }
 
         setFormData({
           email: "",
-          password: ""
-        })
+          password: "",
+        });
 
         setLoading(false);
         setError(true);
@@ -119,8 +119,10 @@ const SignIn = () => {
         bgSize="cover"
         bgPosition="center"
       >
-        <Flex flex={1.5} m={{ base: 0, md: 10 }} animation={spinAnimation}>
+        <Flex flex={1.2} m={{ base: 0, md: 10 }} animation={spinAnimation}>
           <Image
+            maxW={{ base: "full", md: "720px" }}
+            maxH={{ base: "auto", md: "615px" }}
             transform="rotate(2deg)"
             alt={"Login Image"}
             objectFit={"cover"}

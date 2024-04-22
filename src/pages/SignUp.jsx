@@ -97,9 +97,8 @@ const SignUp = () => {
         setLoading(false);
         return;
       } else {
-        apiPostRequest("/api/auth/register", undefined, formData).then(
-          (res) => {
-
+        apiPostRequest("/api/auth/register", undefined, formData)
+          .then((res) => {
             toast({
               title: `پروفایل شما با موفقیت ساخته شد`,
               status: "success",
@@ -108,26 +107,26 @@ const SignUp = () => {
             });
             setLoading(false);
             navigate("/sign-in");
-          }
-        ).catch((err) => {
-          setError(true);
-          setLoading(false);
-
-          setFormData((pState) => {
-            return {
-              ...pState,
-              password: "",
-              restpass: ""
-            }
           })
+          .catch((err) => {
+            setError(true);
+            setLoading(false);
 
-          toast({
-            title: `اطلاعات وارد شده صحیح نمی باشد.`,
-            status: "error",
-            position: "top-right",
-            isClosable: true,
+            setFormData((pState) => {
+              return {
+                ...pState,
+                password: "",
+                restpass: "",
+              };
+            });
+
+            toast({
+              title: `اطلاعات وارد شده صحیح نمی باشد.`,
+              status: "error",
+              position: "top-right",
+              isClosable: true,
+            });
           });
-        });
       }
     } catch (error) {
       setError(true);
@@ -148,7 +147,6 @@ const SignUp = () => {
   return (
     <Box position={"relative"} dir="ltr">
       <Flex
-        as={Flex}
         flexDir={{ base: "column-reverse", md: "row" }}
         spacing={{ base: 10, lg: 10 }}
         minH={"100vh"}
@@ -157,8 +155,10 @@ const SignUp = () => {
         bgSize="cover"
         bgPosition="center"
       >
-        <Flex flex={1.5} m={{ base: 0, md: 10 }} animation={spinAnimation}>
+        <Flex flex={1.2} m={{ base: 0, md: 10 }} animation={spinAnimation}>
           <Image
+            maxW={{ base: "full", md: "720px" }}
+            maxH={{ base: "auto", md: "615px" }}
             transform="rotate(2deg)"
             alt={"Login Image"}
             objectFit={"cover"}
