@@ -18,7 +18,7 @@ function CardeCom(props) {
             <CardHeader>
                 <Heading size='md' display="flex" flexDirection="row-reverse" alignItems="center" justifyContent="space-around">
                     {iconsTitle}
-                    <Text borderBottom="1px">{title}</Text>
+                    <Text>{title}</Text>
                 </Heading>
             </CardHeader>
             <CardBody>

@@ -12,17 +12,17 @@ function Report() {
     return (
         <div className="flex flex-col">
                 <SimpleGrid
-                border='1px' borderColor='gray.200'
+              
                 rounded="10px"
                 mx="10px"
                 my="10px"
                 padding="10px"
                 gap="20px"
-                columns={[2, null, 2]}
+                columns={[1, null, 2]}
 
             >
-                <CardeCom sum="0" title="تعداد چت" discount="0" iconsTitle={<IoChatboxEllipsesOutline className='text-5xl p-3 bg-blue-700 rounded-full text-white' />} />
-                <CardeCom sum="0" title="تعداد محصولات" discount="0" iconsTitle={<FaShoppingBasket className='text-5xl p-3 bg-blue-700 rounded-full text-white' />} />
+                <CardeCom sum="0" title="تعداد چت" discount="0" iconsTitle={<IoChatboxEllipsesOutline className='text-5xl mr-16 p-2 bg-blue-700 rounded-full text-white' />} />
+                <CardeCom sum="0" title="تعداد محصولات" discount="0" iconsTitle={<FaShoppingBasket className='text-5xl p-2 bg-blue-700 rounded-full text-white' />} />
 
 
             </SimpleGrid>

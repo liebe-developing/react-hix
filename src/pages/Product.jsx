@@ -62,6 +62,7 @@ function Product() {
               colorScheme="purple"
               onClick={onOpenCreateProductModal}
               shadow="lg"
+              fontSize={{base: "14px",md:"20px"}}
             >
               اضافه کردن محصول
             </Button>
