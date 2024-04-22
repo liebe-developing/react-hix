@@ -307,7 +307,7 @@ const Settings = () => {
                 >
                   انتخاب فایل
                 </Button>
-                <Text fontSize="13px">
+                <Text fontSize="13px" className="bg-red-100">
                   {formData.selectedWidgetFile?.name || formData.iconUrl}
                 </Text>
                 {formData.iconUrl && (

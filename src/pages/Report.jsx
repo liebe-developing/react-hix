@@ -2,6 +2,8 @@ import {
     Card, CardHeader, CardBody, CardFooter, Heading, Button, Text, Flex, Table, useColorMode, SimpleGrid,
 } from '@chakra-ui/react'
 import { CardeCom } from '../components';
+import { FaShoppingBasket } from "react-icons/fa";
+import { IoChatboxEllipsesOutline } from "react-icons/io5";
 
 function Report() {
     // const even = new EventSource()
@@ -19,8 +21,8 @@ function Report() {
                 columns={[2, null, 2]}
 
             >
-                <CardeCom sum="3" title="تعداد چت" discount="6" />
-                <CardeCom sum="0" title="تعداد محصولات" discount="10" />
+                <CardeCom sum="0" title="تعداد چت" discount="0" iconsTitle={<IoChatboxEllipsesOutline className='text-5xl p-3 bg-blue-700 rounded-full text-white' />} />
+                <CardeCom sum="0" title="تعداد محصولات" discount="0" iconsTitle={<FaShoppingBasket className='text-5xl p-3 bg-blue-700 rounded-full text-white' />} />
 
 
             </SimpleGrid>

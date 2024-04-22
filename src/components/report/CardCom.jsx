@@ -2,11 +2,11 @@
 import {
     Card, CardHeader, CardBody, CardFooter, Heading, Button, Text, Flex, Table,
 } from '@chakra-ui/react'
-import { FaShoppingBasket } from "react-icons/fa";
+
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 function CardeCom(props) {
-    const { title, sum, discount, chst } = props
+    const { title, sum, discount, chst, iconsTitle } = props
 
     return (
         <Card
@@ -17,9 +17,7 @@ function CardeCom(props) {
             display="flex">
             <CardHeader>
                 <Heading size='md' display="flex" flexDirection="row-reverse" alignItems="center" justifyContent="space-around">
-                    <FaShoppingBasket className='text-5xl p-3 bg-blue-700 rounded-full
-                    text-white
-                    ' />
+                    {iconsTitle}
                     <Text borderBottom="1px">{title}</Text>
                 </Heading>
             </CardHeader>
