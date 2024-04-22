@@ -283,7 +283,7 @@ const Settings = () => {
           <Field
             label="رنگ ابزارک"
             type="color"
-            w="30%"
+            w={{base: "80%",md: "50%",lg: "30%"}}
             onChange={handleChange}
             value={formData.widgetColor}
             name="widgetColor"
@@ -297,7 +297,7 @@ const Settings = () => {
               onChange={fileSelectedHandler}
               reference={fileInput}
             >
-              <Flex alignItems="center" flexWrap={"wrap"} gap={5} mb={2}>
+              <Flex alignItems="center" flexWrap={"wrap"} gap={{base: "2",md: "5"}} mb={{base: "0",md: "2"}}>
                 <Button
                   size={100}
                   padding={2}
