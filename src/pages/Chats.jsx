@@ -38,17 +38,22 @@ export function Chats() {
   const [selectedChatMessages, setSelectedChatMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
+  const [userLoading, setUserLoading] = useState(false);
+  const [userSearchTerm, setUserSearchTerm] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   const toast = useToast();
   const { colorMode } = useColorMode();
 
   const { userToken, userContent } = useOutletContext();
   useEffect(() => {
+    setUserLoading(true);
     apiGetRequest(
       `api/chat_user/?upid=${userContent.user_plan_id}`,
       userToken
     ).then((res) => {
       setListUser(res.data.data);
+      setUserLoading(false);
     });
   }, []);
 
@@ -63,15 +68,15 @@ export function Chats() {
     apiGetRequest(
       `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
       userToken
-    ).then((res) => {
-      setSelectedChatMessages(res.data.data);
-    }).finally(() => {
-      setChatLoading(false);
-    });
+    )
+      .then((res) => {
+        setSelectedChatMessages(res.data.data);
+      })
+      .finally(() => {
+        setChatLoading(false);
+      });
   };
-  function checkForSpace(ch) {
-    return /^[A-Z]$/i.test(ch);
-  }
+
   useEffect(() => {
     apiPostRequest("/chat/operator", userToken, undefined).then((res) => {
       if (socket && socket.connected) {
@@ -85,10 +90,9 @@ export function Chats() {
       });
 
       socket.on("connect", () => {
-        socket.on("chat:id", (data) => { });
+        socket.on("chat:id", (data) => {});
 
         socket.on("widget:send", (data) => {
-          console.log(1);
           const { message } = data;
           message.rid = crypto.randomUUID();
           if (!message.created_at) message.created_at = new Date();
@@ -99,7 +103,6 @@ export function Chats() {
         });
 
         socket.on("operator:send", (data) => {
-          console.log(2);
           const { message } = data;
           message.rid = crypto.randomUUID();
           if (!message.created_at) message.created_at = new Date();
@@ -114,11 +117,10 @@ export function Chats() {
     });
   }, []);
 
-  console.log(selectedChatMessages);
 
   const sendMessage = (evnet) => {
     // socket.emit("send_message", { message: "Hello" });
-    const currentLength = selectedChatMessages.length;
+    // const currentLength = selectedChatMessages.length;
     // setSelectedChatMessages([
     //   { type: "text", content: messageText, created_at: new Date() },
     //   ...selectedChatMessages,
@@ -141,7 +143,18 @@ export function Chats() {
     chatBoxRef.current?.scrollIntoView({ behaviour: "smooth" });
   }, [selectedChatMessages]);
 
-  console.log(selectedChatMessages);
+  const handleSearchUser = (searchValue) => {
+    setUserSearchTerm(searchValue);
+
+    if (userSearchTerm !== "") {
+      const filteredUsers = listUser.filter((user) =>
+        user.name.toLowerCase().includes(userSearchTerm.toLowerCase())
+      );
+      setFilteredUsers(filteredUsers);
+    } else {
+      setFilteredUsers(listUser);
+    }
+  };
 
   return (
     <Flex
@@ -154,6 +167,8 @@ export function Chats() {
         <InputGroup>
           <Input
             w="full"
+            value={userSearchTerm}
+            onChange={(e) => handleSearchUser(e.target.value)}
             placeholder="سرچ کنید"
             _placeholder={{ color: "gray.600", fontSize: "15px" }}
             pr={8}
@@ -167,26 +182,52 @@ export function Chats() {
           bg={useColorModeValue("white", "gray.900")}
           className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar"
         >
-          {listUser.map((item) => {
-            return (
-              <div key={item.id}>
-                <UserList {...item} loadFunc={() => selectUserChat(item.id)} />
-              </div>
-            );
-          })}
+          {userLoading && (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="transparent"
+              color="purple.400"
+              size="xl"
+              mt={20}
+              alignSelf="center"
+            />
+          )}
+          {!userLoading && userSearchTerm.length > 1
+            ? filteredUsers.map((item) => {
+                return (
+                  <div key={item.id}>
+                    <UserList
+                      {...item}
+                      loadFunc={() => selectUserChat(item.id)}
+                    />
+                  </div>
+                );
+              })
+            : !userLoading &&
+              listUser.map((item) => {
+                return (
+                  <div key={item.id}>
+                    <UserList
+                      {...item}
+                      loadFunc={() => selectUserChat(item.id)}
+                    />
+                  </div>
+                );
+              })}
         </Box>
       </Flex>
 
       <Flex
         flexDirection="column"
         // w={{ base: "100%", md: "99%", lg: "3xl" }}
-        // h={{ base: "70%", lg: "100%" }}
+        h={"full"}
         // borderWidth="1px"
         flex={1}
       >
         <Flex
           bg={colorMode === "light" ? "white" : "gray.700"}
-          className="w-full flex h-16 justify-between px-4 items-center border-b-[1px] border-gray-300"
+          className="w-full flex h-16 max-sm:h-24 justify-between px-4 items-center border-b-[1px] border-gray-300"
           color={colorMode === "light" ? "black" : "white"}
         >
           <Badge
@@ -194,7 +235,7 @@ export function Chats() {
             p={2}
             borderRadius="10"
             colorScheme="purple"
-            fontSize="1.1em"
+            fontSize={{ base: "0.9em", md: "1.1em" }}
           >
             چت با کاربر
           </Badge>
@@ -202,9 +243,9 @@ export function Chats() {
             
           </div> */}
           {selectedChat && (
-            <>
-              <div>کاربر شماره {selectedChat}</div>
-            </>
+            <Text fontSize={{ base: "0.9em", md: "1.1em" }}>
+              کاربر شماره {selectedChat}
+            </Text>
           )}
         </Flex>
 
@@ -227,7 +268,17 @@ export function Chats() {
             },
           }}
         >
-          {chatLoading ? <div className="w-full h-full flex items-center justify-center"><Spinner size='xl' /></div> :
+          {chatLoading ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="transparent"
+                color="purple.400"
+                size="xl"
+              />
+            </div>
+          ) : (
             <Box className="flex flex-col">
               {selectedChat &&
                 selectedChatMessages &&
@@ -245,7 +296,7 @@ export function Chats() {
                       // color={is_user_message ? "white" : "gray.600"}
                       // borderRadius="lg"
                       w="fit-content"
-                      maxW={"85%"}
+                      maxW={{ base: "90%", md: "45%" }}
                       alignSelf={is_user_message ? "flex-end" : "flex-start"}
                     >
                       {type === "text" ? (
@@ -323,7 +374,7 @@ export function Chats() {
                   );
                 })}
             </Box>
-          }
+          )}
         </Stack>
 
         <HStack
