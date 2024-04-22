@@ -60,24 +60,10 @@ export function Chats() {
   const [cookies, setCookie] = useCookies(["sid"]);
 
   const selectUserChat = (userId) => {
-    if (!socket || chatLoading) return;
-
+    if (chatLoading) return;
     setChatLoading(true);
-    socket.emit("operator:target", { userId });
     setSelectedChat(userId);
-    apiGetRequest(
-      `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
-      userToken
-    )
-      .then((res) => {
-        setSelectedChatMessages(res.data.data);
-      })
-      .finally(() => {
-        setChatLoading(false);
-      });
-  };
 
-  useEffect(() => {
     apiPostRequest("/chat/operator", userToken, undefined).then((res) => {
       if (socket && socket.connected) {
         socket.disconnect();
@@ -90,7 +76,7 @@ export function Chats() {
       });
 
       socket.on("connect", () => {
-        socket.on("chat:id", (data) => {});
+        socket.on("chat:id", (data) => { });
 
         socket.on("widget:send", (data) => {
           const { message } = data;
@@ -114,8 +100,19 @@ export function Chats() {
       });
 
       socket.connect();
-    });
-  }, []);
+      socket.emit("operator:target", { userId });
+
+      apiGetRequest(
+        `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
+        userToken
+      )
+        .then((res) => {
+          setSelectedChatMessages(res.data.data);
+        })
+    }).finally(() => {
+      setChatLoading(false);
+    }); 
+  };
 
 
   const sendMessage = (evnet) => {
