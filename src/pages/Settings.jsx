@@ -294,7 +294,7 @@ const Settings = () => {
               onChange={fileSelectedHandler}
               reference={fileInput}
             >
-              <Flex alignItems="center" gap={5} mb={2}>
+              <Flex alignItems="center" flexWrap={"wrap"} gap={5} mb={2}>
                 <Button
                   size={100}
                   padding={2}
@@ -307,7 +307,7 @@ const Settings = () => {
                 <Text fontSize="13px">
                   {formData.selectedWidgetFile?.name || formData.iconUrl}
                 </Text>
-                {formData.iconUrl && <img  src={formData.iconUrl} 
+                {formData.iconUrl && <img src={formData.iconUrl} 
                   style={{ border: "1px solid yellow", boxShadow:"6px 6px 12px #bebebe ,-6px -6px 12px #ffffff"}}
                 className="rounded-full w-20 h-20 shadow-2xl " />}
               </Flex>
