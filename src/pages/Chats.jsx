@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   HStack,
   Input,
@@ -11,21 +10,18 @@ import {
   InputRightElement,
   Text,
   Badge,
-  IconButton,
   useColorModeValue,
   useToast,
   Spinner,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
-import { Search } from "../constants/icons";
 import { UserList } from "../components";
 import { useEffect, useRef, useState } from "react";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
 // import io from "socket.io-client";
 import { useCookies } from "react-cookie";
-import { Message } from "../components/Chats/TypeMessage";
-import { Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { IoSend } from "react-icons/io5";
 
 /**
@@ -63,61 +59,61 @@ export function Chats() {
     if (chatLoading) return;
     setChatLoading(true);
 
-    apiPostRequest("/chat/operator", userToken, undefined).then((res) => {
-      if (socket && socket.connected) {
-        socket.disconnect();
-        socket = undefined;
-      }
+    apiPostRequest("/chat/operator", userToken, undefined)
+      .then((res) => {
+        if (socket && socket.connected) {
+          socket.disconnect();
+          socket = undefined;
+        }
 
-      socket = io("https://portal.hixdm.com", {
-        path: "/chat/socket",
-        withCredentials: true,
-      });
-
-      socket.on("connect", () => {
-        socket.on("chat:id", (data) => { });
-
-        socket.on("widget:send", (data) => {
-          const { message } = data;
-          console.log(1);
-          message.rid = crypto.randomUUID();
-          if (!message.created_at) message.created_at = new Date();
-          if (message.is_user_message === undefined)
-            message.is_user_message = true;
-
-          setSelectedChatMessages((pState) => [...pState, message]);
+        socket = io("https://portal.hixdm.com", {
+          path: "/chat/socket",
+          withCredentials: true,
         });
 
-        socket.on("operator:send", (data) => {
-          const { message } = data;
-          console.log(2);
-          message.rid = crypto.randomUUID();
-          if (!message.created_at) message.created_at = new Date();
-          if (message.is_user_message === undefined)
-            message.is_user_message = false;
+        socket.on("connect", () => {
+          socket.on("chat:id", (data) => {});
 
-          setSelectedChatMessages((pState) => [...pState, message]);
+          socket.on("widget:send", (data) => {
+            const { message } = data;
+            console.log(1);
+            message.rid = crypto.randomUUID();
+            if (!message.created_at) message.created_at = new Date();
+            if (message.is_user_message === undefined)
+              message.is_user_message = true;
+
+            setSelectedChatMessages((pState) => [...pState, message]);
+          });
+
+          socket.on("operator:send", (data) => {
+            const { message } = data;
+            console.log(2);
+            message.rid = crypto.randomUUID();
+            if (!message.created_at) message.created_at = new Date();
+            if (message.is_user_message === undefined)
+              message.is_user_message = false;
+
+            setSelectedChatMessages((pState) => [...pState, message]);
+          });
         });
-      });
 
-      socket.connect();
-      socket.emit("operator:target", { userId });
+        socket.connect();
+        socket.emit("operator:target", { userId });
 
-      apiGetRequest(
-        `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
-        userToken
-      )
-        .then((res) => {
+        apiGetRequest(
+          `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
+          userToken
+        ).then((res) => {
           setSelectedChat(userId);
           setSelectedChatMessages(res.data.data.messages);
-        })
-    }).finally(() => {
-      setChatLoading(false);
-    }); 
+        });
+      })
+      .finally(() => {
+        setChatLoading(false);
+      });
   };
 
-
-  const sendMessage = (evnet) => {
+  const sendMessage = () => {
     // socket.emit("send_message", { message: "Hello" });
     // const currentLength = selectedChatMessages.length;
     // setSelectedChatMessages([
@@ -168,7 +164,7 @@ export function Chats() {
             w="full"
             value={userSearchTerm}
             onChange={(e) => handleSearchUser(e.target.value)}
-            placeholder="سرچ کنید"
+            placeholder="جستجو..."
             _placeholder={{ color: "gray.600", fontSize: "15px" }}
             pr={8}
           />
@@ -178,6 +174,7 @@ export function Chats() {
         </InputGroup>
         {/* <CHATS CONTENT> */}
         <Box
+          p={5}
           bg={useColorModeValue("white", "gray.900")}
           className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar"
         >
@@ -226,7 +223,7 @@ export function Chats() {
       >
         <Flex
           bg={colorMode === "light" ? "white" : "gray.700"}
-          className="w-full flex h-16 max-sm:h-24 justify-between px-4 items-center border-b-[1px] border-gray-300"
+          className="w-full flex h-16 max-sm:h-22 justify-between px-4 items-center border-b-[1px] border-gray-300"
           color={colorMode === "light" ? "black" : "white"}
         >
           <Badge
@@ -280,10 +277,10 @@ export function Chats() {
           ) : (
             <Box className="flex flex-col">
               {selectedChat &&
-                selectedChatMessages && 
+                selectedChatMessages &&
                 selectedChatMessages.map((item, index, items) => {
                   const { content, is_user_message, created_at } = item;
-                  console.log(item)
+                  console.log(item);
                   const type = item.type.toLocaleLowerCase();
                   return (
                     <Flex
@@ -337,34 +334,46 @@ export function Chats() {
                             </div>
                           ))}
                         </div>
-                  ) : (
-                            <div className="">
-                              <table className="text-sm text-gray-500 dark:text-gray-400 border-2 text-center">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                  <tr>
-                                    <th scope="col" className="py-3 px-6">
-                                      نام
-                                    </th>
-                                    <th scope="col" className="py-3 px-6">
-                                      لینک
-                                    </th>
-                                    <th scope="col" className="py-3 px-6">
-                                      قیمت
-                                    </th>
-                                    <th scope="col" className="py-3 px-6">
-                                      تصویر
-                                    </th>
-                                  </tr>
-                                </thead>
-                                {JSON.parse(content).items.map((item, index) => (
-                                  <tbody className="odd:bg-white even:bg-slate-50" key={index}>
-                                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td className="py-2 px-2">{item.title}</td>                                 
-                                    <td className="py-2 px-2">{item.url}</td>
-                                    <td className="py-2 px-2">{item.price}</td>
-                                    <td className="py-2">{<img src={item.image} width={50} height={50} alt="Product Image"/>}</td>
-                                  </tr>
-                                </tbody>
+                      ) : (
+                        <div className="">
+                          <table className="text-sm text-gray-500 dark:text-gray-400 border-2 text-center">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                              <tr>
+                                <th scope="col" className="py-3 px-6">
+                                  نام
+                                </th>
+                                <th scope="col" className="py-3 px-6">
+                                  لینک
+                                </th>
+                                <th scope="col" className="py-3 px-6">
+                                  قیمت
+                                </th>
+                                <th scope="col" className="py-3 px-6">
+                                  تصویر
+                                </th>
+                              </tr>
+                            </thead>
+                            {JSON.parse(content).items.map((item, index) => (
+                              <tbody
+                                className="odd:bg-white even:bg-slate-50"
+                                key={index}
+                              >
+                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                  <td className="py-2 px-2">{item.title}</td>
+                                  <td className="py-2 px-2">{item.url}</td>
+                                  <td className="py-2 px-2">{item.price}</td>
+                                  <td className="py-2">
+                                    {
+                                      <img
+                                        src={item.image}
+                                        width={50}
+                                        height={50}
+                                        alt="Product Image"
+                                      />
+                                    }
+                                  </td>
+                                </tr>
+                              </tbody>
                             ))}
                           </table>
                         </div>

@@ -2,7 +2,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 
-import { useColorMode, useDisclosure, Icon } from "@chakra-ui/react";
+import {
+  useColorMode,
+  useDisclosure,
+  Icon,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { MdOutlineRemoveDone } from "react-icons/md";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import ProductModal from "./product/ProductModal";
@@ -18,7 +23,10 @@ const Table = ({ tableData }) => {
       <tr
         key={id}
         bg={colorMode === "light" ? "gray.300" : "gray.700"}
-        className="border-b cursor-pointer hover:bg-gray-100"
+        className={`border-b cursor-pointer ${useColorModeValue(
+          "hover:bg-gray-100",
+          "hover:bg-gray-800"
+        )}`}
         onClick={onOpen}
       >
         <td className="text-center py-4 whitespace-nowrap text-[10px] md:text-md font-medium ">

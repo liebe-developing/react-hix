@@ -15,8 +15,7 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FaPlus, FaInfo, FaInfoCircle } from "react-icons/fa";
-import { IoIosInformationCircle } from "react-icons/io";
+import { FaPlus } from "react-icons/fa";
 
 function Product() {
   const [loading, setLoading] = useState(false);
@@ -26,7 +25,6 @@ function Product() {
     onClose: onCloseCreateProductModal,
   } = useDisclosure();
 
-  let counter = 1;
   const { userToken, userContent } = useOutletContext();
   const [productData, setDataProduct] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,7 +45,7 @@ function Product() {
   }, [currentPage]);
 
   return (
-    <div className="">
+    <div className="my-3">
       {!loading && <Loading />}
       {loading && (
         <div className="w-[97%] mx-auto rounded-md">
@@ -62,14 +60,14 @@ function Product() {
               colorScheme="purple"
               onClick={onOpenCreateProductModal}
               shadow="lg"
-              fontSize={{base: "14px",md:"20px"}}
+              size={{ base: "sm", md: "md" }}
             >
               اضافه کردن محصول
             </Button>
             <Box>
               <Alert
                 shadow="md"
-                fontSize={{ base: "11px", sm: "14px" }}
+                fontSize={{ base: "8px", sm: "14px" }}
                 status="info"
                 rounded="lg"
               >

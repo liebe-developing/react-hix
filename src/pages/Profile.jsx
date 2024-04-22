@@ -1,20 +1,30 @@
 import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
   Avatar,
   AvatarBadge,
+  Badge,
   Box,
+  Button,
   Center,
+  Flex,
   Heading,
   IconButton,
   SimpleGrid,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { IoClose } from "react-icons/io5";
 import { Field, PrimaryButton } from "../components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { apiGetRequest, apiPutRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
+import { encode } from "base64-arraybuffer";
 const Profile = () => {
+  const fileInput = useRef(null);
+
   const toast = useToast();
   const { userToken, userContent } = useOutletContext();
 
@@ -100,10 +110,27 @@ const Profile = () => {
     }));
   };
 
+  const fileSelectedHandler = async (e) => {
+    const reader = new FileReader();
+    const waitForFilePromise = new Promise((resolve) => {
+      reader.onload = async (e) => {
+        const text = e.target.result;
+        resolve(encode(text));
+      };
+    });
+    reader.readAsArrayBuffer(e.target.files[0]);
+    const imageBase64 = await waitForFilePromise;
+    console.log(imageBase64);
+    setFormData({
+      ...formData,
+      selectedWidgetFile: { name: e.target.files[0].name, data: imageBase64 },
+    });
+  };
+
   return (
-    <Box mx={5}>
+    <Box m={5}>
       <Heading
-        fontSize="28px"
+        fontSize={{ base: "22px", md: "28px" }}
         borderRadius="10px"
         w="fit-content"
         fontFamily="Casablanca"
@@ -115,22 +142,40 @@ const Profile = () => {
       </Heading>
       <Center>
         <VStack spacing={4}>
-          <Avatar size="xl" bg="gray.500">
+          <Avatar
+            src={formData.iconUrl}
+            size={{ base: "lg", md: "xl" }}
+            bg="gray.500"
+          >
             <AvatarBadge
               as={IconButton}
               size="sm"
               rounded="full"
               top="-10px"
-              colorScheme="red"
+              colorScheme={"red"}
               aria-label="remove Image"
               icon={<IoClose />}
             />
           </Avatar>
-          <PrimaryButton title="عکس خود را آپلود کنید" w="full" />
+          <Flex flexDir="column">
+            <Field
+              type="file"
+              display="none"
+              onChange={fileSelectedHandler}
+              reference={fileInput}
+            >
+              <PrimaryButton
+                btnFn={() => fileInput.current.click()}
+                title="عکس خود را آپلود کنید"
+                w="full"
+                size="md"
+              />
+            </Field>
+          </Flex>
         </VStack>
       </Center>
       <Heading
-        fontSize="28px"
+        fontSize={{ base: "22px", md: "28px" }}
         w="fit-content"
         fontFamily="Casablanca"
         mb={8}
@@ -141,7 +186,12 @@ const Profile = () => {
       </Heading>
 
       <form>
-        <SimpleGrid columns={2} spacing={8} mx={5} mb={12}>
+        <SimpleGrid
+          columns={[1, null, 2]}
+          spacing={{ base: 4, md: 8 }}
+          mx={{ base: 0, md: 5 }}
+          mb={10}
+        >
           <Field
             label="نام و نام خانوادگی"
             placeholder="نام و نام خانوادگی خود را وارد کنید"
@@ -191,7 +241,7 @@ const Profile = () => {
         </SimpleGrid>
         <PrimaryButton
           title="ذخیره تغییرات"
-          mr={4}
+          mr={{ base: 0, md: 4 }}
           btnFn={handleSubmit}
         />
       </form>

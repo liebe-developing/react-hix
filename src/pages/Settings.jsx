@@ -21,11 +21,12 @@ import {
   SimpleGrid,
   Spinner,
   Text,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Field, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
-import { useRef, useState, useId, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   apiGetRequest,
   apiPostRequest,
@@ -34,7 +35,6 @@ import {
 import { useOutletContext } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
-import { BiWindowClose } from "react-icons/bi";
 import { IoCloseCircle } from "react-icons/io5";
 import { encode } from "base64-arraybuffer";
 
@@ -149,6 +149,7 @@ const Settings = () => {
 
   const handleCollectingOperatorEmail = () => {
     let re =
+      // eslint-disable-next-line no-useless-escape
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!operatorEmailField) {
@@ -214,7 +215,7 @@ const Settings = () => {
       <Flex alignItems="center" justifyContent="space-between" gap={3}>
         <Box>
           <Heading
-            fontSize="28px"
+            fontSize={{ base: "22px", md: "28px" }}
             borderRadius="10px"
             w="fit-content"
             fontFamily="Casablanca"
@@ -222,7 +223,11 @@ const Settings = () => {
           >
             تنظیمات
           </Heading>
-          <Text color="#000" opacity={0.5}>
+          <Text
+            color={useColorModeValue("#000", "gray.100")}
+            opacity={0.5}
+            fontSize={{ base: "10px", md: "20px" }}
+          >
             تنظیمات حساب خود را مدیریت کنید
           </Text>
         </Box>
@@ -232,6 +237,7 @@ const Settings = () => {
           onClick={onOpen}
           shadow="lg"
           maxW="fit-content"
+          size={{ base: "xs", md: "md" }}
         >
           اضافه کردن اپراتور
         </Button>
@@ -283,7 +289,7 @@ const Settings = () => {
           <Field
             label="رنگ ابزارک"
             type="color"
-            w={{base: "80%",md: "50%",lg: "30%"}}
+            w={{ base: "100%", md: "50%", lg: "30%" }}
             onChange={handleChange}
             value={formData.widgetColor}
             name="widgetColor"
@@ -297,7 +303,12 @@ const Settings = () => {
               onChange={fileSelectedHandler}
               reference={fileInput}
             >
-              <Flex alignItems="center" flexWrap={"wrap"} gap={{base: "2",md: "5"}} mb={{base: "0",md: "2"}}>
+              <Flex
+                alignItems="center"
+                flexWrap={"wrap"}
+                gap={{ base: "2", md: "5" }}
+                mb={{ base: "0", md: "2" }}
+              >
                 <Button
                   size={100}
                   padding={2}
@@ -307,9 +318,9 @@ const Settings = () => {
                 >
                   انتخاب فایل
                 </Button>
-                <Text fontSize="13px" className="bg-red-100">
-                  {formData.selectedWidgetFile?.name || formData.iconUrl}
-                </Text>
+                <Badge fontSize="13px" colorScheme="red">
+                  {formData.selectedWidgetFile?.name}
+                </Badge>
                 {formData.iconUrl && (
                   <img
                     src={formData.iconUrl}

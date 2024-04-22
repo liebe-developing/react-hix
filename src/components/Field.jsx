@@ -36,6 +36,7 @@ const Field = ({
       <FormLabel fontSize="14px">{label}</FormLabel>
       <InputGroup>
         <Input
+          fontSize={{ base: "14px", md: "18px" }}
           type={type || "text"}
           placeholder={placeholder}
           pr={4}

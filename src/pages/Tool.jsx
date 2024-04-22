@@ -1,35 +1,26 @@
-import { useEffect, useState } from "react"
-import {
-  ArrowDown,
-  IoDocuments,
-  MesIcon,
-} from "../constants/icons"
-import { apiGetRequest, apiPutRequest } from "../api/apiRequest"
-import { useOutletContext } from "react-router-dom"
-import { CopyBlock, dracula } from 'react-code-blocks';
+import { useEffect, useState } from "react";
+import { ArrowDown, IoDocuments, MesIcon } from "../constants/icons";
+import { apiGetRequest } from "../api/apiRequest";
+import { useOutletContext } from "react-router-dom";
+import { CopyBlock, dracula } from "react-code-blocks";
 
 function Tool() {
-
-
-  const { userToken, userContent } = useOutletContext()
-  const [copytext, setCopyText] = useState("")
+  const { userToken, userContent } = useOutletContext();
+  const [copytext, setCopyText] = useState("");
 
   console.log(userToken, userContent);
 
   useEffect(() => {
-    apiGetRequest(`api/settings/script/${userContent.user_plan_id}`, userToken).then(res => {
-
-      setCopyText(res.data.data)
-    })
-  }, [])
-
-
-  const copyHandler = () => {
-    navigator.clipboard.writeText(copytext);
-  }
+    apiGetRequest(
+      `api/settings/script/${userContent.user_plan_id}`,
+      userToken
+    ).then((res) => {
+      setCopyText(res.data.data);
+    });
+  }, []);
 
   return (
-    <div className="">
+    <div className="m-5">
       <h2 className="text-primary">نصب ابزارک</h2>
 
       {/* < contentCopy > */}
@@ -37,7 +28,9 @@ function Tool() {
         <span className="absolute right-3 p-2 -top-6 bg-blue-400 rounded-sm shadow-md ">
           <ArrowDown className="text-3xl text-white" />
         </span>
-        <h3 >برای نمایش ابزارک گفتگو در سایت خود، کد زیر را در قالب سایت درج کنید:</h3>
+        <h3>
+          برای نمایش ابزارک گفتگو در سایت خود، کد زیر را در قالب سایت درج کنید:
+        </h3>
         {/* <button
         dir="ltr"
         onClick={copyHandler}
@@ -45,21 +38,18 @@ function Tool() {
         my-6 text-start ps-4 ">
           {copytext}
         </button> */}
-        <div
-        className="mt-5"
-          dir='ltr'>
-        <CopyBlock
-          text={copytext}
-          language='html'
-          showLineNumbers={true}
-          theme={dracula}
-          wrapLines
-          codeBlock
-        />
+        <div className="mt-5" dir="ltr">
+          <CopyBlock
+            text={copytext}
+            language="html"
+            showLineNumbers={true}
+            theme={dracula}
+            wrapLines
+            codeBlock
+          />
         </div>
       </div>
       {/* </ contentCopy > */}
-
 
       {/* < bottom content about > */}
       <div className="flex flex-col md:justify-between md:flex-row mt-20">
@@ -68,29 +58,24 @@ function Tool() {
           <span className="absolute right-3 p-2 -top-6 bg-blue-400 rounded-sm shadow-md">
             <IoDocuments className="text-3xl text-white" />
           </span>
-          <h2 className="text-primary mb-4">
-            مستندات سامانه
-          </h2>
-          <h4>
-           سامانه در حال بروزرسانی است!
-          </h4>
+          <h2 className="text-primary mb-4">مستندات سامانه</h2>
+          <h4>سامانه در حال بروزرسانی است!</h4>
         </div>
         {/* RGIHT */}
         <div className="relative py-10 px-4">
           <span className="absolute right-3 p-2 -top-6 bg-blue-400 rounded-sm shadow-md">
             <MesIcon className="text-3xl text-white" />
           </span>
-          <h2 className="text-primary mb-4">
-            صفحه اختصاصی هیکس
-          </h2>
+          <h2 className="text-primary mb-4">صفحه اختصاصی هیکس</h2>
           <h4>
-            توسعه دهندگان می توانند برای ایجاد تعامل بیشتر هیکس با سایت خود، از مستندات ابزارک و نیزمستندات API استفاده کنند.
+            توسعه دهندگان می توانند برای ایجاد تعامل بیشتر هیکس با سایت خود، از
+            مستندات ابزارک و نیزمستندات API استفاده کنند.
           </h4>
         </div>
       </div>
       {/* </ bottom content about > */}
     </div>
-  )
+  );
 }
 
-export default Tool
+export default Tool;

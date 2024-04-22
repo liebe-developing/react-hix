@@ -46,11 +46,11 @@ const SignIn = () => {
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
 
   useEffect(() => {
-    const effect = async() => {
+    const effect = async () => {
       if (userToken) {
-        navigate('/');
+        navigate("/");
       }
-    }
+    };
     effect();
   }, []);
 
@@ -58,7 +58,6 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { email, password } = formData;
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;

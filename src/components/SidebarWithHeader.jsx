@@ -313,7 +313,7 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} userContent={userContent} />
-      <Box mr={{ base: 0, md: 60 }} p="1">
+      <Box mr={{ base: 0, md: 60 }}>
         <Outlet
           context={{
             userToken,
