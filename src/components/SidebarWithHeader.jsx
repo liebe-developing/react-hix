@@ -262,9 +262,9 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
               borderColor={useColorModeValue("gray.200", "gray.600")}
               fontSize={{ base: "13px", md: "15px" }}
             >
-              <MenuItem>اعلانات</MenuItem>
-              <MenuItem>توصیه حساب</MenuItem>
-              <MenuDivider />
+              {/* <MenuItem>اعلانات</MenuItem>
+              <MenuItem>توصیه حساب</MenuItem> */}
+              {/* <MenuDivider /> */}
               <MenuItem
                 _hover={{ bg: "red", color: "white" }}
                 onClick={handleLogoutUser}

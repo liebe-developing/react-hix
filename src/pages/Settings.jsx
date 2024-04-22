@@ -317,7 +317,7 @@ const Settings = () => {
                       border: "1px solid yellow",
                       boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
                     }}
-                    className="rounded-full w-20 h-20 shadow-2xl "
+                    className="rounded-full w-10 h-10 md:w-20 md:h-20 shadow-2xl "
                   />
                 )}
               </Flex>
