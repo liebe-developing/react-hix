@@ -15,23 +15,31 @@ const RootLayout = () => {
   const chekAuth = async () => {
     if (!userToken) {
       navigate("/sign-in");
+      return false;
     }
+    return true;
   };
   useEffect(() => {
-    chekAuth();
+    const effect = async () => {
+      const hasAuth = await chekAuth();
 
-    apiGetRequest("api/user_plan/current", userToken)
-      .then((res) => {
+      if (!hasAuth)
+        return;
+      try {
+        const res = await apiGetRequest("api/user_plan/current", userToken);
+
         console.log(res.data);
         setuser(res.data.data);
         if (!res.data.data.plan) {
           navigate("/price-plan");
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         localStorage.clear();
-        window.location.replace("/");
-      });
+        navigate("/");
+      }
+    }
+
+    effect();
   }, []);
 
   return (

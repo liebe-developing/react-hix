@@ -45,14 +45,20 @@ const SignIn = () => {
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
 
+  useEffect(() => {
+    const effect = async() => {
+      if (userToken) {
+        navigate('/');
+      }
+    }
+    effect();
+  }, []);
+
   // const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { email, password } = formData;
 
-  useEffect(() => {
-    userToken && navigate("/");
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
