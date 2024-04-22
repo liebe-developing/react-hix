@@ -62,7 +62,6 @@ export function Chats() {
   const selectUserChat = (userId) => {
     if (chatLoading) return;
     setChatLoading(true);
-    setSelectedChat(userId);
 
     apiPostRequest("/chat/operator", userToken, undefined).then((res) => {
       if (socket && socket.connected) {
@@ -80,6 +79,7 @@ export function Chats() {
 
         socket.on("widget:send", (data) => {
           const { message } = data;
+          console.log(1);
           message.rid = crypto.randomUUID();
           if (!message.created_at) message.created_at = new Date();
           if (message.is_user_message === undefined)
@@ -90,6 +90,7 @@ export function Chats() {
 
         socket.on("operator:send", (data) => {
           const { message } = data;
+          console.log(2);
           message.rid = crypto.randomUUID();
           if (!message.created_at) message.created_at = new Date();
           if (message.is_user_message === undefined)
@@ -107,7 +108,8 @@ export function Chats() {
         userToken
       )
         .then((res) => {
-          setSelectedChatMessages(res.data.data);
+          setSelectedChat(userId);
+          setSelectedChatMessages(res.data.data.messages);
         })
     }).finally(() => {
       setChatLoading(false);
@@ -278,7 +280,7 @@ export function Chats() {
           ) : (
             <Box className="flex flex-col">
               {selectedChat &&
-                selectedChatMessages &&
+                selectedChatMessages && 
                 selectedChatMessages.map((item, index, items) => {
                   const { content, is_user_message, created_at } = item;
                   console.log(item)

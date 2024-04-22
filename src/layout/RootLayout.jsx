@@ -28,7 +28,10 @@ const RootLayout = () => {
           navigate("/price-plan");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        localStorage.clear();
+        window.location.replace("/");
+      });
   }, []);
 
   return (
