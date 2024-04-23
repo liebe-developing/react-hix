@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex, Spacer, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
 
 const Stats = ({ title, value }) => {
+
+  const { colorMode } = useColorMode();
+
   return (
     <Box
       border={useColorModeValue("1px solid #000", "1px solid gray.500")}
@@ -9,10 +12,7 @@ const Stats = ({ title, value }) => {
       h="180px"
       w={{ base: "45%", md: "46%" }}
       p={6}
-      boxShadow={useColorModeValue(
-        "4px 4px 0px 0px #000000",
-        "4px 4px 0px 0px #00000036"
-      )}
+      boxShadow={colorMode === 'light' ? '4px 4px 0px 0px #000000' : "4px 4px 0px 0px #fff"}
     >
       <Flex
         flexDir="column"

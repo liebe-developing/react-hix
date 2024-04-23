@@ -1,25 +1,48 @@
 import {
     Card, CardHeader, CardBody, CardFooter, Heading, Button, Text, Flex, Table, useColorMode, SimpleGrid,
+    useToast,
 } from '@chakra-ui/react'
 import { CardeCom } from '../components';
 import { FaShoppingBasket } from "react-icons/fa";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { useState,useEffect } from 'react';
+import { apiGetRequest } from '../api/apiRequest';
+import { useOutletContext } from 'react-router-dom';
 
 function Report() {
-    // const even = new EventSource()
-    // even.
+    const { userToken, userContent } = useOutletContext();
     const { colorMode } = useColorMode();
+    const [isLoading,setIsLoding] = useState();
+    const [valueReport,setValueReport] = useState();
+
+    const toast = useToast()
+    
+    // useEffect(() => {
+    // apiGetRequest(``,userToken).then(res => {
+    //     setValueReport(res.data.data)
+    // }).catch(error =>{
+    //         toast({
+    //             title: '',
+    //             description: "مشکلی پیش اماد آمده است!",
+    //             status: 'error',
+    //             duration: 9000,
+    //             isClosable: true,
+    //         })
+    // })
+
+    // }, [])
+    
+
+
     return (
         <div className="flex flex-col">
                 <SimpleGrid
-              
                 rounded="10px"
                 mx="10px"
                 my="10px"
                 padding="10px"
                 gap="20px"
                 columns={[1, null, 2]}
-
             >
                 <CardeCom sum="0" title="تعداد چت" discount="0" iconsTitle={<IoChatboxEllipsesOutline className='text-5xl mr-16 p-2 bg-blue-700 rounded-full text-white' />} />
                 <CardeCom sum="0" title="تعداد محصولات" discount="0" iconsTitle={<FaShoppingBasket className='text-5xl p-2 bg-blue-700 rounded-full text-white' />} />
