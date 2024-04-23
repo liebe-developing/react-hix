@@ -13,7 +13,6 @@ import {
   Settings,
   Report,
   Product,
-  Footer,
   TermOfServices,
 } from "./pages";
 // import { useSelector } from "react-redux";

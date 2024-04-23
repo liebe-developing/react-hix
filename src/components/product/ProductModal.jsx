@@ -76,7 +76,6 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
   const dataSend = () => {
     apiPutRequest(`/api/product/`, userToken, productFormData)
       .then((res) => {
-        console.log(res.data);
         toast({
           title: `تغییرات اعمال شد!`,
           status: "success",

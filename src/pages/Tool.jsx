@@ -8,8 +8,6 @@ function Tool() {
   const { userToken, userContent } = useOutletContext();
   const [copytext, setCopyText] = useState("");
 
-  console.log(userToken, userContent);
-
   useEffect(() => {
     apiGetRequest(
       `api/settings/script/${userContent.user_plan_id}`,

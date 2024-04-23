@@ -67,7 +67,6 @@ const Settings = () => {
   useEffect(() => {
     apiGetRequest(`api/settings/${userContent.user_plan_id}`, userToken).then(
       (res) => {
-        console.log(res.data.data.pos);
         setFormData({
           widgetTitle: res.data.data.title,
           widgetDescription: res.data.data.caption,
@@ -99,7 +98,6 @@ const Settings = () => {
     });
     reader.readAsArrayBuffer(e.target.files[0]);
     const imageBase64 = await waitForFilePromise;
-    console.log(imageBase64);
     setFormData({
       ...formData,
       selectedWidgetFile: { name: e.target.files[0].name, data: imageBase64 },
@@ -110,7 +108,6 @@ const Settings = () => {
     e.preventDefault();
 
     setLoading(true);
-    console.log(formData.widgetColor);
 
     const updatedBody = {
       color: formData.widgetColor,
@@ -119,15 +116,15 @@ const Settings = () => {
       pos: formData.widgetPosition,
       icon:
         formData.selectedWidgetFile &&
-        formData.selectedWidgetFile.name &&
-        formData.selectedWidgetFile.data
+          formData.selectedWidgetFile.name &&
+          formData.selectedWidgetFile.data
           ? formData.selectedWidgetFile
           : formData.iconUrl,
       welcome: formData.welcomeMessage,
       explain: formData.storeDescription,
       user_plan_id: userContent.user_plan_id,
     };
-    
+
     apiPutRequest("api/settings", userToken, updatedBody)
       .then((res) => {
         if (res.status === 200) {
@@ -144,7 +141,6 @@ const Settings = () => {
         setLoading(false);
         console.log(error);
       });
-    console.log(formData.widgetPosition);
   };
 
   const handleCollectingOperatorEmail = () => {
@@ -161,18 +157,7 @@ const Settings = () => {
       return;
     }
 
-    if (
-      operators.length >=
-      userContent.plan.operator_count + userContent.plan.gift_operator_count
-    ) {
-      toast({
-        title: `شما حداکثر مجاز به اضافه کردن ${
-          userContent.plan.operator_count + userContent.plan.gift_operator_count
-        } تعداد اپراتور هستید.`,
-        status: "error",
-        position: "top-right",
-      });
-    } else if (re.test(operatorEmailField.name)) {
+    if (re.test(operatorEmailField.name)) {
       operatorEmailField.opId = crypto.randomUUID();
 
       setOperators((prevState) => [...prevState, operatorEmailField]);
@@ -194,15 +179,39 @@ const Settings = () => {
   const handleSavingOperatorEmail = () => {
     setLoadingOpEmails(true);
 
-    apiPostRequest("/api/auth/login", undefined, formData)
+    apiPostRequest(`/api/user_plan/${userContent.user_plan_id}/operator`, userToken, {
+      op_emails: operators.map(o => o.name)
+    })
       .then((res) => {
-        console.log(res);
-
         setLoadingOpEmails(false);
+        toast({
+          title: `اپراتور ها با موفقعیت اضاف شدند !`,
+          status: "success",
+          position: "top-right",
+        });
+
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 400) {
+          toast({
+            title: `شما حداکثر مجاز به اضافه کردن ${userContent.plan.operator_count + userContent.plan.gift_operator_count
+              } تعداد اپراتور هستید.`,
+            status: "error",
+            position: "top-right",
+          });
+        }
+        if (err.response.status === 500) {
+          toast({
+            title: err.response.data.code == 1 ? 'لطفا ابتدا ایمیل های مورد نظر را وارد کنید!' : err.response.data.code == 2 ? 'ایمیل های وارد شده اشتباه می باشد.لطفا بررسی کنید!' :
+              'مشکلی پیش آمده است!',
+            status: "error",
+            position: "top-right",
+          });
+        }
         setLoadingOpEmails(false);
+      }).finally(() => {
+        onClose();
+        setOperators([])
       });
 
     setTimeout(() => {
@@ -311,8 +320,8 @@ const Settings = () => {
               >
                 <Button
                   size={100}
-                  padding={{base: 1,md:2}}
-                  fontSize={{base: "14px",md: "18px"}}
+                  padding={{ base: 1, md: 2 }}
+                  fontSize={{ base: "14px", md: "18px" }}
                   variant="solid"
                   colorScheme="purple"
                   onClick={() => fileInput.current.click()}

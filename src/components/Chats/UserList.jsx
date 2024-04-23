@@ -13,7 +13,6 @@ function UserList({ name, id, email, has_ai, loadFunc }) {
   const handleAiToggle = (e) => {
     e.preventDefault();
     e.target.disabled = true;
-    console.log(id);
     apiPostRequest(`/api/chat_user/${id}/ai/toggle`, userToken)
       .then(() => {
         setAi(!ai);

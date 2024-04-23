@@ -43,13 +43,13 @@ import { useState } from "react";
 import Footer from "./Footer";
 
 const LinkItems = [
-  { name: "داشبورد", icon: GoHome, href: "/" },
-  { name: "گزارش ها", icon: ImStatsDots, href: "/report" },
-  { name: "محصولات", icon: FaRegFolder, href: "/product" },
-  { name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
-  { name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
-  { name: "پروفایل", icon: FaRegUser, href: "/profile" },
-  { name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
+  { id: 0, name: "داشبورد", icon: GoHome, href: "/" },
+  { id: 1, name: "گزارش ها", icon: ImStatsDots, href: "/report" },
+  { id: 2, name: "محصولات", icon: FaRegFolder, href: "/product" },
+  { id: 10, name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
+  { id: 3, name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
+  { id: 11, name: "پروفایل", icon: FaRegUser, href: "/profile" },
+  { id: 4, name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
 ];
 
 const SidebarContent = ({ onClose, userContent, ...rest }) => {
@@ -76,16 +76,18 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
         <img src="/logo_hix.svg" width={130} className="mr-6 mt-6" />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => {
-        return userContent?.user_plan_id ? (
+      {LinkItems.filter(l => userContent?.user_plan_id ? true : (userContent.user.operator_user_plan_id ? l.id >= 10 : false)).map((link) => {
+        return (
+        // userContent?.user_plan_id ? 
           <Link key={link.name} to={link.href} onClick={onClose}>
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
-        ) : (
-          <NavItem icon={link.icon} key={link.name}>
-            {link.name}
-          </NavItem>
-        );
+        )
+        //  : (
+        //   <NavItem icon={link.icon} key={link.name}>
+        //     {link.name}
+        //   </NavItem>
+        // );
       })}
       <Link to="/price-plan">
         <Box

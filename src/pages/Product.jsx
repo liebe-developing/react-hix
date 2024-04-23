@@ -13,12 +13,15 @@ import {
   Box,
   Button,
   Flex,
+  useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 
 function Product() {
   const [loading, setLoading] = useState(false);
+  const { colorMode } = useColorMode();
+
   const {
     isOpen: isOpenCreateProductModal,
     onOpen: onOpenCreateProductModal,
@@ -37,7 +40,6 @@ function Product() {
       userToken
     ).then((res) => {
       // current page
-      console.log(res);
       setDataProduct(res.data.products);
       setBoxButtons(res.data.pageCount);
       setLoading(true);
@@ -70,6 +72,7 @@ function Product() {
                 fontSize={{ base: "8px", sm: "14px" }}
                 status="info"
                 rounded="lg"
+                bg={colorMode === 'light' ? "gray.300" : 'black' }
               >
                 <AlertIcon />
                 برای دیدن جزئیات بیشتر روی فیلد آیتم ها کلیک فرمایید!

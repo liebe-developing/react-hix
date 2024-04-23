@@ -85,8 +85,6 @@ const SignIn = () => {
 
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {
-        console.log(res);
-
         dispatch(signInSuccess(res.data));
         setLoading(false);
         navigate("/");

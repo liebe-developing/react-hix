@@ -3,6 +3,7 @@ import { apiGetRequest } from "../api/apiRequest";
 import { Loader, SidebarWithHeader } from "../components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../pages";
 
 const RootLayout = () => {
   const [user, setuser] = useState();
@@ -28,10 +29,13 @@ const RootLayout = () => {
       try {
         const res = await apiGetRequest("api/user_plan/current", userToken);
 
-        console.log(res.data);
         setuser(res.data.data);
         if (!res.data.data.plan) {
-          navigate("/price-plan");
+          if (!res.data.data.user.operator_user_plan_id)
+            navigate("/price-plan");
+          else {
+            navigate("/chats");
+          }
         }
       } catch (error) {
         localStorage.clear();
@@ -44,13 +48,16 @@ const RootLayout = () => {
 
   return (
     !user ? <Loader /> : (
-      <SidebarWithHeader
-        userContent={user}
-        userAuth={userToken}
-        logOut={() => {
-          setuser(null);
-        }}
-      />
+      <>
+        <SidebarWithHeader
+          userContent={user}
+          userAuth={userToken}
+          logOut={() => {
+            setuser(null);
+          }}
+        />
+        <Footer userContent={user} />
+      </>
     )
   );
 };

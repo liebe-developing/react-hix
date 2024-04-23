@@ -48,7 +48,6 @@ export default function Pricing({ userToken, monthPlan }) {
       planId,
     })
       .then((res) => {
-        console.log(res.data.data.id);
         toast({
           title: `در حال انتقال به صفحه سفارش`,
           status: "success",
@@ -225,7 +224,7 @@ export default function Pricing({ userToken, monthPlan }) {
                   <Box w="80%" pt={7}>
                     <Button
                       onClick={() => sendRouteOrderHandler(id)}
-                      w={price > 0 ? "90%" : "260px"}
+                      w={price > 0 ? "85%" : "190px"}
                       colorScheme="#000"
                       color="#ffff"
                       bg="#48BA06"

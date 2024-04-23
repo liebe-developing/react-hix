@@ -76,8 +76,6 @@ const SignUp = () => {
       setLoading(true);
       setError(false);
 
-      console.log(formData);
-
       if (formData.password !== formData.restpass) {
         toast({
           title: `فیلد رمز باهم برابر نیست!`,

@@ -43,7 +43,6 @@ const Profile = () => {
   useEffect(() => {
     apiGetRequest(`api/user/${userContent.user.id}`, userToken)
       .then((res) => {
-        console.log(res.data.data.user);
         const response = res.data.data.user;
         setFormData({
           name: response.name,
@@ -142,7 +141,6 @@ const Profile = () => {
     urlReader.readAsDataURL(e.target.files[0]);
     const imageBase64 = await waitForFilePromise1;
     const imageDataUrl = await waitForFilePromise2;
-    console.log(imageDataUrl);
     setFormData({
       ...formData,
       selectedAvatarFile: { name: e.target.files[0].name, dataUrl: imageDataUrl, data: imageBase64 },

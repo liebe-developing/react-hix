@@ -43,8 +43,6 @@ function Order() {
       ...prevState,
       [name]: value,
     }));
-
-    console.log(name + "=" + value);
   };
 
   useEffect(() => {
@@ -82,7 +80,6 @@ function Order() {
           });
           setAcceptedPercent(res.data.percent);
 
-          console.log(res.data.percent);
           setDiscountChecked(true);
         }
         if (res.status === 403) {

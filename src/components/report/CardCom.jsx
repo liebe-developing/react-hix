@@ -26,10 +26,6 @@ function CardeCom(props) {
                     <span className="font-bold m-4 text-2xl">{sum}</span>
                 </Text>
             </CardBody>
-            <CardFooter display="flex" gap="10px">
-                <IoChatboxEllipsesOutline className='text-2xl font-light inline-flex' />
-                <h4>{discount}%  / سال قبل</h4>
-            </CardFooter>
         </Card>
     )
 }

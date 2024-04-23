@@ -45,7 +45,7 @@ export function Chats() {
   useEffect(() => {
     setUserLoading(true);
     apiGetRequest(
-      `api/chat_user/?upid=${userContent.user_plan_id}`,
+      `api/chat_user/?upid=${userContent.user_plan_id ? userContent.user_plan_id :userContent.user.operator_user_plan_id}`,
       userToken
     ).then((res) => {
       setListUser(res.data.data);
@@ -76,7 +76,6 @@ export function Chats() {
 
           socket.on("widget:send", (data) => {
             const { message } = data;
-            console.log(1);
             message.rid = crypto.randomUUID();
             if (!message.created_at) message.created_at = new Date();
             if (message.is_user_message === undefined)
@@ -87,7 +86,6 @@ export function Chats() {
 
           socket.on("operator:send", (data) => {
             const { message } = data;
-            console.log(2);
             message.rid = crypto.randomUUID();
             if (!message.created_at) message.created_at = new Date();
             if (message.is_user_message === undefined)
@@ -101,7 +99,7 @@ export function Chats() {
         socket.emit("operator:target", { userId });
 
         apiGetRequest(
-          `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id}`,
+          `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id ? userContent.user_plan_id : userContent.user.operator_user_plan_id}`,
           userToken
         ).then((res) => {
           setSelectedChat(userId);
@@ -280,7 +278,6 @@ export function Chats() {
                 selectedChatMessages &&
                 selectedChatMessages.map((item, index, items) => {
                   const { content, is_user_message, created_at } = item;
-                  console.log(item);
                   const type = item.type.toLocaleLowerCase();
                   return (
                     <Flex
