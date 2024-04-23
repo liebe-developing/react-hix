@@ -7,7 +7,7 @@ const PrimaryButton = ({ title, type, btnFn, children, ...rest }) => {
       display="flex"
       alignItems="center"
       gap={2}
-      _hover={{ opacity: "95%" }}
+      _hover={{ opacity: "85%" }}
       variant="unstyled"
       boxShadow="#FF6D00 0 0 16px -7px !important"
       color="#fff"

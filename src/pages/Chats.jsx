@@ -72,7 +72,7 @@ export function Chats() {
         });
 
         socket.on("connect", () => {
-          socket.on("chat:id", (data) => {});
+          socket.on("chat:id", (data) => { });
 
           socket.on("widget:send", (data) => {
             const { message } = data;
@@ -191,26 +191,26 @@ export function Chats() {
           )}
           {!userLoading && userSearchTerm.length > 1
             ? filteredUsers.map((item) => {
-                return (
-                  <div key={item.id}>
-                    <UserList
-                      {...item}
-                      loadFunc={() => selectUserChat(item.id)}
-                    />
-                  </div>
-                );
-              })
+              return (
+                <div key={item.id}>
+                  <UserList
+                    {...item}
+                    loadFunc={() => selectUserChat(item.id)}
+                  />
+                </div>
+              );
+            })
             : !userLoading &&
-              listUser.map((item) => {
-                return (
-                  <div key={item.id}>
-                    <UserList
-                      {...item}
-                      loadFunc={() => selectUserChat(item.id)}
-                    />
-                  </div>
-                );
-              })}
+            listUser.map((item) => {
+              return (
+                <div key={item.id}>
+                  <UserList
+                    {...item}
+                    loadFunc={() => selectUserChat(item.id)}
+                  />
+                </div>
+              );
+            })}
         </Box>
       </Flex>
 
@@ -353,28 +353,37 @@ export function Chats() {
                                 </th>
                               </tr>
                             </thead>
-                            {JSON.parse(content).items.map((item, index) => (
-                              <tbody
-                                className="odd:bg-white even:bg-slate-50"
-                                key={index}
-                              >
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                  <td className="py-2 px-2">{item.title}</td>
-                                  <td className="py-2 px-2">{item.url}</td>
-                                  <td className="py-2 px-2">{item.price}</td>
-                                  <td className="py-2">
-                                    {
-                                      <img
-                                        src={item.image}
-                                        width={50}
-                                        height={50}
-                                        alt="Product Image"
-                                      />
-                                    }
-                                  </td>
-                                </tr>
-                              </tbody>
-                            ))}
+                            {
+                              (() => {
+                                try {
+                                  return JSON.parse(content).items.map((item, index) => (
+                                    <tbody
+                                      className="odd:bg-white even:bg-slate-50"
+                                      key={index}
+                                    >
+                                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td className="py-2 px-2">{item.title}</td>
+                                        <td className="py-2 px-2">{item.url}</td>
+                                        <td className="py-2 px-2">{item.price}</td>
+                                        <td className="py-2">
+                                          {
+                                            <img
+                                              src={item.image}
+                                              width={50}
+                                              height={50}
+                                              alt="Product Image"
+                                            />
+                                          }
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  ))
+                                }
+                                catch (error) {
+                                  return content
+                                }
+                              })()
+                            }
                           </table>
                         </div>
                       )}

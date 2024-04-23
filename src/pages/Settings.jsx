@@ -127,7 +127,7 @@ const Settings = () => {
       explain: formData.storeDescription,
       user_plan_id: userContent.user_plan_id,
     };
-    console.log(updatedBody);
+    
     apiPutRequest("api/settings", userToken, updatedBody)
       .then((res) => {
         if (res.status === 200) {
@@ -311,7 +311,8 @@ const Settings = () => {
               >
                 <Button
                   size={100}
-                  padding={2}
+                  padding={{base: 1,md:2}}
+                  fontSize={{base: "14px",md: "18px"}}
                   variant="solid"
                   colorScheme="purple"
                   onClick={() => fileInput.current.click()}
@@ -328,7 +329,7 @@ const Settings = () => {
                       border: "1px solid yellow",
                       boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
                     }}
-                    className="rounded-full w-10 h-10 md:w-20 md:h-20 shadow-2xl "
+                    className="rounded-full w-10 h-10 md:w-16 md:h-16 shadow-2xl "
                   />
                 )}
               </Flex>

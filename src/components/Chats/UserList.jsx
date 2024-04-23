@@ -36,13 +36,15 @@ function UserList({ name, id, email, has_ai, loadFunc }) {
       <Flex onClick={loadFunc} className="flex-grow" cursor="pointer" gap={2}>
         <Avatar src="/avatar.webp" name={name} />
         <Flex alignItems="center" justifyContent="space-between" w="full">
-          <Box display="flex" flexDir="column" gap={1.5}>
+          <Box display="flex" flexDir="row" gap={1.5} alignItems={"center"}>
             <Heading fontSize="18px">
               {name}
               {/* <CircleCheck className="text-red-600 inline text-xl mr-10" /> */}
             </Heading>
-            <Text maxW="120" className="text-xs text-gray-500" noOfLines={1}>
-              {/* {mes} */}
+            <Text maxW="120" className="text-xs text-gray-500" noOfLines={1} >
+              <span className="text-lg">
+                {id}
+              </span>
             </Text>
           </Box>
           {/* //TODO: */}

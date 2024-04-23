@@ -36,6 +36,8 @@ const Profile = () => {
     birth: "",
     codeAcount: "",
     idNumber: "",
+    avatarUrl: "",
+    selectedAvatarFile: null
   });
 
   useEffect(() => {
@@ -51,6 +53,7 @@ const Profile = () => {
           birth: response.birth,
           idNumber: response.code_meli,
           password: response.password,
+          avatarUrl: response.avatar
         });
       })
       .catch((error) => {
@@ -59,6 +62,7 @@ const Profile = () => {
   }, []);
 
   const handleSubmit = (e) => {
+    // TODO: / CHANGE LOGIC MODULE
     e.preventDefault();
 
     apiPutRequest("api/user", userToken, {
@@ -87,6 +91,15 @@ const Profile = () => {
         formData.birth && formData.birth.trim().length > 0
           ? formData.birth.trim()
           : undefined,
+      avatar:
+        formData.selectedAvatarFile &&
+          formData.selectedAvatarFile.name &&
+          formData.selectedAvatarFile.data
+          ? {
+            ...formData.selectedAvatarFile,
+            dataUrl: undefined
+          }
+          : formData.avatarUrl,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -112,18 +125,27 @@ const Profile = () => {
 
   const fileSelectedHandler = async (e) => {
     const reader = new FileReader();
-    const waitForFilePromise = new Promise((resolve) => {
+    const urlReader = new FileReader();
+    const waitForFilePromise1 = new Promise((resolve) => {
       reader.onload = async (e) => {
-        const text = e.target.result;
-        resolve(encode(text));
+        const result = e.target.result;
+        resolve(encode(result));
+      };
+    });
+    const waitForFilePromise2 = new Promise((resolve) => {
+      urlReader.onload = async (e) => {
+        const result = e.target.result;
+        resolve(result);
       };
     });
     reader.readAsArrayBuffer(e.target.files[0]);
-    const imageBase64 = await waitForFilePromise;
-    console.log(imageBase64);
+    urlReader.readAsDataURL(e.target.files[0]);
+    const imageBase64 = await waitForFilePromise1;
+    const imageDataUrl = await waitForFilePromise2;
+    console.log(imageDataUrl);
     setFormData({
       ...formData,
-      selectedWidgetFile: { name: e.target.files[0].name, data: imageBase64 },
+      selectedAvatarFile: { name: e.target.files[0].name, dataUrl: imageDataUrl, data: imageBase64 },
     });
   };
 
@@ -142,31 +164,35 @@ const Profile = () => {
       </Heading>
       <Center>
         <VStack spacing={4}>
-          <Avatar
-            src={formData.iconUrl}
-            size={{ base: "lg", md: "xl" }}
-            bg="gray.500"
-          >
-            <AvatarBadge
-              as={IconButton}
-              size="sm"
-              rounded="full"
-              top="-10px"
-              colorScheme={"red"}
-              aria-label="remove Image"
-              icon={<IoClose />}
+          {formData.iconUrl && (
+            <img
+              src={formData.iconUrl}
+              style={{
+                border: "1px solid yellow",
+                boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
+              }}
+              className="rounded-full w-10 h-10 md:w-20 md:h-20 shadow-2xl "
             />
-          </Avatar>
+          )}
+          <img
+            src={formData.selectedAvatarFile ? formData.selectedAvatarFile.dataUrl : (formData.avatarUrl ? formData.avatarUrl : '/avatar.webp')}
+            style={{
+              border: "2px solid #3e256b",
+              boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
+            }}
+            className="rounded-full w-20 h-20 md:w-32 md:h-32 shadow-2xl "
+          />
           <Flex flexDir="column">
             <Field
               type="file"
               display="none"
+              accept=".png, .jpeg"
               onChange={fileSelectedHandler}
               reference={fileInput}
             >
               <PrimaryButton
                 btnFn={() => fileInput.current.click()}
-                title="عکس خود را آپلود کنید"
+                title="ویرایش تصویر پروفایل"
                 w="full"
                 size="md"
               />
