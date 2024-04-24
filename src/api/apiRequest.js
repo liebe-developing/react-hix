@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import apiRequests from "../services/Axios/configs/configs";
 
 export const apiGetRequest = (route, token = undefined) => {
@@ -5,6 +6,10 @@ export const apiGetRequest = (route, token = undefined) => {
     headers: {
       Authorization: token ? `Bearer ${token}` : undefined,
     },
+  }).catch(err => {
+    if (err.response.status === 401) {
+      window.location.replace("/sign-in");
+    }
   });
 };
 
@@ -18,6 +23,10 @@ export const apiPostRequest = (
       Authorization: token ? `Bearer ${token}` : undefined,
     },
     withCredentials: true,
+  }).catch(err => {
+    if (err.response.status === 401) {
+      window.location.replace("/sign-in");
+    }
   });
 };
 
@@ -26,5 +35,9 @@ export const apiPutRequest = (route, token = undefined, data = undefined) => {
     headers: {
       Authorization: token ? `Bearer ${token}` : undefined,
     },
+  }).catch(err => {
+    if (err.response.status === 401) {
+      window.location.replace("/sign-in");
+    }
   });
 };

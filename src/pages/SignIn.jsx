@@ -90,7 +90,7 @@ const SignIn = () => {
         navigate("/");
       })
       .catch((err) => {
-        if (err.status === 401) {
+        if (err.response.status === 401) {
           setIsAuthorized(false);
           return;
         }
