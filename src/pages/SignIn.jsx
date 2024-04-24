@@ -111,7 +111,7 @@ const SignIn = () => {
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
   return (
-    <Box position={"relative"} dir="ltr">
+    <Box position={"relative"} dir="ltr" overflow={"hidden"}>
       <Flex
         as={Flex}
         flexDir={{ base: "column-reverse", md: "row" }}
