@@ -23,8 +23,6 @@ function Report() {
         <div className="flex flex-col">
                 <SimpleGrid
                 rounded="10px"
-                mx="10px"
-                my="10px"
                 padding="10px"
                 gap="20px"
                 columns={[1, null, 2]}
@@ -36,7 +34,7 @@ function Report() {
             </SimpleGrid>
             {/* TABEL CONTENT */}
             {!data ? <div className="w-full h-[250px] flex items-center justify-center"><Spinner size="xl" /></div> : (
-                <div className="flex flex-col mt-3 ">
+                <div className="flex flex-col py-1 ">
                     <div className="overflow-x-auto sm:mx-0.5">
                         <div className="py-2 inline-block min-w-full sm:text-center px-[10px]">
                             <div className="overflow-hidden rounded-md">
@@ -59,7 +57,7 @@ function Report() {
                                         <tr
                                             bg={colorMode === "light" ? "gray.300" : "gray.700"}
                                             className="border-b">
-                                            <td className="text-center py-4 whitespace-nowrap text-sm font-medium bg-gray-300">1</td>
+                                            <td className={"text-center py-4 whitespace-nowrap text-sm font-medium border-l border-gray-400 " + (colorMode === "light" ? "bg-gray-300" : "bg-[#1a202c]")}>1</td>
                                             <td className="text-sm  font-light text-center py-4 whitespace-nowrap">
                                                 {data.pastChatCount[0]}
                                             </td>
@@ -71,7 +69,7 @@ function Report() {
                                         <tr
                                             bg={colorMode === "light" ? "gray.300" : "gray.700"}
                                             className="border-b">
-                                            <td className="text-center py-4 whitespace-nowrap text-sm font-medium bg-gray-300 ">2</td>
+                                            <td className={"text-center py-4 whitespace-nowrap text-sm font-medium border-l border-gray-400 " + (colorMode === "light" ? "bg-gray-300" : "bg-[#1a202c]")}>2</td>
                                             <td className="text-sm  font-light text-center py-4 whitespace-nowrap">
                                                 {data.pastChatCount[1]}
                                             </td>
@@ -82,7 +80,7 @@ function Report() {
                                         <tr
                                             bg={colorMode === "light" ? "gray.300" : "gray.700"}
                                             className="border-b">
-                                            <td className="text-center py-4 whitespace-nowrap text-sm font-medium bg-gray-300">3</td>
+                                            <td className={"text-center py-4 whitespace-nowrap text-sm font-medium border-l border-gray-400 " + (colorMode === "light" ? "bg-gray-300" : "bg-[#1a202c]")}>3</td>
                                             <td className="text-sm  font-light text-center py-4 whitespace-nowrap">
                                                 {data.pastChatCount[2]}
                                             </td>

@@ -53,6 +53,8 @@ const LinkItems = [
 ];
 
 const SidebarContent = ({ onClose, userContent, ...rest }) => {
+  const {colorMode} = useColorMode();
+
   return (
     <Box
       transition="3s ease"
@@ -63,22 +65,24 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       pos="fixed"
       h="full"
       overflowY="auto"
-      py={2.5}
+      // py={2.5}
       {...rest}
     >
       <Flex
-        mb={10}
-        h="10"
         alignItems="center"
-        mx="2"
-        justifyContent="space-between"
+        justifyContent="center"
+        bg={colorMode === 'light' ? '#eee' : '#1a202c'}
+        flexDirection={"row"}
+        className="w-full md:p-5 h-20"
       >
-        <img src="/logo_hix.svg" width={130} className="mr-6 mt-6" />
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
+        <img src="/logo_hix.svg" className={`w-[30%] md:w-[70%] aspect-[1] ${colorMode === 'light' ? 'mix-blend-normal' : 'mix-blend-lighten'} `} />
+        <div className="flex md:hidden flex-row flex-grow justify-end px-4" >
+          <CloseButton onClick={onClose}/>
+        </div>
       </Flex>
       {LinkItems.filter(l => userContent?.user_plan_id ? true : (userContent.user.operator_user_plan_id ? l.id >= 10 : false)).map((link) => {
         return (
-        // userContent?.user_plan_id ? 
+          // userContent?.user_plan_id ? 
           <Link key={link.name} to={link.href} onClick={onClose}>
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
@@ -157,7 +161,7 @@ const NavItem = ({ icon, children, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, userContent, ...rest }) => {
+const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const today = new Date().toLocaleDateString("fa-IR", options);
@@ -178,7 +182,7 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
     <Flex
       mr={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
-      height="20"
+      height={"80px"}
       alignItems="center"
       bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
@@ -233,7 +237,7 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
                   width={{ base: "35px", md: "40px" }}
                   height={{ base: "35px", md: "40px" }}
                   bg={useColorModeValue("gray.300", "white")}
-                  src={userContent.user.avatar || "https://s3-alpha-sig.figma.com/img/8b87/d4ec/07e2adaafa5c876cbc7382f809b9bd51?Expires=1711929600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aDFVBDl3a9HYPxMQKzp-5ENzJXOc~w-4iaafrf2GR3y4KUh1CiV135fHv5sSLdv6DolisHQvUbJIK~ieSYcbJTqjlhz792dhI6pznAqx5k4xub2pW~~PljiBYlqZn3mvA5aT4iAb94G8nvipRjM-jBNKSN0z5f1DiIbqSfdTCwHiEfCdC~pH8jhH~gJR9zju4QgLQPLuUExp3YIiLJxQ3jP90cw7lJOJTCVM5t1R4L5qCAOehWmLfxMrM8XF0TqoPfbJgUqDmz-pNtTfepqNGMFEIIeyURgKS8dEg7mG8zpyl9Q6p0bZwGZJvSic~FR0pwGpmEYolJaSJjgaNNSBAA__"}
+                  src={(avatar && avatar.length > 0) ? avatar : "https://s3-alpha-sig.figma.com/img/8b87/d4ec/07e2adaafa5c876cbc7382f809b9bd51?Expires=1711929600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aDFVBDl3a9HYPxMQKzp-5ENzJXOc~w-4iaafrf2GR3y4KUh1CiV135fHv5sSLdv6DolisHQvUbJIK~ieSYcbJTqjlhz792dhI6pznAqx5k4xub2pW~~PljiBYlqZn3mvA5aT4iAb94G8nvipRjM-jBNKSN0z5f1DiIbqSfdTCwHiEfCdC~pH8jhH~gJR9zju4QgLQPLuUExp3YIiLJxQ3jP90cw7lJOJTCVM5t1R4L5qCAOehWmLfxMrM8XF0TqoPfbJgUqDmz-pNtTfepqNGMFEIIeyURgKS8dEg7mG8zpyl9Q6p0bZwGZJvSic~FR0pwGpmEYolJaSJjgaNNSBAA__"}
                   borderRadius={"100%"}
                   border={"solid 1px #3e256b"}
 
@@ -294,6 +298,7 @@ const MobileNav = ({ onOpen, userContent, ...rest }) => {
 
 const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [avatar, setAvatar] = useState(userContent.user.avatar);
 
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.50", "gray.900")}>
@@ -315,16 +320,19 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} userContent={userContent} />
-      <Box mr={{ base: 0, md: 60 }}>
-        <Outlet
-          context={{
-            userToken,
-            userContent,
-          }}
-        />
-        {/* <Footer /> */}
-      </Box>
+      <MobileNav onOpen={onOpen} userContent={userContent} avatar={avatar} />
+      {/* <Box mr={{ base: 0, md: 60 }} className="flex-grow" id="test"> */}
+      <Flex mr={{ base: 0, md: 60 }} flexDir={"column"} justifyContent={"space-between"} className="min-h-[calc(100vh-80px)] flex-grow" pt={2}>
+          <Outlet
+            context={{
+              userToken,
+              userContent,
+              setAvatar
+            }}
+          />
+          <Footer userContent={userContent} />
+        </Flex>
+      {/* </Box> */}
     </Box>
   );
 };

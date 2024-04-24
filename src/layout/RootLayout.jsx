@@ -56,7 +56,6 @@ const RootLayout = () => {
             setuser(null);
           }}
         />
-        <Footer userContent={user} />
       </>
     )
   );

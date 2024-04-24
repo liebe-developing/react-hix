@@ -26,7 +26,7 @@ const Profile = () => {
   const fileInput = useRef(null);
 
   const toast = useToast();
-  const { userToken, userContent } = useOutletContext();
+  const { userToken, userContent, setAvatar } = useOutletContext();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -107,6 +107,7 @@ const Profile = () => {
             status: "success",
             position: "bottom",
           });
+          setAvatar(res.data.data.avatar)
         }
       })
       .catch((error) => {

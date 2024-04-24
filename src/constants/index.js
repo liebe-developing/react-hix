@@ -392,12 +392,12 @@ const oneYearPackage = [
 const fistNavlinkData = [
   { title: "گزارش ها", desc: "آنالیزها و گزارش ها", icon: reports, link: "/report" },
   { title: "محصولات", desc: "محصولات کسب و کار", icon: products, link: "/product" },
-  { title: "دستورات", icon: orders },
-  {
-    title: "اینستاگرام",
-    desc: "اتصال پیج اینستاگرام به ربات",
-    icon: instagram,
-  },
+  // { title: "دستورات", icon: orders },
+  // {
+  //   title: "اینستاگرام",
+  //   desc: "اتصال پیج اینستاگرام به ربات",
+  //   icon: instagram,
+  // },
 ];
 const secondNavlinkData = [
   {

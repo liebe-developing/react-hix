@@ -28,28 +28,22 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Flex py="1" px="2" flexWrap="wrap" mx={{base: 5, md: 0}} flexDirection={{ base: "column", sm: "column",lg: "row" }} gap={12}>
+    <Flex pt="1" pb="4" px="4" flexWrap="wrap" flexDirection={{ base: "column", sm: "column",lg: "row" }} gap={12}>
       <Box flex={1.2}>
         <MediaBox />
-        <Flex flexWrap="wrap" justifyContent="space-between" my={8} rowGap={4}>
+        <Flex flexWrap="wrap" justifyContent="space-around" gap={4} mt={8} rowGap={4} flexDir={"row"}>
           {fistNavlinkData.map((item, i) => (
             <NavlinkBox key={i} {...item} />
           ))}
         </Flex>
       </Box>
-      <Box
-        bg="rgba(255, 109, 0, 0.3)"
-        height="inherit"
-        w={"2px"}
-        display={{ base: "none", md: "flex" }}
-      ></Box>
       <Box flex={1}>
         {loading && <Loading />}
         {error && <Error title="مشکلی پیش آمده است" />}
         {!loading && !error && getValueDashboard && (
-          <Flex flexWrap="wrap" columnGap={4} rowGap={8} justifyContent="start">
+          <Flex flexWrap="wrap" columnGap={4} rowGap={8} justifyContent="space-between" flexGrow={1}>
             <Stats
-              title="تعداد کاربران"
+              title="تعداد مکالمات"
               value={`${
                 getValueDashboard.maxChats - getValueDashboard.remainingChats
               } / ${getValueDashboard.maxChats}`}

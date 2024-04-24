@@ -7,15 +7,17 @@ import {
   Image,
   Text,
   VStack,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const NavlinkBox = ({ icon, title, desc,link }) => {
+const NavlinkBox = ({ icon, title, desc, link }) => {
+  const { colorMode } = useColorMode();
   return (
     <Box
-      w={{ base: "full", md: "300px" }}
+      w={{ base: "full", md: "250px" }}
       h="80px"
       borderRadius="16px"
       border={useColorModeValue("1px solid #000", "1px solid gray.500")}
@@ -23,6 +25,7 @@ const NavlinkBox = ({ icon, title, desc,link }) => {
       p={3}
       cursor="pointer"
       role="group"
+      className="flex-grow"
     >
       <Flex alignItems="center" w="full" justifyContent="space-between">
         <HStack spacing={2}>
@@ -31,6 +34,13 @@ const NavlinkBox = ({ icon, title, desc,link }) => {
               src={icon}
               transition="all 0.3s ease-in-out"
               _groupHover={{ transform: "scale(1.1)" }}
+              style={colorMode !== 'light' ? {
+                backgroundBlendMode: "luminosity",
+                background: "#7f56af",
+                borderRadius: "15px"
+              } : {
+                borderRadius: "15px"
+              }}
             />
           </Link>
           <VStack spacing={1} align="start">

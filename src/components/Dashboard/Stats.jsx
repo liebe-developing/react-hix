@@ -10,9 +10,11 @@ const Stats = ({ title, value }) => {
       border={useColorModeValue("1px solid #000", "1px solid gray.500")}
       borderRadius="20px"
       h="180px"
-      w={{ base: "45%", md: "46%" }}
+      w={{ base: "45%", md: "45%" }}
+      flexGrow={1}
       p={6}
-      boxShadow={colorMode === 'light' ? '4px 4px 0px 0px #000000' : "4px 4px 0px 0px #fff"}
+      bg={colorMode === 'light' ? '#fff' : '#1a202c'}
+      boxShadow={colorMode === 'light' ? '4px 4px 0px 0px #bbb' : "4px 4px 0px 0px #888"}
     >
       <Flex
         flexDir="column"
