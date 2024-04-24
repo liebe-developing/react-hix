@@ -17,16 +17,22 @@ import {
   useDisclosure,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   useColorMode,
   Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverHeader,
+  PopoverBody,
+  ListItem,
+  List,
 } from "@chakra-ui/react";
 import { Link, Outlet } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
 import {
-  FaInstagram,
   FaTelegramPlane,
   FaRegFolder,
   FaRegUser,
@@ -41,6 +47,8 @@ import { BsCalendarCheck } from "react-icons/bs";
 import { apiPostRequest } from "../api/apiRequest";
 import { useState } from "react";
 import Footer from "./Footer";
+import * as persianTools from "@persian-tools/persian-tools";
+import moment from "jalali-moment";
 
 const LinkItems = [
   { id: 0, name: "داشبورد", icon: GoHome, href: "/" },
@@ -53,7 +61,7 @@ const LinkItems = [
 ];
 
 const SidebarContent = ({ onClose, userContent, ...rest }) => {
-  const {colorMode} = useColorMode();
+  const { colorMode } = useColorMode();
 
   return (
     <Box
@@ -77,7 +85,7 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       >
         <img src="/logo_hix.svg" className={`w-[30%] md:w-[70%] aspect-[1] ${colorMode === 'light' ? 'mix-blend-normal' : 'mix-blend-lighten'} `} />
         <div className="flex md:hidden flex-row flex-grow justify-end px-4" >
-          <CloseButton onClick={onClose}/>
+          <CloseButton onClick={onClose} />
         </div>
       </Flex>
       {LinkItems.filter(l => userContent?.user_plan_id ? true : (userContent.user.operator_user_plan_id ? l.id >= 10 : false)).map((link) => {
@@ -162,7 +170,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
-  const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode, toggleColorMode } = useColorMode();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const today = new Date().toLocaleDateString("fa-IR", options);
 
@@ -213,18 +221,68 @@ const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
       </Text>
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
+        <Text
+          ml={5}
+          display={{ base: "none", md: "flex" }}
+          alignItems="center"
+          gap={2}
+          color={useColorModeValue("gray.600", "gray.400")}
+          fontSize={{ base: "11px", md: "12.5px" }}
+        >
+          <BsCalendarCheck />
+          {today}
+        </Text>
+        <Popover closeOnBlur={true}>
+          <PopoverTrigger>
+            <IconButton
+              aria-label='open menu'
+              size={{ base: "sm", md: "md" }}
+              icon={<FiBell />}
+              variant='ghost'
+            />
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverHeader>پیام ها!</PopoverHeader>
+            <PopoverBody>
+              <List spacing={3}>
+                {(userContent && userContent.notifications && userContent.notifications.length > 0) ? userContent.notifications.map((n,i) => (
+                  <ListItem key={i}>
+                    <Flex flexDir={"row"} className=" p-1 text-xs">
+                      <div className="w-[25%] border-l border-gray-300 px-1">
+                        {(() => {
+                          const date = moment.from(new Date(n.time).toLocaleDateString('en-US', {
+                            year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit"
+                          }).replace(',', ''), 'en').locale('fa').format('YYYY/M/D HH:mm:ss')
+                          return (persianTools.timeAgo(date))
+                        })()}
+                      </div>
+                      <div className="w-[75%] px-1">
+                        {n.message}
+                      </div>
+                    </Flex>
+                  </ListItem>
+                )) :
+                  <ListItem>
+                    پیام جدیدی موجود نیست!
+                  </ListItem>
+                }
+              </List>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+
+        <DarkModeButton
+          colorMode={colorMode}
+          toggleColorMode={toggleColorMode}
+        />
         <Flex alignItems={"center"} zIndex={2}>
-          <Text
-            ml={5}
-            display={{ base: "none", md: "flex" }}
-            alignItems="center"
-            gap={2}
-            color={useColorModeValue("gray.600", "gray.400")}
-            fontSize={{ base: "11px", md: "12.5px" }}
-          >
-            <BsCalendarCheck />
-            {today}
-          </Text>
+
           <Menu>
             <MenuButton
               py={2}
@@ -281,16 +339,7 @@ const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
             </MenuList>
           </Menu>
         </Flex>
-        <IconButton
-          size={{ base: "sm", md: "md" }}
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
-        <DarkModeButton
-          colorMode={colorMode}
-          toggleColorMode={toggleColorMode}
-        />
+
       </HStack>
     </Flex>
   );
@@ -323,15 +372,15 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
       <MobileNav onOpen={onOpen} userContent={userContent} avatar={avatar} />
       {/* <Box mr={{ base: 0, md: 60 }} className="flex-grow" id="test"> */}
       <Flex mr={{ base: 0, md: 60 }} flexDir={"column"} justifyContent={"space-between"} className="min-h-[calc(100vh-80px)] flex-grow" pt={2}>
-          <Outlet
-            context={{
-              userToken,
-              userContent,
-              setAvatar
-            }}
-          />
-          <Footer userContent={userContent} />
-        </Flex>
+        <Outlet
+          context={{
+            userToken,
+            userContent,
+            setAvatar
+          }}
+        />
+        <Footer userContent={userContent} />
+      </Flex>
       {/* </Box> */}
     </Box>
   );
