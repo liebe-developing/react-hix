@@ -227,14 +227,6 @@ const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
       justifyContent={{ base: "space-between", md: "space-between" }}
       {...rest}
     >
-      <Flex alignItems="center" gap={2}>
-        <Icon as={TfiHeadphoneAlt} boxSize={6} />
-        <Link to="tel:+989395060614">
-          <Text fontSize="16px" color="purple" fontWeight="bolder">
-            09395060614
-          </Text>
-        </Link>
-      </Flex>
       <IconButton
         display={{ base: "flex", md: "none" }}
         onClick={onOpen}
@@ -242,6 +234,18 @@ const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
+      <Flex alignItems="center" gap={2}>
+        <Icon as={TfiHeadphoneAlt} boxSize={6} />
+        <Link to="tel:+989395060614">
+          <Text
+            fontSize="16px"
+            color={useColorModeValue("purple", "gray.200")}
+            fontWeight="bolder"
+          >
+            09395060614
+          </Text>
+        </Link>
+      </Flex>
 
       <Text
         display={{ base: "flex", md: "none" }}

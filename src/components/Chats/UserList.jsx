@@ -36,10 +36,10 @@ function UserList({ name, id, email, has_ai, loadFunc }) {
         <Avatar src="/avatar.webp" name={name} />
         <Flex alignItems="center" justifyContent="space-between" w="full">
           <Box display="flex" flexDir="row" gap={1.5} alignItems={"center"}>
-            <Text maxW="120" className="text-xs text-gray-500" noOfLines={1}>
-              <span className="text-lg">{id}</span>
+            <Text fontSize="19px" className="text-gray-500">
+              {id}
             </Text>
-            <Heading fontSize="18px">
+            <Heading isTruncated maxW={"100px"} fontSize="19px">
               {name}
               {/* <CircleCheck className="text-red-600 inline text-xl mr-10" /> */}
             </Heading>
