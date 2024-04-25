@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^2.2.2",
     "axios": "^1.6.8",
     "base64-arraybuffer": "^1.0.2",
+    "emoji-picker-react": "^4.9.2",
     "framer-motion": "^11.0.15",
     "html-formatter": "^0.1.9",
     "jalali-moment": "^3.3.11",

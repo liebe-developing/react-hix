@@ -14,7 +14,6 @@ import {
   InputLeftElement,
   Icon,
   keyframes,
-  Spinner,
   useToast,
   FormHelperText,
 } from "@chakra-ui/react";
@@ -23,7 +22,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
-import { Error } from "../components";
+import { Loading } from "../components";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -33,7 +32,6 @@ to {transform: translateY(-60px)}
 const SignUp = () => {
   const mobileInput = useRef(null);
 
-  const [passwordLengthError, setPasswordLengthError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [error, setError] = useState(false);
@@ -84,7 +82,7 @@ const SignUp = () => {
         });
         setLoading(false);
       } else if (
-        formData.password.length < 6 ||
+        formData.password.length < 4 ||
         formData.password.length > 16
       ) {
         toast({
@@ -96,17 +94,16 @@ const SignUp = () => {
         return;
       } else {
         apiPostRequest("/api/auth/register", undefined, formData)
-          .then((res) => {
+          .then(() => {
             toast({
               title: `پروفایل شما با موفقیت ساخته شد`,
               status: "success",
               position: "top-right",
-              isClosable: true,
             });
             setLoading(false);
             navigate("/sign-in");
           })
-          .catch((err) => {
+          .catch(() => {
             setError(true);
             setLoading(false);
 
@@ -311,13 +308,7 @@ const SignUp = () => {
                     type="submit"
                   >
                     {loading ? (
-                      <Spinner
-                        thickness="4px"
-                        speed="0.65s"
-                        emptyColor="gray.200"
-                        color="blue.500"
-                        size="lg"
-                      />
+                      <Loading emColor="gray.200" color="blue.500" size="lg" />
                     ) : (
                       "ثبت نام"
                     )}

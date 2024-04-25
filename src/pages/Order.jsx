@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import {
   useToast,
@@ -11,11 +16,11 @@ import {
   Text,
   Select,
   Checkbox,
-  Spinner,
 } from "@chakra-ui/react";
 import * as persianTools from "@persian-tools/persian-tools";
 import Field from "../components/Field";
 import isValidURL from "../services/ErrorHandling/validate ";
+import Loading from "../components/Loading";
 
 function Order() {
   const toast = useToast();
@@ -308,11 +313,7 @@ function Order() {
                     // className="py-1 px-2 bg-blue-500 rounded text-black hover:scale-105"
                   >
                     {loadingDiscount ? (
-                      <Spinner
-                        // size="md"
-                        emptyColor="gray.200"
-                        color="green.500"
-                      />
+                      <Loading emColor="gray.200" color="green.500" />
                     ) : (
                       "ثبت"
                     )}
@@ -345,12 +346,12 @@ function Order() {
                     onChange={(e) => setChecked(e.target.checked)}
                     className="me-1 w-4 h-4 "
                   />
-                  <label> قوانین را میپذیرم! 
+                  <label>
+                    {" "}
+                    قوانین را میپذیرم!
                     <span className="mr-3 text-blue-600 hover:underline underline-offset-4">
-                      <Link to="/termofservices">
-                        قوانین
-                      </Link>
-                    </span> 
+                      <Link to="/termofservices">قوانین</Link>
+                    </span>
                   </label>
                 </h3>
                 <Button
@@ -363,9 +364,9 @@ function Order() {
                   // hover:bg-rose-500 text-white rounded-md py-1 px-9 mr-10"
                 >
                   {loading ? (
-                    <Spinner
+                    <Loading
                       // size="md"
-                      emptyColor="orange.200"
+                      emColor="orange.200"
                       color="orange.500"
                     />
                   ) : (

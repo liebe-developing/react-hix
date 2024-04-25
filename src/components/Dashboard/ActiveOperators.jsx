@@ -3,13 +3,15 @@ import {
   Box,
   Flex,
   Heading,
+  Icon,
   Image,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { popularProducts } from "../../constants";
+import { FaCheckCircle } from "react-icons/fa";
 
-const PopularProducts = () => {
+const ActiveOperators = ({ name }) => {
   return (
     <Box
       boxShadow={useColorModeValue(
@@ -23,15 +25,8 @@ const PopularProducts = () => {
     >
       <Flex flexDir="column" gap={4}>
         <Heading fontSize={{ base: "16px", md: "19px" }} letterSpacing="1px">
-          پرطرفدار ترین محصولات
+          اپراتورهای فعال
         </Heading>
-        <Text
-          color={useColorModeValue("#000", "gray.300")}
-          opacity={0.5}
-          fontSize={{ base: "12px", md: "14px" }}
-        >
-          پر فروش‌ ترین محصولات یک ماه گذشته کسب و کار شما
-        </Text>
         {popularProducts.map((item, i) => (
           <Flex
             justifyContent="space-between"
@@ -39,23 +34,23 @@ const PopularProducts = () => {
             borderBottom={"2px solid rgba(255, 109, 0, 0.5)"}
             _last={{ borderBottom: "none" }}
             key={i}
-            mx={{ base: 2, md: 8 }}
-            py={5}
+            mx={{ base: 2, md: 0 }}
+            py={4}
           >
             <Box>
               <Flex gap={4} alignItems="center">
-                <Image src={item.productImg} title={item.title} />
                 <Text>{item.title}</Text>
               </Flex>
             </Box>
             <Box
               display="flex"
-              gap={2}
+              gap={1}
               color={useColorModeValue("#000", "gray.300")}
               opacity={0.6}
+              alignItems="center"
             >
+              <Icon as={FaCheckCircle} boxSize={6} color="green" />
               <Text>{item.quantity}</Text>
-              <Text>عدد</Text>
             </Box>
           </Flex>
         ))}
@@ -64,4 +59,4 @@ const PopularProducts = () => {
   );
 };
 
-export default PopularProducts;
+export default ActiveOperators;

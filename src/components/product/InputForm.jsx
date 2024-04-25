@@ -41,12 +41,12 @@ const InputForm = ({ handleChange, productFormData, priceNumInput }) => {
         reference={priceNumInput}
         type="number"
         maxLength="17"
-        onKeyPress={price.length == 16 && false}
+        onKeyPress={price?.length == 16 && false}
         placeholder="قیمت محصول"
         style={{ border: "1px solid gray" }}
         name="price"
         onChange={handleChange}
-        helper={`${price.length ? `${numberToWords(price)} تومان` : ""}`}
+        helper={`${price?.length ? `${numberToWords(price)} تومان` : ""}`}
       />
       <Field
         label="ویژگی ها"

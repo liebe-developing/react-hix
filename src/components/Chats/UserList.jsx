@@ -25,9 +25,9 @@ function UserList({ name, id, email, has_ai, loadFunc }) {
     <Flex
       alignItems={"center"}
       justifyContent={"center"}
-      px={2}
       gap={2}
       py={4}
+      px={2}
       boxShadow="0 2px 2px -2px #bbb"
       transition="all 0.2s ease-in-out"
       _hover={{ bg: "#0000000a" }}
@@ -36,15 +36,13 @@ function UserList({ name, id, email, has_ai, loadFunc }) {
         <Avatar src="/avatar.webp" name={name} />
         <Flex alignItems="center" justifyContent="space-between" w="full">
           <Box display="flex" flexDir="row" gap={1.5} alignItems={"center"}>
+            <Text maxW="120" className="text-xs text-gray-500" noOfLines={1}>
+              <span className="text-lg">{id}</span>
+            </Text>
             <Heading fontSize="18px">
               {name}
               {/* <CircleCheck className="text-red-600 inline text-xl mr-10" /> */}
             </Heading>
-            <Text maxW="120" className="text-xs text-gray-500" noOfLines={1} >
-              <span className="text-lg">
-                {id}
-              </span>
-            </Text>
           </Box>
           {/* //TODO: */}
         </Flex>

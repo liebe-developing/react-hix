@@ -20,29 +20,32 @@ import {
   Heading,
   Checkbox,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { apiPostRequest, apiPutRequest } from "../../api/apiRequest";
 import Field from "../Field";
 import { numberToWords } from "@persian-tools/persian-tools";
 import InputForm from "./InputForm";
+import PrimaryButton from "../PrimaryButton";
+import Loading from "../Loading";
 
 const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
   const { userToken, userContent } = useOutletContext();
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
   const {
+    id,
     url,
     title,
     description,
     image,
+    brand,
+    status,
     price,
+    category_title,
     attributes,
     weight,
-    brand,
-    category_title,
-    id,
-    status,
   } = dataContentModal;
 
   const [productFormData, setProductFormData] = useState({
@@ -59,6 +62,8 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
     weight: weight,
   });
 
+  console.log(productFormData.title);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProductFormData((prevState) => ({
@@ -67,21 +72,25 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
     }));
   };
 
-  const handleChangeCecked = () => {
+  const handleChangeCheckbox = () => {
     setProductFormData({ status: !productFormData.status });
   };
 
-  // BACK-END SENDE DATA
+  const handleEditProduct = (e) => {
+    e.preventDefault();
 
-  const dataSend = () => {
+    setLoading(true);
+
     apiPutRequest(`/api/product/`, userToken, productFormData)
       .then((res) => {
+        console.log(res);
         toast({
           title: `تغییرات اعمال شد!`,
           status: "success",
           position: "top",
           isClosable: true,
         });
+        setLoading(false);
       })
       .catch((error) => {
         toast({
@@ -119,61 +128,74 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                 borderRadius: "24px",
               },
             }}
-            mt={10}
-            px={0}
+            mt={12}
+            px={2}
             pb={0}
-            className="pl-[1px] relative"
           >
-            <Flex
-              gap={4}
-              w="full"
-              h="full"
-              justifyContent="center"
-              alignItems="start"
-            >
-              <Box
-                flex={1}
-                h={{ base: 350, md: "full" }}
-                // minW={{ base: "auto", md: 400 }}
-                // className="group sm:sticky top-0 max-sm:mb-3 right-0"
+            <form onSubmit={handleEditProduct}>
+              <Flex
+                gap={4}
+                w="full"
+                h="full"
+                justifyContent="center"
+                alignItems={{ base: "center", md: "start" }}
+                flexDir={{ base: "column", md: "row" }}
               >
-                {image && (
-                  <Image
-                    w="full"
-                    h="full"
-                    objectFit="cover"
-                    name={title}
-                    src={image}
-                    loading="lazy"
-                    // className="shadow-sm mix-blend-normal object-contain mx-auto block"
-                  />
-                )}
-              </Box>
-              <Box flex={1.5} mx={5}>
-                <SimpleGrid mb={5} columns={[1, null, 2]} spacing={5}>
-                  <InputForm
-                    handleChange={handleChange}
-                    productFormData={productFormData}
-                  />
-                </SimpleGrid>
-
-                <Checkbox
-                  className={`
-                    ${
-                      status === true
-                        ? "text-3xl text-green-400"
-                        : "text-3xl text-red-400"
-                    }
-                  `}
-                  name="status"
-                  checked={status}
-                  type="checkbox"
-                  onChange={handleChangeCecked}
+                <Box
+                  flex={{ base: 1.5, md: 1 }}
+                  h={{ base: "300px", md: "full" }}
+                  w={{ base: "95%", md: 350 }}
+                  pos="sticky"
+                  top={0}
+                  right={0}
                 >
-                  {status === true ? "موجود" : "ناموجود"}
-                </Checkbox>
-              </Box>
-            </Flex>
+                  {dataContentModal.image && (
+                    <Image
+                      w="full"
+                      h="full"
+                      objectFit="cover"
+                      name={productFormData.title}
+                      src={dataContentModal.image}
+                      loading="lazy"
+                      rounded="md"
+                      // className="shadow-sm mix-blend-normal object-contain mx-auto block"
+                    />
+                  )}
+                  <PrimaryButton
+                    title={
+                      loading ? (
+                        <Loading emColor="orange.200" color="orange.500" />
+                      ) : (
+                        "ذخیره تغییرات"
+                      )
+                    }
+                    type="submit"
+                    w="full"
+                    mt="4"
+                    mb="0"
+                    rounded="none"
+                  />
+                </Box>
+                <Box flex={1.5} mx={5} mb={4} w="95%">
+                  <SimpleGrid mb={5} columns={[1, null, 2]} spacing={5}>
+                    <InputForm
+                      handleChange={handleChange}
+                      productFormData={productFormData}
+                    />
+                  </SimpleGrid>
+
+                  <Checkbox
+                    colorScheme={
+                      productFormData.status === true ? "green" : "red"
+                    }
+                    isChecked
+                    onChange={handleChangeCheckbox}
+                  >
+                    {productFormData.status ? "موجود" : "ناموجود"}
+                  </Checkbox>
+                </Box>
+              </Flex>
+            </form>
           </ModalBody>
         </ModalContent>
       </Modal>

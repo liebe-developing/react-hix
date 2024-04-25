@@ -412,10 +412,10 @@ const secondNavlinkData = [
 
 
 const popularProducts = [
-  { title: "محصول 1", quantity: 236, productImg: product1 },
-  { title: "محصول 2", quantity: 210, productImg: product2 },
-  { title: "محصول 3", quantity: 198, productImg: product3 },
-  { title: "محصول 4", quantity: 145, productImg: product4 },
+  { title: "اپراتور شماره  1", quantity: "فعال" },
+  { title: "اپراتور شماره  2", quantity: "فعال" },
+  { title: "اپراتور شماره  3", quantity: "فعال" },
+  { title: "اپراتور شماره  4", quantity: "فعال" },
 ];
 
 const popularClients = [

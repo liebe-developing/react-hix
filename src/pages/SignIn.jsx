@@ -14,8 +14,6 @@ import {
   InputLeftElement,
   Icon,
   keyframes,
-  Spinner,
-  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -25,6 +23,7 @@ import { signInSuccess } from "../redux/user/userSlice";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
 import Error from "../components/Error";
+import { Loading } from "../components";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -35,8 +34,6 @@ const SignIn = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(true);
-
-  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -73,7 +70,7 @@ const SignIn = () => {
     setLoading(true);
     setError(false);
 
-    if (formData.password.length < 4 || formData.password.length > 16) {
+    /* if (formData.password.length < 4 || formData.password.length > 16) {
       toast({
         title: `رمز عبور باید بین 4 تا 16 کاراکتر باشد`,
         status: "error",
@@ -81,7 +78,7 @@ const SignIn = () => {
       });
       setLoading(false);
       return;
-    }
+    } */
 
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {
@@ -106,7 +103,7 @@ const SignIn = () => {
 
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2000);
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
@@ -223,13 +220,7 @@ const SignIn = () => {
                     isDisabled={loading}
                   >
                     {loading ? (
-                      <Spinner
-                        thickness="4px"
-                        speed="0.65s"
-                        emptyColor="gray.200"
-                        color="blue.500"
-                        size="lg"
-                      />
+                      <Loading emColor="gray.200" color="blue.500" size="lg" />
                     ) : (
                       "ورود"
                     )}
@@ -244,7 +235,6 @@ const SignIn = () => {
           </Box>
         </Flex>
       </Flex>
-
     </Box>
   );
 };

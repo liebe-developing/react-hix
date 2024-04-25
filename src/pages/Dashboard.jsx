@@ -1,5 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { MediaBox, Stats, Loading, Error } from "../components/index";
+import {
+  MediaBox,
+  Stats,
+  Loading,
+  Error,
+  ActiveOperators,
+} from "../components/index";
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { fistNavlinkData } from "../constants";
@@ -28,20 +34,41 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Flex pt="1" pb="4" px="4" flexWrap="wrap" flexDirection={{ base: "column", sm: "column",lg: "row" }} gap={12}>
+    <Flex
+      pt="1"
+      pb="4"
+      px="4"
+      flexWrap="wrap"
+      flexDirection={{ base: "column", sm: "column", lg: "row" }}
+      gap={12}
+    >
       <Box flex={1.2}>
         <MediaBox />
-        <Flex flexWrap="wrap" justifyContent="space-around" gap={4} mt={8} rowGap={4} flexDir={"row"}>
+        <Flex
+          flexWrap="wrap"
+          justifyContent="space-around"
+          gap={4}
+          mt={8}
+          rowGap={4}
+          flexDir={"row"}
+        >
           {fistNavlinkData.map((item, i) => (
             <NavlinkBox key={i} {...item} />
           ))}
         </Flex>
+        <ActiveOperators />
       </Box>
       <Box flex={1}>
         {loading && <Loading />}
         {error && <Error title="مشکلی پیش آمده است" />}
         {!loading && !error && getValueDashboard && (
-          <Flex flexWrap="wrap" columnGap={4} rowGap={8} justifyContent="space-between" flexGrow={1}>
+          <Flex
+            flexWrap="wrap"
+            columnGap={4}
+            rowGap={8}
+            justifyContent="space-between"
+            flexGrow={1}
+          >
             <Stats
               title="تعداد مکالمات"
               value={`${
@@ -61,12 +88,10 @@ const Dashboard = () => {
               value={`${getValueDashboard.productCount}`}
             />
             <Stats
-              
               title="روزهای باقی مانده"
               value={`${getValueDashboard.remainingDays} / ${getValueDashboard.maxDays}`}
             />
           </Flex>
-          // <PopularProducts />
         )}
       </Box>
     </Flex>

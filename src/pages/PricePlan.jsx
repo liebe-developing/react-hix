@@ -32,11 +32,13 @@ const PricePlan = () => {
   const [oneMonth, setOneMonth] = useState();
   const [sixMonth, setSixMonth] = useState();
   const [oneYear, setOneYear] = useState();
-  const [isLoding, setisLoding] = useState(false);
+  const [isLoding, setIsLoding] = useState(false);
 
   useEffect(() => {
+    setIsLoding(true);
     apiGetRequest("api/plan", userToken)
       .then((res) => {
+        setIsLoding(false);
         const plans = res.data.data;
         const freePlan = plans.filter((plan) => plan.price === 0);
         const oneMonthPlans = plans.filter((plan) => plan.days === 30);
@@ -50,36 +52,37 @@ const PricePlan = () => {
       })
       .catch((error) => {
         console.log(error);
+        setIsLoding(false);
       });
-    setisLoding(true);
   }, []);
 
   // console.log(oneMonth);
   return (
     <>
-      {!isLoding && <Loading />}
-      {isLoding && (
+      {isLoding ? (
+        <Loading emColor="purple.100" color="purple" />
+      ) : (
         <Box>
           <Center>
             <Tabs colorScheme="purple" w="full">
               <TabList maxW={{ base: "full", md: "70%" }} mx="auto">
                 {free && (
-                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
+                  <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     رایگان
                   </Tab>
                 )}
                 {oneMonth && (
-                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
+                  <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     ۱ ماهه
                   </Tab>
                 )}
                 {sixMonth && (
-                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
+                  <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     ۶ ماهه
                   </Tab>
                 )}
                 {oneYear && (
-                  <Tab w="full" fontSize={{base: "15px", md: "20px"}}>
+                  <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     ۱ ساله
                   </Tab>
                 )}

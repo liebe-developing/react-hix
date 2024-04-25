@@ -4,11 +4,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   SimpleGrid,
-  Spinner,
 } from "@chakra-ui/react";
 import PrimaryButton from "../PrimaryButton";
 import Field from "../Field";
@@ -18,6 +16,7 @@ import { useToast } from "@chakra-ui/react";
 import { useOutletContext } from "react-router-dom";
 import { numberToWords } from "@persian-tools/persian-tools";
 import InputForm from "./InputForm";
+import Loading from "../Loading";
 
 const CreateProductModal = ({ isOpen, onClose }) => {
   const priceNumInput = useRef(null);
@@ -95,12 +94,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size="4xl"
-      isCentered
-    >
+    <Modal isOpen={isOpen} onClose={onClose} size="4xl" isCentered>
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={handleSubmitNewProduct}>
@@ -116,13 +110,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
             </SimpleGrid>
             <PrimaryButton type="submit">
               {loading ? (
-                <Spinner
-                  thickness="4px"
-                  speed="0.65s"
-                  emptyColor="gray.200"
-                  color="orange"
-                  size="lg"
-                />
+                <Loading emColor="gray.200" color="orange.500" />
               ) : (
                 "ثبت محصول"
               )}

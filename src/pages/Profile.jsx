@@ -16,7 +16,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { IoClose } from "react-icons/io5";
-import { Field, PrimaryButton } from "../components";
+import { Field, Loading, PrimaryButton } from "../components";
 import { useEffect, useRef, useState } from "react";
 import { apiGetRequest, apiPutRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
@@ -25,6 +25,7 @@ import { encode } from "base64-arraybuffer";
 const Profile = () => {
   const fileInput = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const { userToken, userContent, setAvatar } = useOutletContext();
 
@@ -37,7 +38,7 @@ const Profile = () => {
     codeAcount: "",
     idNumber: "",
     avatarUrl: "",
-    selectedAvatarFile: null
+    selectedAvatarFile: null,
   });
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const Profile = () => {
           birth: response.birth,
           idNumber: response.code_meli,
           password: response.password,
-          avatarUrl: response.avatar
+          avatarUrl: response.avatar,
         });
       })
       .catch((error) => {
@@ -64,41 +65,43 @@ const Profile = () => {
     // TODO: / CHANGE LOGIC MODULE
     e.preventDefault();
 
+    setIsLoading(true);
+
     apiPutRequest("api/user", userToken, {
       name:
-        formData.name && formData.name.trim().length > 0
-          ? formData.name.trim()
+        formData?.name && formData?.name.trim().length > 0
+          ? formData?.name.trim()
           : undefined,
       mobile:
-        formData.numberPhone && formData.numberPhone.trim().length > 0
-          ? formData.numberPhone.trim()
+        formData?.numberPhone && formData?.numberPhone.trim().length > 0
+          ? formData?.numberPhone.trim()
           : undefined,
       address:
-        formData.address && formData.address.trim().length > 0
-          ? formData.address.trim()
+        formData?.address && formData?.address.trim().length > 0
+          ? formData?.address.trim()
           : undefined,
       email:
-        formData.email && formData.email.trim().length > 0
-          ? formData.email.trim()
+        formData?.email && formData?.email.trim().length > 0
+          ? formData?.email.trim()
           : undefined,
-      // password: formData.password && formData.password.trim().length > 0 ? formData.password.trim() : undefined,
+      // password: formData?.password && formData?.password.trim().length > 0 ? formData?.password.trim() : undefined,
       code_meli:
-        formData.idNumber && formData.idNumber.trim().length > 0
-          ? formData.idNumber.trim()
+        formData?.idNumber && formData?.idNumber.trim().length > 0
+          ? formData?.idNumber.trim()
           : undefined,
       birth:
-        formData.birth && formData.birth.trim().length > 0
-          ? formData.birth.trim()
+        formData?.birth && formData?.birth.trim().length > 0
+          ? formData?.birth.trim()
           : undefined,
       avatar:
-        formData.selectedAvatarFile &&
-          formData.selectedAvatarFile.name &&
-          formData.selectedAvatarFile.data
+        formData?.selectedAvatarFile &&
+        formData?.selectedAvatarFile.name &&
+        formData?.selectedAvatarFile.data
           ? {
-            ...formData.selectedAvatarFile,
-            dataUrl: undefined
-          }
-          : formData.avatarUrl,
+              ...formData?.selectedAvatarFile,
+              dataUrl: undefined,
+            }
+          : formData?.avatarUrl,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -107,11 +110,14 @@ const Profile = () => {
             status: "success",
             position: "bottom",
           });
-          setAvatar(res.data.data.avatar)
+          setAvatar(res?.data?.data?.avatar);
+          setIsLoading(false);
+          console.log(res.data);
         }
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   };
 
@@ -144,7 +150,11 @@ const Profile = () => {
     const imageDataUrl = await waitForFilePromise2;
     setFormData({
       ...formData,
-      selectedAvatarFile: { name: e.target.files[0].name, dataUrl: imageDataUrl, data: imageBase64 },
+      selectedAvatarFile: {
+        name: e.target.files[0].name,
+        dataUrl: imageDataUrl,
+        data: imageBase64,
+      },
     });
   };
 
@@ -174,7 +184,13 @@ const Profile = () => {
             />
           )}
           <img
-            src={formData.selectedAvatarFile ? formData.selectedAvatarFile.dataUrl : (formData.avatarUrl ? formData.avatarUrl : '/avatar.webp')}
+            src={
+              formData.selectedAvatarFile
+                ? formData.selectedAvatarFile.dataUrl
+                : formData.avatarUrl
+                ? formData.avatarUrl
+                : "/avatar.webp"
+            }
             style={{
               border: "2px solid #3e256b",
               boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
@@ -265,7 +281,13 @@ const Profile = () => {
           />
         </SimpleGrid>
         <PrimaryButton
-          title="ذخیره تغییرات"
+          title={
+            isLoading ? (
+              <Loading emColor="orange.100" color="orange.400" size="lg" />
+            ) : (
+              "ذخیره تغییرات"
+            )
+          }
           mr={{ base: 0, md: 4 }}
           btnFn={handleSubmit}
         />

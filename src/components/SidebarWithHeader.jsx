@@ -32,11 +32,7 @@ import {
 } from "@chakra-ui/react";
 import { Link, Outlet } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
-import {
-  FaTelegramPlane,
-  FaRegFolder,
-  FaRegUser,
-} from "react-icons/fa";
+import { FaTelegramPlane, FaRegFolder, FaRegUser } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
 import { ImStatsDots } from "react-icons/im";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -45,10 +41,11 @@ import DarkModeButton from "./DarkModeButton";
 import { GrUpgrade } from "react-icons/gr";
 import { BsCalendarCheck } from "react-icons/bs";
 import { apiPostRequest } from "../api/apiRequest";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import * as persianTools from "@persian-tools/persian-tools";
 import moment from "jalali-moment";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 
 const LinkItems = [
   { id: 0, name: "داشبورد", icon: GoHome, href: "/" },
@@ -79,22 +76,33 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       <Flex
         alignItems="center"
         justifyContent="center"
-        bg={colorMode === 'light' ? '#eee' : '#1a202c'}
+        bg={colorMode === "light" ? "#eee" : "#1a202c"}
         flexDirection={"row"}
         className="w-full md:p-5 h-20"
       >
-        <img src="/logo_hix.svg" className={`w-[30%] md:w-[70%] aspect-[1] ${colorMode === 'light' ? 'mix-blend-normal' : 'mix-blend-lighten'} `} />
-        <div className="flex md:hidden flex-row flex-grow justify-end px-4" >
+        <img
+          src="/logo_hix.svg"
+          className={`w-[30%] md:w-[70%] aspect-[1] ${
+            colorMode === "light" ? "mix-blend-normal" : "mix-blend-lighten"
+          } `}
+        />
+        <div className="flex md:hidden flex-row flex-grow justify-end px-4">
           <CloseButton onClick={onClose} />
         </div>
       </Flex>
-      {LinkItems.filter(l => userContent?.user_plan_id ? true : (userContent.user.operator_user_plan_id ? l.id >= 10 : false)).map((link) => {
+      {LinkItems.filter((l) =>
+        userContent?.user_plan_id
+          ? true
+          : userContent.user.operator_user_plan_id
+          ? l.id >= 10
+          : false
+      ).map((link) => {
         return (
-          // userContent?.user_plan_id ? 
+          // userContent?.user_plan_id ?
           <Link key={link.name} to={link.href} onClick={onClose}>
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
-        )
+        );
         //  : (
         //   <NavItem icon={link.icon} key={link.name}>
         //     {link.name}
@@ -144,8 +152,9 @@ const NavItem = ({ icon, children, ...rest }) => {
     >
       <Flex
         align="center"
-        p="16px"
+        p="8px"
         mx="4"
+        my={6}
         borderRadius="lg"
         role="group"
         cursor="pointer"
@@ -169,13 +178,14 @@ const NavItem = ({ icon, children, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
-    const { colorMode, toggleColorMode } = useColorMode();
+const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const options = { year: "numeric", month: "long", day: "numeric" };
   const today = new Date().toLocaleDateString("fa-IR", options);
+  const [scrolled, setScrolled] = useState(false);
 
   const handleLogoutUser = () => {
-    apiPostRequest("/api/auth/logout")
+    apiPostRequest("/api/auth/logout", userToken)
       .then(() => {
         localStorage.clear();
         window.location.replace("/");
@@ -186,18 +196,45 @@ const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
       });
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      if (scrollTop > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <Flex
       mr={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height={"80px"}
+      pos="sticky"
+      top={0}
+      zIndex={999}
       alignItems="center"
+      boxShadow={scrolled && "0 2px 5px rgba(0,0,0,0.1)"}
       bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      justifyContent={{ base: "space-between", md: "space-between" }}
       {...rest}
     >
+      <Flex alignItems="center" gap={2}>
+        <Icon as={TfiHeadphoneAlt} boxSize={6} />
+        <Link to="tel:+989395060614">
+          <Text fontSize="16px" color="purple" fontWeight="bolder">
+            09395060614
+          </Text>
+        </Link>
+      </Flex>
       <IconButton
         display={{ base: "flex", md: "none" }}
         onClick={onOpen}
@@ -222,7 +259,6 @@ const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
 
       <HStack spacing={{ base: "1.5", md: "1" }}>
         <Text
-          ml={5}
           display={{ base: "none", md: "flex" }}
           alignItems="center"
           gap={2}
@@ -232,57 +268,67 @@ const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
           <BsCalendarCheck />
           {today}
         </Text>
-        <Popover closeOnBlur={true}>
-          <PopoverTrigger>
-            <IconButton
-              aria-label='open menu'
-              size={{ base: "sm", md: "md" }}
-              icon={<FiBell />}
-              variant='ghost'
-            />
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverHeader>پیام ها!</PopoverHeader>
-            <PopoverBody>
-              <List spacing={3}>
-                {(userContent && userContent.notifications && userContent.notifications.length > 0) ? userContent.notifications.map((n,i) => (
-                  <ListItem key={i}>
-                    <Flex flexDir={"row"} className=" p-1 text-xs">
-                      <div className="w-[25%] border-l border-gray-300 px-1">
-                        {(() => {
-                          const date = moment.from(new Date(n.time).toLocaleDateString('en-US', {
-                            year: "numeric",
-                              month: "2-digit",
-                              day: "2-digit",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              second: "2-digit"
-                          }).replace(',', ''), 'en').locale('fa').format('YYYY/M/D HH:mm:ss')
-                          return (persianTools.timeAgo(date))
-                        })()}
-                      </div>
-                      <div className="w-[75%] px-1">
-                        {n.message}
-                      </div>
-                    </Flex>
-                  </ListItem>
-                )) :
-                  <ListItem>
-                    پیام جدیدی موجود نیست!
-                  </ListItem>
-                }
-              </List>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+        <Flex mx={2}>
+          <Popover closeOnBlur={true}>
+            <PopoverTrigger>
+              <IconButton
+                aria-label="open menu"
+                size={{ base: "sm", md: "md" }}
+                icon={<FiBell />}
+                variant="ghost"
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverHeader>پیام ها!</PopoverHeader>
+              <PopoverBody>
+                <List spacing={3}>
+                  {userContent &&
+                  userContent.notifications &&
+                  userContent.notifications.length > 0 ? (
+                    userContent.notifications.map((n, i) => (
+                      <ListItem key={i}>
+                        <Flex flexDir={"row"} className=" p-1 text-xs">
+                          <div className="w-[25%] border-l border-gray-300 px-1">
+                            {(() => {
+                              const date = moment
+                                .from(
+                                  new Date(n.time)
+                                    .toLocaleDateString("en-US", {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      second: "2-digit",
+                                    })
+                                    .replace(",", ""),
+                                  "en"
+                                )
+                                .locale("fa")
+                                .format("YYYY/M/D HH:mm:ss");
+                              return persianTools.timeAgo(date);
+                            })()}
+                          </div>
+                          <div className="w-[75%] px-1">{n.message}</div>
+                        </Flex>
+                      </ListItem>
+                    ))
+                  ) : (
+                    <ListItem>پیام جدیدی موجود نیست!</ListItem>
+                  )}
+                </List>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
 
-        <DarkModeButton
-          colorMode={colorMode}
-          toggleColorMode={toggleColorMode}
-        />
+          <DarkModeButton
+            colorMode={colorMode}
+            toggleColorMode={toggleColorMode}
+          />
+        </Flex>
+
         <Flex alignItems={"center"} zIndex={2}>
-
           <Menu>
             <MenuButton
               py={2}
@@ -295,10 +341,13 @@ const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
                   width={{ base: "35px", md: "40px" }}
                   height={{ base: "35px", md: "40px" }}
                   bg={useColorModeValue("gray.300", "white")}
-                  src={(avatar && avatar.length > 0) ? avatar : "https://s3-alpha-sig.figma.com/img/8b87/d4ec/07e2adaafa5c876cbc7382f809b9bd51?Expires=1711929600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aDFVBDl3a9HYPxMQKzp-5ENzJXOc~w-4iaafrf2GR3y4KUh1CiV135fHv5sSLdv6DolisHQvUbJIK~ieSYcbJTqjlhz792dhI6pznAqx5k4xub2pW~~PljiBYlqZn3mvA5aT4iAb94G8nvipRjM-jBNKSN0z5f1DiIbqSfdTCwHiEfCdC~pH8jhH~gJR9zju4QgLQPLuUExp3YIiLJxQ3jP90cw7lJOJTCVM5t1R4L5qCAOehWmLfxMrM8XF0TqoPfbJgUqDmz-pNtTfepqNGMFEIIeyURgKS8dEg7mG8zpyl9Q6p0bZwGZJvSic~FR0pwGpmEYolJaSJjgaNNSBAA__"}
+                  src={
+                    avatar && avatar.length > 0
+                      ? avatar
+                      : "https://s3-alpha-sig.figma.com/img/8b87/d4ec/07e2adaafa5c876cbc7382f809b9bd51?Expires=1711929600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aDFVBDl3a9HYPxMQKzp-5ENzJXOc~w-4iaafrf2GR3y4KUh1CiV135fHv5sSLdv6DolisHQvUbJIK~ieSYcbJTqjlhz792dhI6pznAqx5k4xub2pW~~PljiBYlqZn3mvA5aT4iAb94G8nvipRjM-jBNKSN0z5f1DiIbqSfdTCwHiEfCdC~pH8jhH~gJR9zju4QgLQPLuUExp3YIiLJxQ3jP90cw7lJOJTCVM5t1R4L5qCAOehWmLfxMrM8XF0TqoPfbJgUqDmz-pNtTfepqNGMFEIIeyURgKS8dEg7mG8zpyl9Q6p0bZwGZJvSic~FR0pwGpmEYolJaSJjgaNNSBAA__"
+                  }
                   borderRadius={"100%"}
                   border={"solid 1px #3e256b"}
-
                 />
                 <VStack
                   display={{ base: "none", md: "flex" }}
@@ -339,7 +388,6 @@ const MobileNav = ({ onOpen, userContent, avatar, ...rest }) => {
             </MenuList>
           </Menu>
         </Flex>
-
       </HStack>
     </Flex>
   );
@@ -369,14 +417,24 @@ const SidebarWithHeader = ({ userContent, userAuth: userToken }) => {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} userContent={userContent} avatar={avatar} />
+      <MobileNav
+        userToken={userToken}
+        onOpen={onOpen}
+        userContent={userContent}
+        avatar={avatar}
+      />
       {/* <Box mr={{ base: 0, md: 60 }} className="flex-grow" id="test"> */}
-      <Flex mr={{ base: 0, md: 60 }} flexDir={"column"} justifyContent={"space-between"} className="min-h-[calc(100vh-80px)] flex-grow" pt={2}>
+      <Flex
+        mr={{ base: 0, md: 60 }}
+        flexDir={"column"}
+        justifyContent={"space-between"}
+        className="min-h-[calc(100vh-80px)] flex-grow"
+      >
         <Outlet
           context={{
             userToken,
             userContent,
-            setAvatar
+            setAvatar,
           }}
         />
         <Footer userContent={userContent} />

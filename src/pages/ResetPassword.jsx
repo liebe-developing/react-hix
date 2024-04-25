@@ -12,7 +12,6 @@ import {
   useColorModeValue,
   keyframes,
   FormHelperText,
-  Spinner,
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
@@ -20,6 +19,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
+import { Loading } from "../components";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -44,7 +44,7 @@ const ResetPassword = () => {
   const resetPasswordHandler = (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     apiPostRequest("/api/auth/reset_password", undefined, email)
       .then(function (res) {
         console.log(res);
@@ -134,13 +134,7 @@ const ResetPassword = () => {
                     isDisabled={loading}
                   >
                     {loading ? (
-                      <Spinner
-                        thickness="4px"
-                        speed="0.65s"
-                        emptyColor="gray.200"
-                        color="blue.500"
-                        size="lg"
-                      />
+                      <Loading emColor="gray.200" color="blue.500" size="lg" />
                     ) : (
                       "بازیابی"
                     )}

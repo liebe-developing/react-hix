@@ -7,7 +7,7 @@ import Pricing from "./PricePlan/Pricing";
 import ErrorMessage from "./ErrorMessage";
 import MediaBox from "./Dashboard/MediaBox";
 import Stats from "./Dashboard/Stats";
-import PopularProducts from "./Dashboard/PopularProducts";
+import ActiveOperators from "./Dashboard/ActiveOperators";
 import PopularClients from "./Dashboard/PopularClients";
 import PrimaryButton from "./PrimaryButton";
 import Field from "./Field";
@@ -31,7 +31,7 @@ export {
   ErrorMessage,
   MediaBox,
   Stats,
-  PopularProducts,
+  ActiveOperators,
   PopularClients,
   PrimaryButton,
   Field,

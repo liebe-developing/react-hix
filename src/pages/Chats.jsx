@@ -12,10 +12,15 @@ import {
   Badge,
   useColorModeValue,
   useToast,
-  Spinner,
+  Popover,
+  PopoverTrigger,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverContent,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
-import { UserList } from "../components";
+import { Loading, UserList } from "../components";
 import { useEffect, useRef, useState } from "react";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
@@ -23,6 +28,8 @@ import { useOutletContext } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { io } from "socket.io-client";
 import { IoSend } from "react-icons/io5";
+import EmojiPicker from "emoji-picker-react";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
 
 /**
  * @type {Socket} socket
@@ -37,15 +44,25 @@ export function Chats() {
   const [userLoading, setUserLoading] = useState(false);
   const [userSearchTerm, setUserSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [showPicker, setShowPicker] = useState(false);
 
   const toast = useToast();
   const { colorMode } = useColorMode();
+
+  const onEmojiClick = (event, emojiObject) => {
+    setMessageText((prevInput) => prevInput + emojiObject.emoji);
+    setShowPicker(false);
+  };
 
   const { userToken, userContent } = useOutletContext();
   useEffect(() => {
     setUserLoading(true);
     apiGetRequest(
-      `api/chat_user/?upid=${userContent.user_plan_id ? userContent.user_plan_id : userContent.user.operator_user_plan_id}`,
+      `api/chat_user/?upid=${
+        userContent.user_plan_id
+          ? userContent.user_plan_id
+          : userContent.user.operator_user_plan_id
+      }`,
       userToken
     ).then((res) => {
       setListUser(res.data.data);
@@ -72,7 +89,7 @@ export function Chats() {
         });
 
         socket.on("connect", () => {
-          socket.on("chat:id", (data) => { });
+          socket.on("chat:id", (data) => {});
 
           socket.on("widget:send", (data) => {
             const { message } = data;
@@ -99,7 +116,11 @@ export function Chats() {
         socket.emit("operator:target", { userId });
 
         apiGetRequest(
-          `/api/chat_messages/user/${userId}?upid=${userContent.user_plan_id ? userContent.user_plan_id : userContent.user.operator_user_plan_id}`,
+          `/api/chat_messages/user/${userId}?upid=${
+            userContent.user_plan_id
+              ? userContent.user_plan_id
+              : userContent.user.operator_user_plan_id
+          }`,
           userToken
         ).then((res) => {
           setSelectedChat(userId);
@@ -151,7 +172,8 @@ export function Chats() {
 
   return (
     <Flex
-      h={{ base: "130vh", md: "100%" }} minH={"100%"}
+      h={{ base: "130vh", md: "100%" }}
+      minH={"100%"}
       flexDirection={{ base: "column", lg: "row" }}
       // gap="6px"
       w="full"
@@ -173,47 +195,43 @@ export function Chats() {
         </InputGroup>
         {/* <CHATS CONTENT> */}
         <Box
-          p={5}
           bg={useColorModeValue("white", "gray.900")}
           className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar"
         >
           {userLoading && (
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="transparent"
+            <Loading
+              emColor="transparent"
               color="purple.400"
-              size="xl"
               mt={20}
               alignSelf="center"
             />
           )}
           {!userLoading && userSearchTerm.length > 1
             ? filteredUsers.map((item) => {
-              return (
-                <div key={item.id}>
-                  <UserList
-                    {...item}
-                    loadFunc={() => selectUserChat(item.id)}
-                  />
-                </div>
-              );
-            })
+                return (
+                  <div key={item.id}>
+                    <UserList
+                      {...item}
+                      loadFunc={() => selectUserChat(item.id)}
+                    />
+                  </div>
+                );
+              })
             : !userLoading &&
-            listUser.map((item) => {
-              return (
-                <div key={item.id}>
-                  <UserList
-                    {...item}
-                    loadFunc={() => selectUserChat(item.id)}
-                  />
-                </div>
-              );
-            })}
+              listUser.map((item) => {
+                return (
+                  <div key={item.id}>
+                    <UserList
+                      {...item}
+                      loadFunc={() => selectUserChat(item.id)}
+                    />
+                  </div>
+                );
+              })}
         </Box>
       </Flex>
 
-      <Flex className="w-full min-h-[100%]" flexDir={"column"} flexGrow={1}>
+      <Flex className="w-full min-h-[100%]" flexDir={"column"}>
         <Flex
           flexDirection="column"
           // w={{ base: "100%", md: "99%", lg: "3xl" }}
@@ -254,26 +272,22 @@ export function Chats() {
             flex={1}
             css={{
               "&::-webkit-scrollbar": {
-                width: "4px",
+                width: "6px",
               },
               "&::-webkit-scrollbar-track": {
                 width: "6px",
               },
               "&::-webkit-scrollbar-thumb": {
-                background: "#d5e3f7",
+                background: "gray",
                 borderRadius: "24px",
               },
             }}
+            overflowY="scroll"
+            maxH={{ base: "", md: "406" }}
           >
             {chatLoading ? (
               <div className="w-full h-full flex items-center justify-center">
-                <Spinner
-                  thickness="4px"
-                  speed="0.65s"
-                  emptyColor="transparent"
-                  color="purple.400"
-                  size="xl"
-                />
+                <Loading emColor="transparent" color="purple.400" />
               </div>
             ) : (
               <Box className="flex flex-col flex-grow">
@@ -287,7 +301,9 @@ export function Chats() {
                         key={item.id}
                         p={1}
                         my={0}
-                        ref={index === items.length - 1 ? chatBoxRef : undefined}
+                        ref={
+                          index === items.length - 1 ? chatBoxRef : undefined
+                        }
                         // bg={is_user_message ? "blue.500" : "gray.100"}
                         // color={is_user_message ? "white" : "gray.600"}
                         // borderRadius="lg"
@@ -317,9 +333,12 @@ export function Chats() {
                               {content}
                             </Text>
                             <Text fontSize="11px" color="gray-500">
-                              {new Date(created_at).toLocaleTimeString("fa-IR", {
-                                hour12: false,
-                              })}{" "}
+                              {new Date(created_at).toLocaleTimeString(
+                                "fa-IR",
+                                {
+                                  hour12: false,
+                                }
+                              )}{" "}
                             </Text>
                           </Flex>
                         ) : type === "form" ? (
@@ -353,18 +372,24 @@ export function Chats() {
                                   </th>
                                 </tr>
                               </thead>
-                              {
-                                (() => {
-                                  try {
-                                    return JSON.parse(content).items.map((item, index) => (
+                              {(() => {
+                                try {
+                                  return JSON.parse(content).items.map(
+                                    (item, index) => (
                                       <tbody
                                         className="odd:bg-white even:bg-slate-50"
                                         key={index}
                                       >
                                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                          <td className="py-2 px-2">{item.title}</td>
-                                          <td className="py-2 px-2">{item.url}</td>
-                                          <td className="py-2 px-2">{item.price}</td>
+                                          <td className="py-2 px-2">
+                                            {item.title}
+                                          </td>
+                                          <td className="py-2 px-2">
+                                            {item.url}
+                                          </td>
+                                          <td className="py-2 px-2">
+                                            {item.price}
+                                          </td>
                                           <td className="py-2">
                                             {
                                               <img
@@ -377,13 +402,12 @@ export function Chats() {
                                           </td>
                                         </tr>
                                       </tbody>
-                                    ))
-                                  }
-                                  catch (error) {
-                                    return content
-                                  }
-                                })()
-                              }
+                                    )
+                                  );
+                                } catch (error) {
+                                  return content;
+                                }
+                              })()}
                             </table>
                           </div>
                         )}
@@ -395,11 +419,28 @@ export function Chats() {
           </Stack>
 
           <HStack
+            pos="relative"
             h="75px"
             px={8}
             bg={colorMode === "light" ? "white" : "gray.700"}
             _focusWithin={{ boxShadow: "-1px 0 100px rgba(0,0,0,0.05)" }}
           >
+            <Icon
+              boxSize={6}
+              color={useColorModeValue("purple", "gray.200")}
+              as={MdOutlineEmojiEmotions}
+              cursor="pointer"
+              onClick={() => setShowPicker((val) => !val)}
+            />
+            {showPicker && (
+              <EmojiPicker
+                width={450}
+                height={350}
+                searchDisabled
+                onEmojiClick={onEmojiClick}
+                className="absolute bottom-[238px]"
+              />
+            )}
             <Input
               color={colorMode == "light" ? "black" : "white"}
               variant="unstyled"
@@ -422,6 +463,7 @@ export function Chats() {
                 }
               }}
             />
+
             {messageText !== "" && messageText.trim() && (
               <Icon
                 boxSize={6}

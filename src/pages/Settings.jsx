@@ -19,12 +19,11 @@ import {
   ModalOverlay,
   Select,
   SimpleGrid,
-  Spinner,
   Text,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Field, PrimaryButton } from "../components";
+import { Field, Loading, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
 import { useRef, useState, useEffect } from "react";
 import {
@@ -116,8 +115,8 @@ const Settings = () => {
       pos: formData.widgetPosition,
       icon:
         formData.selectedWidgetFile &&
-          formData.selectedWidgetFile.name &&
-          formData.selectedWidgetFile.data
+        formData.selectedWidgetFile.name &&
+        formData.selectedWidgetFile.data
           ? formData.selectedWidgetFile
           : formData.iconUrl,
       welcome: formData.welcomeMessage,
@@ -179,45 +178,59 @@ const Settings = () => {
   const handleSavingOperatorEmail = () => {
     setLoadingOpEmails(true);
 
-    apiPostRequest(`/api/user_plan/${userContent.user_plan_id}/operator`, userToken, {
-      op_emails: operators.map(o => o.name)
-    })
+    apiPostRequest(
+      `/api/user_plan/${userContent.user_plan_id}/operator`,
+      userToken,
+      {
+        op_emails: operators.map((o) => o.name),
+      }
+    )
       .then((res) => {
-        setLoadingOpEmails(false);
-        toast({
-          title: `اپراتور ها با موفقعیت اضاف شدند !`,
-          status: "success",
-          position: "top-right",
-        });
-
+        console.log(res);
+        if (res.response.status === 400) {
+          toast({
+            title: `شما حداکثر مجاز به اضافه کردن ${
+              userContent.plan.operator_count +
+              userContent.plan.gift_operator_count
+            } تعداد اپراتور هستید.`,
+            status: "error",
+            position: "top-right",
+          });
+        } /* else if (res.response.status === 500) {
+          toast({
+            title:
+              res.response.data.code == 1
+                ? "لطفا ابتدا ایمیل های مورد نظر را وارد کنید!"
+                : res.response.data.code == 2
+                ? "ایمیل های وارد شده اشتباه می باشد.لطفا بررسی کنید!"
+                : "مشکلی پیش آمده است!",
+            status: "error",
+            position: "top-right",
+          });
+        }  */ else {
+          toast({
+            title: `اپراتور ها با موفقعیت اضاف شدند !`,
+            status: "success",
+            position: "top-right",
+          });
+          setLoadingOpEmails(false);
+        }
       })
       .catch((err) => {
-        if (err.response.status === 400) {
-          toast({
-            title: `شما حداکثر مجاز به اضافه کردن ${userContent.plan.operator_count + userContent.plan.gift_operator_count
-              } تعداد اپراتور هستید.`,
-            status: "error",
-            position: "top-right",
-          });
-        }
-        if (err.response.status === 500) {
-          toast({
-            title: err.response.data.code == 1 ? 'لطفا ابتدا ایمیل های مورد نظر را وارد کنید!' : err.response.data.code == 2 ? 'ایمیل های وارد شده اشتباه می باشد.لطفا بررسی کنید!' :
-              'مشکلی پیش آمده است!',
-            status: "error",
-            position: "top-right",
-          });
-        }
+        console.log(err);
         setLoadingOpEmails(false);
-      }).finally(() => {
+      })
+      .finally(() => {
         onClose();
-        setOperators([])
+        setOperators([]);
       });
 
     setTimeout(() => {
       setLoadingOpEmails(false);
     }, 3000);
   };
+
+  console.log(operators);
 
   return (
     <Box m={5}>
@@ -359,13 +372,7 @@ const Settings = () => {
         <PrimaryButton
           title={
             loading ? (
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="orange.200"
-                color="orange.500"
-                size="lg"
-              />
+              <Loading emColor="orange.200" color="orange.500" size="lg" />
             ) : (
               "ذخیره تغییرات"
             )
@@ -446,10 +453,8 @@ const Settings = () => {
                 onClick={handleSavingOperatorEmail}
               >
                 {loadingOpEmails ? (
-                  <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="purple.200"
+                  <Loading
+                    emColor="purple.200"
                     color="purple.400"
                     size="lg"
                   />
