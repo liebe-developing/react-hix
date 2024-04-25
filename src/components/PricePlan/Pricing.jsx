@@ -180,7 +180,7 @@ export default function Pricing({ userToken, monthPlan }) {
                         <>
                           <Text>{chat_count} +</Text>
                           <Text color="#6b38e2" fontWeight={"900"}>
-                            {gift_chat_count} هدیه
+                            {gift_chat_count} مکالمه هدیه
                           </Text>
                         </>
                       ) : (
@@ -199,7 +199,7 @@ export default function Pricing({ userToken, monthPlan }) {
                         <>
                           <Text>{file_size_limit} مگابایت +</Text>
                           <Text color="#6b38e2" fontWeight={"900"}>
-                            {gift_file_size_limit} هدیه
+                            {gift_file_size_limit} مگابایت هدیه
                           </Text>
                         </>
                       ) : (

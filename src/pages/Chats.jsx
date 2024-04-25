@@ -18,6 +18,9 @@ import {
   PopoverCloseButton,
   PopoverBody,
   PopoverContent,
+  IconButton,
+  Portal,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
 import { Loading, UserList } from "../components";
@@ -45,11 +48,12 @@ export function Chats() {
   const [userSearchTerm, setUserSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
+  const {isOpen, onToggle, onClose} = useDisclosure();
 
   const toast = useToast();
   const { colorMode } = useColorMode();
 
-  const onEmojiClick = (event, emojiObject) => {
+  const onEmojiClick = (emojiObject, event) => {
     setMessageText((prevInput) => prevInput + emojiObject.emoji);
     setShowPicker(false);
   };
@@ -180,17 +184,18 @@ export function Chats() {
       flexGrow={1}
     >
       <Flex flexDirection="column">
-        <InputGroup>
+        <InputGroup h={16}>
           <Input
             w="full"
+            h="full"
             value={userSearchTerm}
             onChange={(e) => handleSearchUser(e.target.value)}
             placeholder="جستجو..."
             _placeholder={{ color: "gray.600", fontSize: "15px" }}
             pr={8}
           />
-          <InputRightElement>
-            <Icon as={CiSearch} boxSize={5} cursor="pointer" />
+          <InputRightElement pointerEvents="none" h="full">
+            <Icon as={CiSearch} boxSize={6} cursor="pointer" />
           </InputRightElement>
         </InputGroup>
         {/* <CHATS CONTENT> */}
@@ -231,7 +236,7 @@ export function Chats() {
         </Box>
       </Flex>
 
-      <Flex className="w-full min-h-[100%]" flexDir={"column"}>
+      <Flex className="w-full min-h-[90%]" flexDir={"column"} flexGrow={1}>
         <Flex
           flexDirection="column"
           // w={{ base: "100%", md: "99%", lg: "3xl" }}
@@ -283,7 +288,7 @@ export function Chats() {
               },
             }}
             overflowY="scroll"
-            maxH={{ base: "", md: "406" }}
+            // maxH={{ base: "", md: "406" }}
           >
             {chatLoading ? (
               <div className="w-full h-full flex items-center justify-center">
@@ -419,28 +424,45 @@ export function Chats() {
           </Stack>
 
           <HStack
-            pos="relative"
             h="75px"
-            px={8}
+            pr={2}
+            pl={8}
             bg={colorMode === "light" ? "white" : "gray.700"}
             _focusWithin={{ boxShadow: "-1px 0 100px rgba(0,0,0,0.05)" }}
           >
-            <Icon
+          <Popover closeOnBlur={true} onClose={onClose} isOpen={isOpen} placement="top-end">
+            <PopoverTrigger>
+              <IconButton
+                aria-label="open emojis"
+                size={{ base: "md", md: "lg" }}
+                icon={<MdOutlineEmojiEmotions />}
+                variant="ghost"
+                onClick={onToggle}
+              />
+            </PopoverTrigger>
+            <Portal>
+            <PopoverContent minW={32} bg={"none"} border={"none"}>
+              <PopoverArrow />
+              <PopoverBody>
+              <EmojiPicker
+                className="w-full h-full"
+                searchDisabled
+                onEmojiClick={onEmojiClick}
+                open={isOpen}
+                previewConfig={{
+                  showPreview: false
+                }}/>
+              </PopoverBody>
+            </PopoverContent>
+            </Portal>
+          </Popover>
+            {/* <Icon
               boxSize={6}
               color={useColorModeValue("purple", "gray.200")}
               as={MdOutlineEmojiEmotions}
               cursor="pointer"
               onClick={() => setShowPicker((val) => !val)}
-            />
-            {showPicker && (
-              <EmojiPicker
-                width={450}
-                height={350}
-                searchDisabled
-                onEmojiClick={onEmojiClick}
-                className="absolute bottom-[238px]"
-              />
-            )}
+            /> */}
             <Input
               color={colorMode == "light" ? "black" : "white"}
               variant="unstyled"

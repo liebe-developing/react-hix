@@ -412,10 +412,10 @@ const secondNavlinkData = [
 
 
 const popularProducts = [
-  { title: "اپراتور شماره  1", quantity: "فعال" },
-  { title: "اپراتور شماره  2", quantity: "فعال" },
-  { title: "اپراتور شماره  3", quantity: "فعال" },
-  { title: "اپراتور شماره  4", quantity: "فعال" },
+  { email: "test12@gmail.com", status: "فعال" },
+  { email: "arashTest@gmail.com", status: "فعال" },
+  { email: "testArash@gmail.com", status: "فعال" },
+  { email: "arashare@gmail.com", status: "فعال" },
 ];
 
 const popularClients = [

@@ -14,6 +14,7 @@ import {
   SimpleGrid,
   Text,
   VStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { IoClose } from "react-icons/io5";
 import { Field, Loading, PrimaryButton } from "../components";
@@ -173,16 +174,6 @@ const Profile = () => {
       </Heading>
       <Center>
         <VStack spacing={4}>
-          {formData.iconUrl && (
-            <img
-              src={formData.iconUrl}
-              style={{
-                border: "1px solid yellow",
-                boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
-              }}
-              className="rounded-full w-10 h-10 md:w-20 md:h-20 shadow-2xl "
-            />
-          )}
           <img
             src={
               formData.selectedAvatarFile
@@ -193,7 +184,8 @@ const Profile = () => {
             }
             style={{
               border: "2px solid #3e256b",
-              boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
+              boxShadow: useColorModeValue("6px 6px 12px #bebebe ,-6px -6px 12px #ffffff", 
+              "6px 6px 12px #464646 ,-6px -6px 12px #333")
             }}
             className="rounded-full w-20 h-20 md:w-32 md:h-32 shadow-2xl "
           />

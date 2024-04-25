@@ -21,7 +21,7 @@ const MediaBox = () => {
       w={"full"}
       h={"180px"}
       borderRadius={"20px"}
-      boxShadow="4px 4px 0px 0px #bbb"
+      boxShadow={useColorModeValue("4px 4px 0px 0px #bbb", "4px 4px 0px 0px #888")}
       position="relative"
       padding={6}
     >

@@ -23,6 +23,16 @@ export const apiPostRequest = (route, token = undefined, data = undefined) => {
   });
 };
 
+export const apiDeleteRequest = (route, token = undefined, data = undefined) => {
+  return apiRequests.delete(route, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    },
+    data,
+    withCredentials: true,
+  })
+};
+
 export const apiPutRequest = (route, token = undefined, data = undefined) => {
   return apiRequests
     .put(route, data, {

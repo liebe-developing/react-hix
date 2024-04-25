@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   return (
     <Flex
-      pt="1"
+      pt="2"
       pb="4"
       px="4"
       flexWrap="wrap"
@@ -56,7 +56,7 @@ const Dashboard = () => {
             <NavlinkBox key={i} {...item} />
           ))}
         </Flex>
-        <ActiveOperators />
+        <ActiveOperators operators={getValueDashboard?.operators} />
       </Box>
       <Box flex={1}>
         {loading && <Loading />}

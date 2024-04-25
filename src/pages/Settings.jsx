@@ -89,17 +89,30 @@ const Settings = () => {
 
   const fileSelectedHandler = async (e) => {
     const reader = new FileReader();
-    const waitForFilePromise = new Promise((resolve) => {
+    const urlReader = new FileReader();
+    const waitForFilePromise1 = new Promise((resolve) => {
       reader.onload = async (e) => {
         const text = e.target.result;
         resolve(encode(text));
       };
     });
+    const waitForFilePromise2 = new Promise((resolve) => {
+      urlReader.onload = async (e) => {
+        const result = e.target.result;
+        resolve(result);
+      };
+    });
     reader.readAsArrayBuffer(e.target.files[0]);
-    const imageBase64 = await waitForFilePromise;
+    urlReader.readAsDataURL(e.target.files[0]);
+    const imageBase64 = await waitForFilePromise1;
+    const imageDataUrl = await waitForFilePromise2;
     setFormData({
       ...formData,
-      selectedWidgetFile: { name: e.target.files[0].name, data: imageBase64 },
+      selectedWidgetFile: { 
+        name: e.target.files[0].name,
+        dataUrl: imageDataUrl, 
+        data: imageBase64 
+      },
     });
   };
 
@@ -344,16 +357,19 @@ const Settings = () => {
                 <Badge fontSize="13px" colorScheme="red">
                   {formData.selectedWidgetFile?.name}
                 </Badge>
-                {formData.iconUrl && (
+                
                   <img
-                    src={formData.iconUrl}
+                    src={formData.selectedWidgetFile
+                      ? formData.selectedWidgetFile.dataUrl
+                      : formData.iconUrl}
                     style={{
                       border: "1px solid yellow",
-                      boxShadow: "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
+                      boxShadow: useColorModeValue("6px 6px 12px #bebebe ,-6px -6px 12px #ffffff", 
+                                                  "6px 6px 12px #464646 ,-6px -6px 12px #333"),
                     }}
                     className="rounded-full w-10 h-10 md:w-16 md:h-16 shadow-2xl "
                   />
-                )}
+                
               </Flex>
             </Field>
             <Text fontSize="11px" color={"gray.600"}>

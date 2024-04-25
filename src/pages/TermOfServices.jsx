@@ -1,9 +1,11 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { rulesData } from "../constants";
 import { useEffect } from "react";
 
 
 export default function TermOfServices() {
+    const {colorMode} = useColorMode();
+
     useEffect(() => {
         window.scroll(0, 0);
     }, []);
@@ -20,11 +22,9 @@ export default function TermOfServices() {
                 <Text fontSize={{ base: "sm",md: "large" }} >
                     حق بروز رسانی و ایجاد تغییرات در این قوانین بدون اطلاع قبلی برای هیکس, محفوظ است. همچنین در صورت عدم رعایت هر کدام از موارد زیر ، دسترسی شما به خدمات هیکس محدود خواهد شد.        
             </Text>
-                <ul className="list-decimal mt-7  gap-3 ">
+                <ul className={`list-decimal mt-7 gap-3 ${colorMode === "light" ? "text-gray-800" : "text-gray-300"}`}>
                     {rulesData.map((item, i) => {
-                        return <li key={i} className="my-5 text-sm
-                        md:text-md
-                        text-gray-800">{item.label}</li>
+                        return <li key={i} className="my-5 text-sm md:text-md">{item.label}</li>
                     })}
                 </ul>
             </div>
