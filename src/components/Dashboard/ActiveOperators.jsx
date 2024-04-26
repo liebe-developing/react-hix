@@ -57,10 +57,10 @@ const ActiveOperators = ({ operators }) => {
             <Heading fontSize={{ base: "16px", md: "19px" }} letterSpacing="1px">
               اپراتورهای فعال
             </Heading>
-            <Heading fontSize={{ base: "12px", md: "14px" }} letterSpacing="1px">
+            <Heading fontSize={{ base: "12px", md: "14px" }}  letterSpacing="1px">
               <Link to="/settings">
                 افزودن اپراتور
-              <Icon as={FaPlusCircle} boxSize={6} color="green" />
+              <Icon as={FaPlusCircle} mr={1} boxSize={6} color="green" />
               </Link>
             </Heading>
           </Flex>
