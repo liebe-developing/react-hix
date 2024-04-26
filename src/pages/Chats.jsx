@@ -48,7 +48,7 @@ export function Chats() {
   const [userSearchTerm, setUserSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
-  const {isOpen, onToggle, onClose} = useDisclosure();
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   const toast = useToast();
   const { colorMode } = useColorMode();
@@ -288,7 +288,7 @@ export function Chats() {
               },
             }}
             overflowY="scroll"
-            // maxH={{ base: "", md: "406" }}
+            maxH={{ base: "450", md: "406" }}
           >
             {chatLoading ? (
               <div className="w-full h-full flex items-center justify-center">
@@ -430,32 +430,38 @@ export function Chats() {
             bg={colorMode === "light" ? "white" : "gray.700"}
             _focusWithin={{ boxShadow: "-1px 0 100px rgba(0,0,0,0.05)" }}
           >
-          <Popover closeOnBlur={true} onClose={onClose} isOpen={isOpen} placement="top-end">
-            <PopoverTrigger>
-              <IconButton
-                aria-label="open emojis"
-                size={{ base: "md", md: "lg" }}
-                icon={<MdOutlineEmojiEmotions />}
-                variant="ghost"
-                onClick={onToggle}
-              />
-            </PopoverTrigger>
-            <Portal>
-            <PopoverContent minW={32} bg={"none"} border={"none"}>
-              <PopoverArrow />
-              <PopoverBody>
-              <EmojiPicker
-                className="w-full h-full"
-                searchDisabled
-                onEmojiClick={onEmojiClick}
-                open={isOpen}
-                previewConfig={{
-                  showPreview: false
-                }}/>
-              </PopoverBody>
-            </PopoverContent>
-            </Portal>
-          </Popover>
+            <Popover
+              closeOnBlur={true}
+              onClose={onClose}
+              isOpen={isOpen}
+              placement="top-end"
+            >
+              <PopoverTrigger>
+                <IconButton
+                  aria-label="open emojis"
+                  size={{ base: "md", md: "lg" }}
+                  icon={<MdOutlineEmojiEmotions />}
+                  variant="ghost"
+                  onClick={onToggle}
+                />
+              </PopoverTrigger>
+              <Portal>
+                <PopoverContent minW={32} bg={"none"} border={"none"}>
+                  <PopoverArrow />
+                  <PopoverBody>
+                    <EmojiPicker
+                      className="w-full h-full"
+                      searchDisabled
+                      onEmojiClick={onEmojiClick}
+                      open={isOpen}
+                      previewConfig={{
+                        showPreview: false,
+                      }}
+                    />
+                  </PopoverBody>
+                </PopoverContent>
+              </Portal>
+            </Popover>
             {/* <Icon
               boxSize={6}
               color={useColorModeValue("purple", "gray.200")}
