@@ -21,6 +21,8 @@ import {
   IconButton,
   Portal,
   useDisclosure,
+  SkeletonCircle,
+  Skeleton,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
 import { Loading, UserList } from "../components";
@@ -33,6 +35,7 @@ import { io } from "socket.io-client";
 import { IoSend } from "react-icons/io5";
 import EmojiPicker from "emoji-picker-react";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
+import messageSound from "../assets/sounds/message.mp3";
 
 /**
  * @type {Socket} socket
@@ -52,10 +55,16 @@ export function Chats() {
 
   const toast = useToast();
   const { colorMode } = useColorMode();
+  const messageRef = useRef(null);
+
+  useEffect(() => {
+    messageRef.current.focus();
+    setShowPicker(true);
+  }, [showPicker, messageText]);
 
   const onEmojiClick = (emojiObject, event) => {
     setMessageText((prevInput) => prevInput + emojiObject.emoji);
-    setShowPicker(false);
+    // setShowPicker(false);
   };
 
   const { userToken, userContent } = useOutletContext();
@@ -103,6 +112,10 @@ export function Chats() {
               message.is_user_message = true;
 
             setSelectedChatMessages((pState) => [...pState, message]);
+            if (!document.hasFocus() && message) {
+              const sound = new Audio(messageSound);
+              sound.play();
+            }
           });
 
           socket.on("operator:send", (data) => {
@@ -176,14 +189,14 @@ export function Chats() {
 
   return (
     <Flex
-      h={{ base: "130vh", md: "100%" }}
+      h={{ base: "full", md: "100%" }}
       minH={"100%"}
       flexDirection={{ base: "column", lg: "row" }}
       // gap="6px"
       w="full"
       flexGrow={1}
     >
-      <Flex flexDirection="column">
+      <Flex flexDirection="column" borderBottom="1px solid #00000021">
         <InputGroup h={16}>
           <Input
             w="full"
@@ -204,12 +217,12 @@ export function Chats() {
           className="w-full custom-scroll md:h-full shadow-xl flex flex-col overflow-y-scroll no-scrollbar"
         >
           {userLoading && (
-            <Loading
-              emColor="transparent"
-              color="purple.400"
-              mt={20}
-              alignSelf="center"
-            />
+            <Flex alignItems="center" my={4} mx={4} gap={3}>
+              <Box display="flex" justifyContent="space-between" bg="white">
+                <SkeletonCircle size={{ base: "12", md: "10" }} />
+              </Box>
+              <Skeleton flex={1} height={{ base: "30", md: "25" }} />
+            </Flex>
           )}
           {!userLoading && userSearchTerm.length > 1
             ? filteredUsers.map((item) => {
@@ -288,7 +301,7 @@ export function Chats() {
               },
             }}
             overflowY="scroll"
-            maxH={{ base: "450", md: "406" }}
+            maxH={{ base: "550", md: "406" }}
           >
             {chatLoading ? (
               <div className="w-full h-full flex items-center justify-center">
@@ -439,7 +452,8 @@ export function Chats() {
               <PopoverTrigger>
                 <IconButton
                   aria-label="open emojis"
-                  size={{ base: "md", md: "lg" }}
+                  // size={{ base: "md", md: "lg" }}
+                  fontSize="22px"
                   icon={<MdOutlineEmojiEmotions />}
                   variant="ghost"
                   onClick={onToggle}
@@ -454,6 +468,7 @@ export function Chats() {
                       searchDisabled
                       onEmojiClick={onEmojiClick}
                       open={isOpen}
+                      theme={useColorModeValue("light", "dark")}
                       previewConfig={{
                         showPreview: false,
                       }}
@@ -480,6 +495,8 @@ export function Chats() {
               _placeholder={{
                 color: "gray.400",
               }}
+              ref={messageRef}
+              autoFocus
               pattern="\s*\S+.*"
               onKeyDown={(e) => {
                 if (

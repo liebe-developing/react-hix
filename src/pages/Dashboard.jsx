@@ -56,7 +56,7 @@ const Dashboard = () => {
             <NavlinkBox key={i} {...item} />
           ))}
         </Flex>
-        <ActiveOperators operators={getValueDashboard?.operators} />
+        <ActiveOperators loading={loading} operators={getValueDashboard?.operators} />
       </Box>
       <Box flex={1}>
         {loading && <Loading />}

@@ -1,4 +1,4 @@
-import { Flex, Text, useColorMode, useTheme } from "@chakra-ui/react";
+import { Badge, Flex, Text, useColorMode, useTheme } from "@chakra-ui/react";
 import React from "react";
 import {
   Link,
@@ -40,7 +40,7 @@ export default function Footer({ userContent }) {
 
       {/* mobile */}
 
-      <Flex flexDir={"row"} justifyContent={"space-around"} gap={2}>
+      <Flex flexDir={"row"} gap={2} alignItems="center">
         <Link
           to={
             userContent.user_plan_id
@@ -59,6 +59,7 @@ export default function Footer({ userContent }) {
         >
           قوانین
         </Link>
+        <Text colorScheme="purple" fontFamily="sans-serif" fontWeight='bold'>v1.0.5</Text>
       </Flex>
     </Flex>
   );
