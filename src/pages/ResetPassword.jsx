@@ -14,12 +14,21 @@ import {
   FormHelperText,
   Alert,
   AlertIcon,
+  useToast,
+  Center,
+  HStack,
+  PinInput,
+  PinInputField,
+  InputGroup,
+  InputLeftElement,
+  Icon,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
 import { Loading, PageTitle } from "../components";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -27,12 +36,30 @@ to {transform: translateY(-60px)}
 `;
 const ResetPassword = () => {
   const [error, setError] = useState(false);
-  const [isEmailAvailable, setIsEmailAvailable] = useState(false);
+  const [isEmailAvailable, setIsEmailAvailable] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [loadingResetPassword, setLoadingResetPassword] = useState(false);
+  const [hasEmailBeenSent, setHasEmailBeenSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toast = useToast();
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
 
   const [email, setEmail] = useState("");
+
+  const [formData, setFormData] = useState({
+    verify_code: "",
+    newPassword: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   // const toast = useToast();
   const navigate = useNavigate();
@@ -41,24 +68,35 @@ const ResetPassword = () => {
     userToken && navigate("/");
   }, []);
 
-  const resetPasswordHandler = (e) => {
+  const sendEmailHandler = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    apiPostRequest("/api/auth/reset_password", undefined, email)
+    apiPostRequest("/api/auth/reset_password", undefined, { email })
       .then(function (res) {
-        console.log(res);
         setLoading(false);
-        // navigate("/sign-in");
+        toast({
+          title: `ایمیل با موفقیت ارسال شد`,
+          status: "success",
+          position: "top-right",
+        });
+        setHasEmailBeenSent(true);
       })
       .catch((error) => {
-        if (error.status === 404) {
+        if (error.response.status === 404) {
           setIsEmailAvailable(false);
+        } else {
+          setError(true);
         }
-        console.log(error);
         setLoading(false);
-        setError(true);
       });
+  };
+
+  /* Write the rest of codes to send verify code and new password to database */
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    setLoadingResetPassword(false);
+    console.log(formData);
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
@@ -109,7 +147,7 @@ const ResetPassword = () => {
             >
               بازیابی رمز عبور
             </Heading>
-            <form onSubmit={resetPasswordHandler}>
+            <form onSubmit={sendEmailHandler}>
               <Flex flexDir="column" gap={4} dir="rtl">
                 <FormControl id="email" isRequired>
                   <FormLabel>ایمیل</FormLabel>
@@ -125,7 +163,94 @@ const ResetPassword = () => {
                     جهت بازیابی ایمیل خود را وارد نمایید.
                   </FormHelperText>
                 </FormControl>
-                <Stack spacing={4}>
+                {!hasEmailBeenSent && (
+                  <Stack spacing={4}>
+                    <Button
+                      bg={"cyan.400"}
+                      color={"white"}
+                      _hover={{
+                        bg: "cyan.500",
+                      }}
+                      type="submit"
+                      isDisabled={loading}
+                    >
+                      {loading ? (
+                        <Loading
+                          emColor="gray.200"
+                          color="blue.500"
+                          size="lg"
+                        />
+                      ) : (
+                        "ارسال"
+                      )}
+                    </Button>
+                    <Flex
+                      gap={2}
+                      alignItems="center"
+                      justifyContent="center"
+                      fontSize={"13px"}
+                    >
+                      <Text color={"gray.700"}>حساب کاربری دارید؟</Text>
+                      <Link to="/sign-in">
+                        <Text color={"blue.400"}>ورود</Text>
+                      </Link>
+                    </Flex>
+                  </Stack>
+                )}
+              </Flex>
+            </form>
+            {hasEmailBeenSent && (
+              <form onSubmit={handleResetPassword}>
+                <Flex flexDir="column" dir="rtl" mt={5}>
+                  <Text>کد ارسالی را وارد نمایید</Text>
+                  <FormControl mt={2} mb={4}>
+                    <Flex dir="ltr" justifyContent="right">
+                      <PinInput
+                        otp
+                        onChange={(e) =>
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            verify_code: e,
+                          }))
+                        }
+                        value={formData.verify_code}
+                      >
+                        <PinInputField />
+                        <PinInputField />
+                        <PinInputField />
+                        <PinInputField />
+                      </PinInput>
+                    </Flex>
+                  </FormControl>
+                  <FormControl id="newpassword" isRequired mb={4}>
+                    <FormLabel>رمز عبور جدید</FormLabel>
+                    <InputGroup>
+                      <Input
+                        name="newPassword"
+                        id="newpassword"
+                        value={formData.newPassword}
+                        onChange={handleChange}
+                        px="16px"
+                        pr={4}
+                        type={showPassword ? "text" : "password"}
+                        placeholder="********"
+                      />
+                      <InputLeftElement h={"full"}>
+                        <Button
+                          variant={"ghost"}
+                          onClick={() =>
+                            setShowPassword((showPassword) => !showPassword)
+                          }
+                        >
+                          {showPassword ? (
+                            <Icon as={FaEye} />
+                          ) : (
+                            <Icon as={FaEyeSlash} />
+                          )}
+                        </Button>
+                      </InputLeftElement>
+                    </InputGroup>
+                  </FormControl>
                   <Button
                     bg={"cyan.400"}
                     color={"white"}
@@ -133,28 +258,17 @@ const ResetPassword = () => {
                       bg: "cyan.500",
                     }}
                     type="submit"
-                    isDisabled={loading}
+                    isDisabled={loadingResetPassword}
                   >
-                    {loading ? (
+                    {loadingResetPassword ? (
                       <Loading emColor="gray.200" color="blue.500" size="lg" />
                     ) : (
-                      "بازیابی"
+                      "تغییر رمز عبور"
                     )}
                   </Button>
-                  <Flex
-                    gap={2}
-                    alignItems="center"
-                    justifyContent="center"
-                    fontSize={"13px"}
-                  >
-                    <Text color={"gray.700"}>حساب کاربری دارید؟</Text>
-                    <Link to="/sign-in">
-                      <Text color={"blue.400"}>ورود</Text>
-                    </Link>
-                  </Flex>
-                </Stack>
-              </Flex>
-            </form>
+                </Flex>
+              </form>
+            )}
             {error && (
               <Alert status="error" dir="rtl" mt={5} fontSize="14.5px">
                 <AlertIcon />
@@ -162,7 +276,7 @@ const ResetPassword = () => {
               </Alert>
             )}
 
-            {isEmailAvailable && (
+            {!isEmailAvailable && (
               <Alert status="error" dir="rtl" mt={5} fontSize="14.5px">
                 <AlertIcon />
                 ایمیل یافت نشد

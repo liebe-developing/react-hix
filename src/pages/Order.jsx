@@ -315,7 +315,7 @@ function Order() {
                     // className="py-1 px-2 bg-blue-500 rounded text-black hover:scale-105"
                   >
                     {loadingDiscount ? (
-                      <Loading emColor="gray.200" color="green.500" />
+                      <Loading emColor="gray.200" color="green.500" size="md" />
                     ) : (
                       "ثبت"
                     )}
@@ -352,13 +352,18 @@ function Order() {
                     {" "}
                     قوانین را میپذیرم!
                     <span className="mr-3 text-blue-600 hover:underline underline-offset-4">
-                      <Link to="/termsofservices">قوانین</Link>
+                      <Link to="/termsofservices" target="_blank">
+                        قوانین
+                      </Link>
                     </span>
                   </label>
                 </h3>
                 <Button
                   type="submit"
-                  colorScheme="orange"
+                  bg="#F05E22"
+                  color="white"
+                  variant="unstyled"
+                  _hover={{ opacity: "0.9" }}
                   onClick={sendShopping}
                   w="full"
                   mt={8}
@@ -367,7 +372,7 @@ function Order() {
                 >
                   {loading ? (
                     <Loading
-                      // size="md"
+                      size="md"
                       emColor="orange.200"
                       color="orange.500"
                     />

@@ -86,27 +86,41 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       >
         <img
           src="/logo_hix.svg"
-          className={`w-[30%] md:w-[70%] aspect-[1] ${colorMode === "light" ? "mix-blend-normal" : "mix-blend-lighten"
-            } `}
+          className={`w-[30%] md:w-[70%] aspect-[1] ${
+            colorMode === "light" ? "mix-blend-normal" : "mix-blend-lighten"
+          } `}
         />
         <div className="flex md:hidden flex-row flex-grow justify-end px-4">
           <CloseButton onClick={onClose} />
         </div>
       </Flex>
       {LinkItems.map((link) => {
-        const available = (userContent?.user_plan_id && userContent.plan.price === 0 ? link.id >= 0 : userContent.user.operator_user_plan_id ? link.id >= 20 : false);
-        
+        let available = false;
+        if (userContent.user_plan_id) {
+          if (userContent.plan.price === 0) {
+            if (link.id >= 0) available = true;
+          } else {
+            available = true;
+          }
+        } else if (userContent.user.operator_user_plan_id && link.id >= 20) {
+          available = true;
+        }
+
         return (
           // userContent?.user_plan_id ?
-          <Link key={link.name} to={available ? link.href : window.location.href} onClick={() => {
-            onClose();
-            if(!available) {
-              toast({
-                title: "شما به این بخش از داشبورد دسترسی ندارید.",
-                status: "error"
-              })
-            }
-          }} >
+          <Link
+            key={link.name}
+            to={available ? link.href : window.location.href}
+            onClick={() => {
+              onClose();
+              if (!available) {
+                toast({
+                  title: "شما به این بخش از داشبورد دسترسی ندارید.",
+                  status: "error",
+                });
+              }
+            }}
+          >
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
         );
@@ -304,8 +318,8 @@ const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
               <PopoverBody>
                 <List spacing={3}>
                   {userContent &&
-                    userContent.notifications &&
-                    userContent.notifications.length > 0 ? (
+                  userContent.notifications &&
+                  userContent.notifications.length > 0 ? (
                     userContent.notifications.map((n, i) => (
                       <ListItem key={i}>
                         <Flex

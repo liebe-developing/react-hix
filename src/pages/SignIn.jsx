@@ -14,6 +14,7 @@ import {
   InputLeftElement,
   Icon,
   keyframes,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -34,6 +35,7 @@ const SignIn = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(true);
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -51,7 +53,6 @@ const SignIn = () => {
     effect();
   }, []);
 
-  // const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { email, password } = formData;
@@ -70,7 +71,7 @@ const SignIn = () => {
     setLoading(true);
     setError(false);
 
-    /* if (formData.password.length < 4 || formData.password.length > 16) {
+    if (formData.password.length < 4 || formData.password.length > 16) {
       toast({
         title: `رمز عبور باید بین 4 تا 16 کاراکتر باشد`,
         status: "error",
@@ -78,7 +79,7 @@ const SignIn = () => {
       });
       setLoading(false);
       return;
-    } */
+    }
 
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {

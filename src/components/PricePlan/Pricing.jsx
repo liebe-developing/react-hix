@@ -30,7 +30,7 @@ function PriceWrapper(props) {
       alignSelf={{ base: "center", lg: "flex-start" }}
       borderColor={useColorModeValue("gray.200", "gray.500")}
       borderRadius={"xl"}
-      w={{ base: "full", md: "50%" }}
+      w={{ base: "full", md: "80%", lg: "50%" }}
       mx="auto"
     >
       {children}
@@ -87,7 +87,7 @@ export default function Pricing({ userToken, monthPlan }) {
   };
 
   return (
-    <Box py={0} m="0 auto" mx={10}>
+    <Box py={0} m="0 auto" mx={5}>
       <Flex
         direction={{ base: "column", lg: "row" }}
         textAlign="center"
@@ -110,16 +110,22 @@ export default function Pricing({ userToken, monthPlan }) {
               oldPrice,
               price,
               title,
+              current,
+              relativeCurrent,
             } = item;
             const persianPrice = price / 10;
             const persianOldPrice = oldPrice / 10;
             return (
               <PriceWrapper key={id} boxShadow="xl">
-                <Box py={4} px={12} borderBottom="1px solid #eee">
+                <Box
+                  py={4}
+                  px={12}
+                  borderBottom="1px solid #eee"
+                  position="relative"
+                >
                   {/* Discount UI START */}
                   {price ? (
                     <Box
-                      position="relative"
                       h={12}
                       display="flex"
                       alignItems="center"
@@ -141,6 +147,21 @@ export default function Pricing({ userToken, monthPlan }) {
                     </Box>
                   ) : null}
                   {/* Discount UI END */}
+                  {current && (
+                    <Text
+                      position="absolute"
+                      top={6}
+                      right={{ base: 6, md: 0, lg: -4, xl: 10 }}
+                      bg="#F05E22"
+                      color="white"
+                      padding={2}
+                      fontSize="sm"
+                      borderRadius="100px"
+                      boxShadow="xl"
+                    >
+                      بسته فعلی
+                    </Text>
+                  )}
                   <HStack justifyContent="center">
                     {price > 0 ? (
                       <>
@@ -160,7 +181,10 @@ export default function Pricing({ userToken, monthPlan }) {
                         رایگان
                       </Text>
                     )}
-                    <Text fontSize="xl" color="gray.800">
+                    <Text
+                      fontSize="xl"
+                      color={useColorModeValue("gray.800", "gray.200")}
+                    >
                       {days > 30
                         ? (days !== 365 ? days / 30 : 12) + "ماهه"
                         : days + "روزه"}
@@ -187,7 +211,10 @@ export default function Pricing({ userToken, monthPlan }) {
                       تعداد مکالمه:{" "}
                       {gift_chat_count !== 0 ? (
                         <>
-                          <Text fontSize="20px" color={"#000"}>
+                          <Text
+                            fontSize={{ base: "13px", md: "18px" }}
+                            color={useColorModeValue("#000", "gray.200")}
+                          >
                             {chat_count} +
                           </Text>
                           <Text
@@ -197,7 +224,9 @@ export default function Pricing({ userToken, monthPlan }) {
                             color="#F05E22"
                             fontWeight={"900"}
                           >
-                            <Text fontSize="20px">{gift_chat_count}</Text>
+                            <Text fontSize={{ base: "13px", md: "18px" }}>
+                              {gift_chat_count}
+                            </Text>
                             مکالمه هدیه
                           </Text>
                         </>
@@ -215,7 +244,7 @@ export default function Pricing({ userToken, monthPlan }) {
                       آپلود فایل تا:{" "}
                       {gift_file_size_limit !== 0 ? (
                         <>
-                          <Text fontSize="20px">
+                          <Text fontSize={{ base: "13px", md: "18px" }}>
                             {file_size_limit} مگابایت +
                           </Text>
                           <Text
@@ -225,7 +254,9 @@ export default function Pricing({ userToken, monthPlan }) {
                             color="#F05E22"
                             fontWeight={"900"}
                           >
-                            <Text fontSize="20px">{gift_file_size_limit}</Text>{" "}
+                            <Text fontSize={{ base: "13px", md: "18px" }}>
+                              {gift_file_size_limit}
+                            </Text>{" "}
                             مگابایت هدیه
                           </Text>
                         </>
@@ -255,6 +286,10 @@ export default function Pricing({ userToken, monthPlan }) {
                       colorScheme="#000"
                       color="#ffff"
                       bg="#3e256b"
+                      border={useColorModeValue(
+                        "1px solid white",
+                        "1px solid #666"
+                      )}
                       variant="outline"
                       fontSize={{ base: "sm", md: "x-large" }}
                       _hover={{
@@ -263,7 +298,7 @@ export default function Pricing({ userToken, monthPlan }) {
                         shadow: "xl",
                       }}
                     >
-                      خرید
+                      {relativeCurrent <= 0 ? "خرید" : "ارتقا"}
                     </Button>
                   </Box>
                 </VStack>

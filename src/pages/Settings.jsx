@@ -109,7 +109,6 @@ const Settings = () => {
     setFormData({
       ...formData,
       selectedWidgetFile: {
-      selectedWidgetFile: {
         name: e.target.files[0].name,
         dataUrl: imageDataUrl,
         data: imageBase64,

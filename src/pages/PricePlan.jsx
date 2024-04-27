@@ -40,7 +40,18 @@ const PricePlan = () => {
     apiGetRequest("api/plan", userToken)
       .then((res) => {
         setIsLoding(false);
-        const plans = res.data.data;
+        const plans = res.data.data.map((p) => {
+          console.log(p.id + " , " + userContent.plan.id);
+          return {
+            ...p,
+            relativeCurrent: !userContent.user_plan_id
+              ? 0
+              : p.id > userContent.plan.id
+              ? 1
+              : 0,
+            current: userContent.user_plan_id && p.id == userContent.plan.id,
+          };
+        });
         const freePlan = plans.filter((plan) => plan.price === 0);
         const oneMonthPlans = plans.filter((plan) => plan.days === 30);
         const sixMonthPlans = plans.filter((plan) => plan.days === 180);
@@ -68,29 +79,29 @@ const PricePlan = () => {
           <Center>
             <Tabs colorScheme="purple" w="full">
               <TabList maxW={{ base: "full", md: "70%" }} mx="auto">
-                {free && (
+                {free && free.length > 0 && (
                   <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     رایگان
                   </Tab>
                 )}
-                {oneMonth && (
+                {oneMonth && oneMonth.length > 0 && (
                   <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     ۱ ماهه
                   </Tab>
                 )}
-                {sixMonth && (
+                {sixMonth && sixMonth.length > 0 && (
                   <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     ۶ ماهه
                   </Tab>
                 )}
-                {oneYear && (
+                {oneYear && oneYear.length > 0 && (
                   <Tab w="full" fontSize={{ base: "15px", md: "20px" }}>
                     ۱ ساله
                   </Tab>
                 )}
               </TabList>
               <TabPanels>
-                {free && (
+                {free && free.length > 0 && (
                   <TabPanel>
                     <PricePlanHeading />
                     <Pricing
@@ -101,7 +112,7 @@ const PricePlan = () => {
                     <OneMonthPackageTable oneMonthPackage={oneMonthPackage} />
                   </TabPanel>
                 )}
-                {oneMonth && (
+                {oneMonth && oneMonth.length > 0 && (
                   <TabPanel>
                     <PricePlanHeading />
                     <Pricing monthPlan={oneMonth} userToken={userToken} />
@@ -109,7 +120,7 @@ const PricePlan = () => {
                   </TabPanel>
                 )}
 
-                {sixMonth && (
+                {sixMonth && sixMonth.length > 0 && (
                   <TabPanel>
                     <PricePlanHeading />
                     <Pricing monthPlan={sixMonth} userToken={userToken} />
@@ -117,7 +128,7 @@ const PricePlan = () => {
                   </TabPanel>
                 )}
 
-                {oneYear && (
+                {oneYear && oneYear.length > 0 && (
                   <TabPanel>
                     <PricePlanHeading />
                     <Pricing monthPlan={oneYear} userToken={userToken} />
