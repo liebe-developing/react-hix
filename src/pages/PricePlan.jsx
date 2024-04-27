@@ -14,6 +14,7 @@ import {
   PricePlanHeading,
   Pricing,
   Loading,
+  PageTitle,
 } from "../components";
 import {
   oneMonthPackage,
@@ -59,6 +60,7 @@ const PricePlan = () => {
   // console.log(oneMonth);
   return (
     <>
+      <PageTitle title="تعرفه‌ها | دستیار هوشمند هیکس" />
       {isLoding ? (
         <Loading emColor="purple.100" color="purple" />
       ) : (

@@ -22,7 +22,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
-import { Loading } from "../components";
+import { Loading, PageTitle } from "../components";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -141,6 +141,7 @@ const SignUp = () => {
 
   return (
     <Box position={"relative"} dir="ltr" overflow={"hidden"}>
+      <PageTitle title="ثبت نام | دستیار هوشمند هیکس" />
       <Flex
         flexDir={{ base: "column-reverse", md: "row" }}
         spacing={{ base: 10, lg: 10 }}
@@ -253,7 +254,7 @@ const SignUp = () => {
                     </InputLeftElement>
                   </InputGroup>
                   <FormHelperText fontSize="12px">
-                    حداقل 3 و حداکثر 16 کاراکتر مجاز است.
+                    حداقل 4 و حداکثر 16 کاراکتر مجاز است.
                   </FormHelperText>
                 </FormControl>
                 <FormControl id="password" isRequired>

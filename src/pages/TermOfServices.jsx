@@ -1,6 +1,7 @@
 import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { rulesData } from "../constants";
 import { useEffect } from "react";
+import { PageTitle } from "../components";
 
 
 export default function TermOfServices() {
@@ -12,6 +13,7 @@ export default function TermOfServices() {
     
     return (
         <Box className="flex flex-col items-center justify-start gap-6 mt-2 w-full">
+            <PageTitle title="قوانین | دستیار هوشمند هیکس" />
             <Text fontSize="x-large" className="drop-shadow-xl" >
                 قوانین و شرایط استفاده خدمات <span className="text-blue-700">هیکس</span>
             </Text>

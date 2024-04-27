@@ -21,6 +21,7 @@ import * as persianTools from "@persian-tools/persian-tools";
 import Field from "../components/Field";
 import isValidURL from "../services/ErrorHandling/validate ";
 import Loading from "../components/Loading";
+import { PageTitle } from "../components";
 
 function Order() {
   const toast = useToast();
@@ -165,6 +166,7 @@ function Order() {
     ((dataApiInvoiceSetUi?.plan?.price / 10) * (100 - acceptedPercent)) / 100;
   return (
     <section className="flex items-center justify-center h-auto my-10">
+      <PageTitle title="سفارش | دستیار هوشمند هیکس" />
       {dataApiInvoiceSetUi && (
         <>
           <div
@@ -350,7 +352,7 @@ function Order() {
                     {" "}
                     قوانین را میپذیرم!
                     <span className="mr-3 text-blue-600 hover:underline underline-offset-4">
-                      <Link to="/termofservices">قوانین</Link>
+                      <Link to="/termsofservices">قوانین</Link>
                     </span>
                   </label>
                 </h3>

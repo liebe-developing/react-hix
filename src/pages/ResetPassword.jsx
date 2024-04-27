@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
-import { Loading } from "../components";
+import { Loading, PageTitle } from "../components";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -27,7 +27,7 @@ to {transform: translateY(-60px)}
 `;
 const ResetPassword = () => {
   const [error, setError] = useState(false);
-  const [isEmailAvailable, setIsEmailAvailable] = useState(true);
+  const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const userToken = useSelector((state) => state?.user?.currentUser?.token);
@@ -48,13 +48,14 @@ const ResetPassword = () => {
     apiPostRequest("/api/auth/reset_password", undefined, email)
       .then(function (res) {
         console.log(res);
-        if (res.status === 404) {
-          setIsEmailAvailable(true);
-        }
         setLoading(false);
         // navigate("/sign-in");
       })
-      .catch(() => {
+      .catch((error) => {
+        if (error.status === 404) {
+          setIsEmailAvailable(false);
+        }
+        console.log(error);
         setLoading(false);
         setError(true);
       });
@@ -64,6 +65,7 @@ const ResetPassword = () => {
 
   return (
     <Box position={"relative"} dir="ltr">
+      <PageTitle title="بازیابی رمز | دستیار هوشمند هیکس" />
       <Flex
         as={Flex}
         flexDir={{ base: "column-reverse", md: "row" }}
@@ -160,7 +162,7 @@ const ResetPassword = () => {
               </Alert>
             )}
 
-            {!isEmailAvailable && (
+            {isEmailAvailable && (
               <Alert status="error" dir="rtl" mt={5} fontSize="14.5px">
                 <AlertIcon />
                 ایمیل یافت نشد

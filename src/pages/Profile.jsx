@@ -17,7 +17,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { IoClose } from "react-icons/io5";
-import { Field, Loading, PrimaryButton } from "../components";
+import { Field, Loading, PageTitle, PrimaryButton } from "../components";
 import { useEffect, useRef, useState } from "react";
 import { apiGetRequest, apiPutRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
@@ -161,6 +161,7 @@ const Profile = () => {
 
   return (
     <Box m={5}>
+      <PageTitle title="پروفایل | دستیار هوشمند هیکس" />
       <Heading
         fontSize={{ base: "22px", md: "28px" }}
         borderRadius="10px"
@@ -184,8 +185,10 @@ const Profile = () => {
             }
             style={{
               border: "2px solid #3e256b",
-              boxShadow: useColorModeValue("6px 6px 12px #bebebe ,-6px -6px 12px #ffffff", 
-              "6px 6px 12px #464646 ,-6px -6px 12px #333")
+              boxShadow: useColorModeValue(
+                "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
+                "6px 6px 12px #464646 ,-6px -6px 12px #333"
+              ),
             }}
             className="rounded-full w-20 h-20 md:w-32 md:h-32 shadow-2xl "
           />

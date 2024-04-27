@@ -1,16 +1,14 @@
+/* eslint-disable react/no-unknown-property */
 import { useColorMode, SimpleGrid } from "@chakra-ui/react";
-import { CardeCom, Loading } from "../components";
+import { CardeCom, Loading, PageTitle } from "../components";
 import { FaShoppingBasket } from "react-icons/fa";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
-import { useState, useEffect } from "react";
-import { apiGetRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
 import { useFetch } from "../hook";
 
 function Report() {
   const { userToken, userContent } = useOutletContext();
   const { colorMode } = useColorMode();
-  const [valueReport, setValueReport] = useState();
 
   const [data] = useFetch(
     `/api/user_plan/${userContent.user_plan_id}/report`,
@@ -19,6 +17,7 @@ function Report() {
 
   return (
     <div className="flex flex-col">
+      <PageTitle title="گزارش‌ها | دستیار هوشمند هیکس" />
       <SimpleGrid
         rounded="10px"
         padding="10px"

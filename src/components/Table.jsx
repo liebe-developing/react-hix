@@ -29,7 +29,7 @@ const Table = ({ tableData }) => {
         )}`}
         onClick={onOpen}
       >
-        <td className="text-center py-4 whitespace-nowrap text-[10px] md:text-md font-medium ">
+        <td className="text-center py-4 whitespace-nowrap text-[8px] md:text-[10px] lg:text-[17px] font-medium ">
           {id}
         </td>
         <td className="text-center py-4 whitespace-nowrap text-[8px] md:text-[10px] lg:text-[17px] font-medium ">
@@ -42,7 +42,7 @@ const Table = ({ tableData }) => {
             <MdOutlineRemoveDone className="bg-white text-black rounded-full MdOutlineRemoveDone text-xl md:text-2xl inline" />
           )}
         </td>
-        <td className="text-center py-4 whitespace-nowrap text-[10px] md:text-md font-medium ">
+        <td className="text-center py-4 whitespace-nowrap text-[8px] md:text-[10px] lg:text-[17px] font-medium ">
           <a href={url} className="text-blue-500">
             لینک
           </a>

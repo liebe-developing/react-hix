@@ -5,6 +5,7 @@ import {
   Loading,
   Error,
   ActiveOperators,
+  PageTitle,
 } from "../components/index";
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -34,67 +35,73 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Flex
-      pt="2"
-      pb="4"
-      px="4"
-      flexWrap="wrap"
-      flexDirection={{ base: "column", sm: "column", lg: "row" }}
-      gap={12}
-    >
-      <Box flex={1.2}>
-        <MediaBox />
-        <Flex
-          flexWrap="wrap"
-          justifyContent="space-around"
-          gap={4}
-          mt={8}
-          rowGap={4}
-          flexDir={"row"}
-        >
-          {fistNavlinkData.map((item, i) => (
-            <NavlinkBox key={i} {...item} />
-          ))}
-        </Flex>
-        <ActiveOperators loading={loading} operators={getValueDashboard?.operators} />
-      </Box>
-      <Box flex={1}>
-        {loading && <Loading />}
-        {error && <Error title="مشکلی پیش آمده است" />}
-        {!loading && !error && getValueDashboard && (
+    <>
+      <PageTitle title="داشبورد | دستیار هوشمند هیکس" />
+      <Flex
+        pt="2"
+        pb="4"
+        px="4"
+        flexWrap="wrap"
+        flexDirection={{ base: "column", sm: "column", lg: "row" }}
+        gap={12}
+      >
+        <Box flex={1.2}>
+          <MediaBox />
           <Flex
             flexWrap="wrap"
-            columnGap={4}
-            rowGap={8}
-            justifyContent="space-between"
-            flexGrow={1}
+            justifyContent="space-around"
+            gap={4}
+            mt={8}
+            rowGap={4}
+            flexDir={"row"}
           >
-            <Stats
-              title="تعداد مکالمات"
-              value={`${
-                getValueDashboard.maxChats - getValueDashboard.remainingChats
-              } / ${getValueDashboard.maxChats}`}
-            />
-            <Stats
-              title="اپراتورها"
-              value={`${getValueDashboard.operatorCount} / ${
-                getValueDashboard.maxOperators === 999999999
-                  ? "نامحدود"
-                  : getValueDashboard.maxOperators
-              }`}
-            />
-            <Stats
-              title="محصولات"
-              value={`${getValueDashboard.productCount}`}
-            />
-            <Stats
-              title="روزهای باقی مانده"
-              value={`${getValueDashboard.remainingDays} / ${getValueDashboard.maxDays}`}
-            />
+            {fistNavlinkData.map((item, i) => (
+              <NavlinkBox key={i} {...item} />
+            ))}
           </Flex>
-        )}
-      </Box>
-    </Flex>
+          <ActiveOperators
+            loading={loading}
+            operators={getValueDashboard?.operators}
+          />
+        </Box>
+        <Box flex={1}>
+          {loading && <Loading />}
+          {error && <Error title="مشکلی پیش آمده است" />}
+          {!loading && !error && getValueDashboard && (
+            <Flex
+              flexWrap="wrap"
+              columnGap={4}
+              rowGap={8}
+              justifyContent="space-between"
+              flexGrow={1}
+            >
+              <Stats
+                title="تعداد مکالمات"
+                value={`${
+                  getValueDashboard.maxChats - getValueDashboard.remainingChats
+                } / ${getValueDashboard.maxChats}`}
+              />
+              <Stats
+                title="اپراتورها"
+                value={`${getValueDashboard.operatorCount} / ${
+                  getValueDashboard.maxOperators === 999999999
+                    ? "نامحدود"
+                    : getValueDashboard.maxOperators
+                }`}
+              />
+              <Stats
+                title="محصولات"
+                value={`${getValueDashboard.productCount}`}
+              />
+              <Stats
+                title="روزهای باقی مانده"
+                value={`${getValueDashboard.remainingDays} / ${getValueDashboard.maxDays}`}
+              />
+            </Flex>
+          )}
+        </Box>
+      </Flex>
+    </>
   );
 };
 

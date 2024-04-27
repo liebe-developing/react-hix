@@ -82,7 +82,7 @@ const InputForm = ({ handleChange, productFormData, priceNumInput }) => {
         onChange={handleChange}
       />
       <Field
-        label="URL"
+        label="URL (لینک صفحه محصول)"
         isRequired
         value={url}
         placeholder="آدرس اینترنتی محصول"

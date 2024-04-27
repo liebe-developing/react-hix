@@ -54,21 +54,21 @@ export default function Pricing({ userToken, monthPlan }) {
           position: "bottom-left",
           isClosable: false,
         });
-       if(res.data.data.id) {
-         setTimeout(() => {
-           navigate("/order", {
-             state: {
-               invoiceId: res.data.data.id,
-             },
-           });
-         }, 1000);
-       }else {
-        return;
-       }
+        if (res.data.data.id) {
+          setTimeout(() => {
+            navigate("/order", {
+              state: {
+                invoiceId: res.data.data.id,
+              },
+            });
+          }, 1000);
+        } else {
+          return;
+        }
       })
       .catch((error) => {
         console.log(error);
-        if(error.response.status === 403) {
+        if (error.response.status === 403) {
           toast({
             title: `شما قبلا بسته رایگان را فعال فعال کرده اید.`,
             status: "error",
@@ -187,9 +187,18 @@ export default function Pricing({ userToken, monthPlan }) {
                       تعداد مکالمه:{" "}
                       {gift_chat_count !== 0 ? (
                         <>
-                          <Text>{chat_count} +</Text>
-                          <Text color="#6b38e2" fontWeight={"900"}>
-                            {gift_chat_count} مکالمه هدیه
+                          <Text fontSize="20px" color={"#000"}>
+                            {chat_count} +
+                          </Text>
+                          <Text
+                            display="flex"
+                            alignItems={"center"}
+                            gap={1}
+                            color="#F05E22"
+                            fontWeight={"900"}
+                          >
+                            <Text fontSize="20px">{gift_chat_count}</Text>
+                            مکالمه هدیه
                           </Text>
                         </>
                       ) : (
@@ -206,9 +215,18 @@ export default function Pricing({ userToken, monthPlan }) {
                       آپلود فایل تا:{" "}
                       {gift_file_size_limit !== 0 ? (
                         <>
-                          <Text>{file_size_limit} مگابایت +</Text>
-                          <Text color="#6b38e2" fontWeight={"900"}>
-                            {gift_file_size_limit} مگابایت هدیه
+                          <Text fontSize="20px">
+                            {file_size_limit} مگابایت +
+                          </Text>
+                          <Text
+                            display="flex"
+                            gap={1}
+                            alignItems="center"
+                            color="#F05E22"
+                            fontWeight={"900"}
+                          >
+                            <Text fontSize="20px">{gift_file_size_limit}</Text>{" "}
+                            مگابایت هدیه
                           </Text>
                         </>
                       ) : (
@@ -236,12 +254,12 @@ export default function Pricing({ userToken, monthPlan }) {
                       w={price > 0 ? "85%" : "190px"}
                       colorScheme="#000"
                       color="#ffff"
-                      bg="#48BA06"
+                      bg="#3e256b"
                       variant="outline"
                       fontSize={{ base: "sm", md: "x-large" }}
                       _hover={{
-                        bg: "orange.200",
-                        color: "#697A6F",
+                        opacity: "0.9",
+                        color: "#fff",
                         shadow: "xl",
                       }}
                     >

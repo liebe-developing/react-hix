@@ -23,7 +23,7 @@ import { signInSuccess } from "../redux/user/userSlice";
 import { apiPostRequest } from "../api/apiRequest";
 import { useSelector } from "react-redux";
 import Error from "../components/Error";
-import { Loading } from "../components";
+import { Loading, PageTitle } from "../components";
 
 const moveUpAndDown = keyframes`  
 from {transform: translateY(0);}   
@@ -109,6 +109,7 @@ const SignIn = () => {
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
   return (
     <Box position={"relative"} dir="ltr" overflow={"hidden"}>
+      <PageTitle title="ورود | دستیار هوشمند هیکس" />
       <Flex
         as={Flex}
         flexDir={{ base: "column-reverse", md: "row" }}

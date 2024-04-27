@@ -41,11 +41,8 @@ function App() {
           <Route path="/chats" element={<Chats />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
-          <Route
-            path="/termsofservices"
-            element={<TermOfServices />}
-          />
         </Route>
+        <Route path="/termsofservices" element={<TermOfServices />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />

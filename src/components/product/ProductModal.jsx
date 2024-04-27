@@ -2,7 +2,6 @@
 /* eslint-disable react/prop-types */
 import {
   Box,
-  Divider,
   Flex,
   Image,
   Modal,
@@ -10,14 +9,9 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Text,
-  UnorderedList,
   useColorModeValue,
-  Button,
   useToast,
-  Input,
   SimpleGrid,
-  Heading,
   Checkbox,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
@@ -30,40 +24,34 @@ import PrimaryButton from "../PrimaryButton";
 import Loading from "../Loading";
 
 const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
-  const { userToken, userContent } = useOutletContext();
-  const toast = useToast();
   const [loading, setLoading] = useState(false);
 
-  const {
-    id,
-    url,
-    title,
-    description,
-    image,
-    brand,
-    status,
-    price,
-    category,
-    attributes,
-    weight,
-  } = dataContentModal;
+  const { userToken, userContent } = useOutletContext();
+
+  const toast = useToast();
+
+  const priceNumInput = useRef(null);
 
   const [productFormData, setProductFormData] = useState({
-    id: id,
-    url: url,
-    title: title,
-    description: description,
-    image: image,
-    brand: brand,
-    status: status,
-    price: price,
-    category_title: category,
-    attributes: attributes,
-    weight: weight,
+    id: dataContentModal.id,
+    url: dataContentModal.url,
+    title: dataContentModal.title,
+    description: dataContentModal.description,
+    image: dataContentModal.image,
+    brand: dataContentModal.brand,
+    status: dataContentModal.status,
+    price: dataContentModal.price,
+    category_title: dataContentModal.category,
+    attributes: dataContentModal.attributes,
+    weight: dataContentModal.weight,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let priceNum = priceNumInput.current.value;
+    if (priceNum.length == 17) {
+      return false;
+    }
     setProductFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -81,16 +69,18 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
 
     apiPutRequest(`/api/product/`, userToken, productFormData)
       .then((res) => {
-        console.log(res);
+        console.log(productFormData);
         toast({
           title: `تغییرات اعمال شد!`,
           status: "success",
           position: "top",
-          isClosable: true,
         });
         setLoading(false);
+        onClose();
       })
       .catch((error) => {
+        console.log(error);
+        isOpen();
         toast({
           title: `خطایی رخ داده است!`,
           status: "error",
@@ -141,7 +131,8 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
               >
                 <Box
                   flex={{ base: 1.5, md: 1 }}
-                  h={{ base: "300px", md: "full" }}
+                  h={{ base: "300px", md: "440px" }}
+                  minH={{ base: "300px", md: "440px" }}
                   w={{ base: "95%", md: 350 }}
                   pos="sticky"
                   top={0}
@@ -162,7 +153,11 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                   <PrimaryButton
                     title={
                       loading ? (
-                        <Loading emColor="orange.200" color="orange.500" />
+                        <Loading
+                          emColor="orange.200"
+                          color="orange.500"
+                          size="lg"
+                        />
                       ) : (
                         "ذخیره تغییرات"
                       )
@@ -179,12 +174,13 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                     <InputForm
                       handleChange={handleChange}
                       productFormData={productFormData}
+                      priceNumInput={priceNumInput}
                     />
                   </SimpleGrid>
 
                   <Checkbox
                     colorScheme={
-                      productFormData.status === true ? "green" : "red"
+                      productFormData.status === true ? "green" : "none"
                     }
                     isChecked
                     onChange={handleChangeCheckbox}

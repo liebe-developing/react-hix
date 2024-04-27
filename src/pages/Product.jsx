@@ -4,6 +4,7 @@ import { apiGetRequest } from "../api/apiRequest";
 import {
   CreateProductModal,
   Loading,
+  PageTitle,
   Pagination,
   Table,
 } from "../components/index";
@@ -48,6 +49,7 @@ function Product() {
 
   return (
     <div className="my-3">
+      <PageTitle title="محصولات | دستیار هوشمند هیکس" />
       {!loading && <Loading />}
       {loading && (
         <div className="w-[97%] mx-auto rounded-md">
@@ -58,10 +60,12 @@ function Product() {
             mb={5}
           >
             <Button
-              leftIcon={<FaPlus />}
-              colorScheme="purple"
+              leftIcon={<FaPlus />} 
+              bg="#F05E22"
+              color="white"
               onClick={onOpenCreateProductModal}
               shadow="lg"
+              _hover={{ opacity: "0.9" }}
               fontSize={{ base: "14px", md: "18px" }}
             >
               اضافه کردن محصول
@@ -72,7 +76,7 @@ function Product() {
                 fontSize={{ base: "8px", sm: "14px" }}
                 status="info"
                 rounded="lg"
-                bg={colorMode === 'light' ? "gray.300" : 'black' }
+                bg={colorMode === "light" ? "gray.300" : "black"}
               >
                 <AlertIcon />
                 برای دیدن جزئیات بیشتر روی فیلد آیتم ها کلیک فرمایید!
@@ -80,29 +84,29 @@ function Product() {
             </Box>
           </Flex>
           <table className="w-full overflow-x-scroll">
-            <thead className="bg-blue-500 border-b ">
-              <tr className="text-white">
+            <thead className="bg-[#3e256b] border-b ">
+              <tr className="text-white font-bold">
                 <th
                   scope="col"
-                  className="text-[10px] md:text-sm font-medium  text-center py-4"
+                  className="text-[10px] md:text-lg font-bold  text-center py-4"
                 >
                   شمارنده
                 </th>
                 <th
                   scope="col"
-                  className="text-[10px] md:text-sm font-medium  text-center py-4"
+                  className="text-[10px] md:text-lg font-bold  text-center py-4"
                 >
                   عنوان
                 </th>
                 <th
                   scope="col"
-                  className="text-[10px]  md:text-sm font-medium  text-center py-4"
+                  className="text-[10px]  md:text-lg font-bold  text-center py-4"
                 >
                   موجود
                 </th>
                 <th
                   scope="col"
-                  className="text-[10px]  md:text-sm font-medium  text-center py-4"
+                  className="text-[10px]  md:text-lg font-bold  text-center py-4"
                 >
                   لینک
                 </th>

@@ -29,6 +29,7 @@ import {
   PopoverBody,
   ListItem,
   List,
+  Badge,
 } from "@chakra-ui/react";
 import { Link, Outlet } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
@@ -46,6 +47,7 @@ import Footer from "./Footer";
 import * as persianTools from "@persian-tools/persian-tools";
 import moment from "jalali-moment";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
+import { CiClock2 } from "react-icons/ci";
 
 const LinkItems = [
   { id: 0, name: "داشبورد", icon: GoHome, href: "/" },
@@ -128,11 +130,18 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
           >
             <Icon
               as={GrUpgrade}
-              w={"20px"}
-              h={"20px"}
+              w={"22px"}
+              h={"22px"}
               color={useColorModeValue("gray.700", "gray.400")}
             />
-            <Button colorScheme="whatsapp" variant="solid" w="full" size="sm">
+            <Button
+              bg="#F05E22"
+              color="white"
+              variant="unstyled"
+              _hover={{ opacity: 0.9 }}
+              w="full"
+              size="md"
+            >
               ارتقا به ویژه
             </Button>
           </Flex>
@@ -210,6 +219,8 @@ const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  console.log(userContent.notifications);
 
   return (
     <Flex
@@ -292,8 +303,15 @@ const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
                   userContent.notifications.length > 0 ? (
                     userContent.notifications.map((n, i) => (
                       <ListItem key={i}>
-                        <Flex flexDir={"row"} className=" p-1 text-xs">
-                          <div className="w-[25%] border-l border-gray-300 px-1">
+                        <Flex
+                          gap={4}
+                          flexDir={{ base: "column", md: "row" }}
+                          alignItems="center"
+                          borderBottom={"1px solid rgba(0, 0, 0, 0.1)"}
+                          _last={{ borderBottom: "none" }}
+                          py={4}
+                        >
+                          <Box flex={1}>
                             {(() => {
                               const date = moment
                                 .from(
@@ -311,10 +329,22 @@ const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
                                 )
                                 .locale("fa")
                                 .format("YYYY/M/D HH:mm:ss");
-                              return persianTools.timeAgo(date);
+                              return (
+                                <Flex
+                                  fontSize="12px"
+                                  gap={1}
+                                  alignItems="center"
+                                  whiteSpace="nowrap"
+                                >
+                                  <Icon boxSize={4} as={CiClock2} />
+                                  {persianTools.timeAgo(date)}
+                                </Flex>
+                              );
                             })()}
-                          </div>
-                          <div className="w-[75%] px-1">{n.message}</div>
+                          </Box>
+                          <Box flex={2} fontSize="13px">
+                            {n.message}
+                          </Box>
                         </Flex>
                       </ListItem>
                     ))

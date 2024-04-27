@@ -20,6 +20,7 @@ import Table from "./Table";
 import ProductModal from "./product/ProductModal";
 import CreateProductModal from "./product/CreateProductModal";
 import Loader from "./Loader";
+import PageTitle from "./PageTitle";
 
 export {
   SidebarWithHeader,
@@ -43,5 +44,6 @@ export {
   ProductModal,
   Table,
   CreateProductModal,
-  Loader
+  Loader,
+  PageTitle,
 };

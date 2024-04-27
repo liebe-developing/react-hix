@@ -23,9 +23,10 @@ import {
   useDisclosure,
   SkeletonCircle,
   Skeleton,
+  Button,
 } from "@chakra-ui/react";
 import { CiSearch } from "react-icons/ci";
-import { Loading, UserList } from "../components";
+import { Loading, PageTitle, UserList } from "../components";
 import { useEffect, useRef, useState } from "react";
 import { apiGetRequest, apiPostRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
@@ -36,6 +37,9 @@ import { IoSend } from "react-icons/io5";
 import EmojiPicker from "emoji-picker-react";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import messageSound from "../assets/sounds/message.mp3";
+import moment from "jalali-moment";
+import * as persianTools from "@persian-tools/persian-tools";
+import { IoMdRefresh } from "react-icons/io";
 
 /**
  * @type {Socket} socket
@@ -68,7 +72,10 @@ export function Chats() {
   };
 
   const { userToken, userContent } = useOutletContext();
-  useEffect(() => {
+
+  const [refreshTimeout, setRefreshTimeout] = useState();
+
+  const handleUserRefresh = () => {
     setUserLoading(true);
     apiGetRequest(
       `api/chat_user/?upid=${
@@ -78,12 +85,37 @@ export function Chats() {
       }`,
       userToken
     ).then((res) => {
+      if (
+        (res.data.data.length > listUser.length && listUser.length != 0) ||
+        (listUser.length > 0 &&
+          res.data.data[res.data.data.length - 1].id !=
+            listUser[listUser.length - 1].id)
+      ) {
+        if (!document.hasFocus()) {
+          const sound = new Audio(messageSound);
+          sound.play();
+        }
+      }
       setListUser(res.data.data);
       setUserLoading(false);
     });
+  };
+
+  useEffect(() => {
+    handleUserRefresh();
   }, []);
 
-  const [cookies, setCookie] = useCookies(["sid"]);
+  useEffect(() => {
+    if (refreshTimeout) {
+      clearTimeout(refreshTimeout);
+    }
+
+    setRefreshTimeout(
+      setTimeout(() => {
+        handleUserRefresh();
+      }, 30000)
+    );
+  }, [listUser]);
 
   const selectUserChat = (userId) => {
     if (chatLoading) return;
@@ -112,6 +144,7 @@ export function Chats() {
               message.is_user_message = true;
 
             setSelectedChatMessages((pState) => [...pState, message]);
+
             if (!document.hasFocus() && message) {
               const sound = new Audio(messageSound);
               sound.play();
@@ -126,6 +159,10 @@ export function Chats() {
               message.is_user_message = false;
 
             setSelectedChatMessages((pState) => [...pState, message]);
+            /* if (message) {
+              const sound = new Audio(messageSound);
+              sound.play();
+            } */
           });
         });
 
@@ -141,6 +178,7 @@ export function Chats() {
           userToken
         ).then((res) => {
           setSelectedChat(userId);
+          console.log(res.data.data.messages);
           setSelectedChatMessages(res.data.data.messages);
         });
       })
@@ -178,8 +216,10 @@ export function Chats() {
     setUserSearchTerm(searchValue);
 
     if (userSearchTerm !== "") {
-      const filteredUsers = listUser.filter((user) =>
-        user.name.toLowerCase().includes(userSearchTerm.toLowerCase())
+      const filteredUsers = listUser.filter(
+        (user) =>
+          user.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          String(user.id).includes(searchValue)
       );
       setFilteredUsers(filteredUsers);
     } else {
@@ -196,21 +236,33 @@ export function Chats() {
       w="full"
       flexGrow={1}
     >
+      <PageTitle title="چت اپراتور | دستیار هوشمند هیکس" />
       <Flex flexDirection="column" borderBottom="1px solid #00000021">
-        <InputGroup h={16}>
-          <Input
-            w="full"
+        <Flex alignItems="center">
+          <InputGroup flex={3} h={16}>
+            <Input
+              w="full"
+              h="full"
+              value={userSearchTerm}
+              onChange={(e) => handleSearchUser(e.target.value)}
+              placeholder="جستجو..."
+              _placeholder={{ color: "gray.600", fontSize: "15px" }}
+              pr={8}
+            />
+            <InputRightElement pointerEvents="none" h="full">
+              <Icon as={CiSearch} boxSize={6} cursor="pointer" />
+            </InputRightElement>
+          </InputGroup>
+          <IconButton
+            borderRadius="0"
             h="full"
-            value={userSearchTerm}
-            onChange={(e) => handleSearchUser(e.target.value)}
-            placeholder="جستجو..."
-            _placeholder={{ color: "gray.600", fontSize: "15px" }}
-            pr={8}
+            flex={1}
+            variant="ghost"
+            fontSize="25px"
+            icon={<IoMdRefresh />}
+            onClick={handleUserRefresh}
           />
-          <InputRightElement pointerEvents="none" h="full">
-            <Icon as={CiSearch} boxSize={6} cursor="pointer" />
-          </InputRightElement>
-        </InputGroup>
+        </Flex>
         {/* <CHATS CONTENT> */}
         <Box
           bg={useColorModeValue("white", "gray.900")}
@@ -358,24 +410,24 @@ export function Chats() {
                                 }
                               )}{" "} */}
                               {(() => {
-                              const date = moment
-                                .from(
-                                  new Date(created_at)
-                                    .toLocaleDateString("en-US", {
-                                      year: "numeric",
-                                      month: "2-digit",
-                                      day: "2-digit",
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                      second: "2-digit",
-                                    })
-                                    .replace(",", ""),
-                                  "en"
-                                )
-                                .locale("fa")
-                                .format("YYYY/M/D HH:mm:ss");
-                              return persianTools.timeAgo(date);
-                            })()}
+                                const date = moment
+                                  .from(
+                                    new Date(created_at)
+                                      .toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        second: "2-digit",
+                                      })
+                                      .replace(",", ""),
+                                    "en"
+                                  )
+                                  .locale("fa")
+                                  .format("YYYY/M/D HH:mm:ss");
+                                return persianTools.timeAgo(date);
+                              })()}
                             </Text>
                           </Flex>
                         ) : type === "form" ? (
@@ -496,13 +548,6 @@ export function Chats() {
                 </PopoverContent>
               </Portal>
             </Popover>
-            {/* <Icon
-              boxSize={6}
-              color={useColorModeValue("purple", "gray.200")}
-              as={MdOutlineEmojiEmotions}
-              cursor="pointer"
-              onClick={() => setShowPicker((val) => !val)}
-            /> */}
             <Input
               color={colorMode == "light" ? "black" : "white"}
               variant="unstyled"
@@ -516,6 +561,7 @@ export function Chats() {
               }}
               ref={messageRef}
               autoFocus
+              isDisabled={!selectedChat}
               pattern="\s*\S+.*"
               onKeyDown={(e) => {
                 if (

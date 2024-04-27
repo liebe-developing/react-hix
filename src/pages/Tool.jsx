@@ -4,6 +4,7 @@ import { apiGetRequest } from "../api/apiRequest";
 import { useOutletContext } from "react-router-dom";
 import { CopyBlock, dracula } from "react-code-blocks";
 import { useColorModeValue } from "@chakra-ui/react";
+import { PageTitle } from "../components";
 
 function Tool() {
   const { userToken, userContent } = useOutletContext();
@@ -20,10 +21,16 @@ function Tool() {
 
   return (
     <div className="m-5">
+      <PageTitle title="راه‌اندازی | دستیار هوشمند هیکس" />
       <h2 className="text-primary">نصب ابزارک</h2>
 
       {/* < contentCopy > */}
-      <div className={`w-full my-9 py-9 px-4 text-white rounded-md relative ${useColorModeValue("bg-gray-400", "bg-gray-700")}`}>
+      <div
+        className={`w-full my-9 py-9 px-4 text-white rounded-md relative ${useColorModeValue(
+          "bg-gray-400",
+          "bg-gray-700"
+        )}`}
+      >
         <span className="absolute right-3 p-2 -top-6 bg-blue-400 rounded-sm shadow-md ">
           <ArrowDown className="text-3xl text-white" />
         </span>

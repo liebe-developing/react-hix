@@ -23,7 +23,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Field, Loading, PrimaryButton } from "../components";
+import { Field, Loading, PageTitle, PrimaryButton } from "../components";
 import { MdArrowDropDown } from "react-icons/md";
 import { useRef, useState, useEffect } from "react";
 import {
@@ -108,10 +108,10 @@ const Settings = () => {
     const imageDataUrl = await waitForFilePromise2;
     setFormData({
       ...formData,
-      selectedWidgetFile: { 
+      selectedWidgetFile: {
         name: e.target.files[0].name,
-        dataUrl: imageDataUrl, 
-        data: imageBase64 
+        dataUrl: imageDataUrl,
+        data: imageBase64,
       },
     });
   };
@@ -247,6 +247,7 @@ const Settings = () => {
 
   return (
     <Box m={5}>
+      <PageTitle title="تنظیمات | دستیار هوشمند هیکس" />
       <Flex alignItems="center" justifyContent="space-between" gap={3}>
         <Box>
           <Heading
@@ -357,19 +358,22 @@ const Settings = () => {
                 <Badge fontSize="13px" colorScheme="red">
                   {formData.selectedWidgetFile?.name}
                 </Badge>
-                
-                  <img
-                    src={formData.selectedWidgetFile
+
+                <img
+                  src={
+                    formData.selectedWidgetFile
                       ? formData.selectedWidgetFile.dataUrl
-                      : formData.iconUrl}
-                    style={{
-                      border: "1px solid yellow",
-                      boxShadow: useColorModeValue("6px 6px 12px #bebebe ,-6px -6px 12px #ffffff", 
-                                                  "6px 6px 12px #464646 ,-6px -6px 12px #333"),
-                    }}
-                    className="rounded-full w-10 h-10 md:w-16 md:h-16 shadow-2xl "
-                  />
-                
+                      : formData.iconUrl
+                  }
+                  style={{
+                    border: "1px solid yellow",
+                    boxShadow: useColorModeValue(
+                      "6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
+                      "6px 6px 12px #464646 ,-6px -6px 12px #333"
+                    ),
+                  }}
+                  className="rounded-full w-10 h-10 md:w-16 md:h-16 shadow-2xl "
+                />
               </Flex>
             </Field>
             <Text fontSize="11px" color={"gray.600"}>
@@ -469,11 +473,7 @@ const Settings = () => {
                 onClick={handleSavingOperatorEmail}
               >
                 {loadingOpEmails ? (
-                  <Loading
-                    emColor="purple.200"
-                    color="purple.400"
-                    size="lg"
-                  />
+                  <Loading emColor="purple.200" color="purple.400" size="lg" />
                 ) : (
                   "ثبت"
                 )}

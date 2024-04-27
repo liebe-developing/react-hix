@@ -21,6 +21,7 @@ function UserList({ name, id, email, has_ai, loadFunc }) {
         e.target.disabled = false;
       });
   };
+
   return (
     <Flex
       alignItems={"center"}
