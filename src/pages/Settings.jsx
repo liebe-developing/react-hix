@@ -108,10 +108,10 @@ const Settings = () => {
     const imageDataUrl = await waitForFilePromise2;
     setFormData({
       ...formData,
-      selectedWidgetFile: { 
+      selectedWidgetFile: {
         name: e.target.files[0].name,
-        dataUrl: imageDataUrl, 
-        data: imageBase64 
+        dataUrl: imageDataUrl,
+        data: imageBase64
       },
     });
   };
@@ -128,8 +128,8 @@ const Settings = () => {
       pos: formData.widgetPosition,
       icon:
         formData.selectedWidgetFile &&
-        formData.selectedWidgetFile.name &&
-        formData.selectedWidgetFile.data
+          formData.selectedWidgetFile.name &&
+          formData.selectedWidgetFile.data
           ? formData.selectedWidgetFile
           : formData.iconUrl,
       welcome: formData.welcomeMessage,
@@ -202,10 +202,9 @@ const Settings = () => {
         console.log(res);
         if (res.response.status === 400) {
           toast({
-            title: `شما حداکثر مجاز به اضافه کردن ${
-              userContent.plan.operator_count +
+            title: `شما حداکثر مجاز به اضافه کردن ${userContent.plan.operator_count +
               userContent.plan.gift_operator_count
-            } تعداد اپراتور هستید.`,
+              } تعداد اپراتور هستید.`,
             status: "error",
             position: "top-right",
           });
@@ -304,14 +303,23 @@ const Settings = () => {
           <Field
             onChange={handleChange}
             label="توضیحات فروشگاه "
-            placeholder="لطفا توضیحات مرتبط با کسب و کار خود را وارد نمایید!"
+            placeholder="لطفا توضیحات مرتبط با کسب و محصولات خود را وارد نمایید!"
             value={formData.storeDescription}
             name="storeDescription"
           />
           <FormControl>
             <FormLabel fontSize="14px">موقعیت نمایش ویجت</FormLabel>
             <Select
-              onChange={handleChange}
+              onChange={(e) => {
+                if (userContent.plan.price === 0) {
+                  toast({
+                    title: "این قابلیت در بسته رایگان غیر فعال میباشد!",
+                    status: "error"
+                  })
+                  return;
+                }
+                handleChange(e)
+              }}
               name="widgetPosition"
               value={formData.widgetPosition}
               _placeholder={{ fontSize: "12px" }}
@@ -325,6 +333,16 @@ const Settings = () => {
             label="رنگ ویجت"
             type="color"
             w={{ base: "100%", md: "50%", lg: "30%" }}
+            onClick={(e) => {
+              if (userContent.plan.price === 0) {
+                toast({
+                  title: "این قابلیت در بسته رایگان غیر فعال میباشد!",
+                  status: "error"
+                })
+                e.preventDefault();
+                return;
+              }
+            }}
             onChange={handleChange}
             value={formData.widgetColor}
             name="widgetColor"
@@ -350,26 +368,35 @@ const Settings = () => {
                   fontSize={{ base: "14px", md: "18px" }}
                   variant="solid"
                   colorScheme="purple"
-                  onClick={() => fileInput.current.click()}
+                  onClick={() => {
+                    if (userContent.plan.price === 0) {
+                      toast({
+                        title: "این قابلیت در بسته رایگان غیر فعال میباشد!",
+                        status: "error"
+                      })
+                      return;
+                    }
+                    fileInput.current.click()
+                  }}
                 >
                   انتخاب فایل
                 </Button>
                 <Badge fontSize="13px" colorScheme="red">
                   {formData.selectedWidgetFile?.name}
                 </Badge>
-                
-                  <img
-                    src={formData.selectedWidgetFile
-                      ? formData.selectedWidgetFile.dataUrl
-                      : formData.iconUrl}
-                    style={{
-                      border: "1px solid yellow",
-                      boxShadow: useColorModeValue("6px 6px 12px #bebebe ,-6px -6px 12px #ffffff", 
-                                                  "6px 6px 12px #464646 ,-6px -6px 12px #333"),
-                    }}
-                    className="rounded-full w-10 h-10 md:w-16 md:h-16 shadow-2xl "
-                  />
-                
+
+                <img
+                  src={formData.selectedWidgetFile
+                    ? formData.selectedWidgetFile.dataUrl
+                    : formData.iconUrl}
+                  style={{
+                    border: "1px solid yellow",
+                    boxShadow: useColorModeValue("6px 6px 12px #bebebe ,-6px -6px 12px #ffffff",
+                      "6px 6px 12px #464646 ,-6px -6px 12px #333"),
+                  }}
+                  className="rounded-full w-10 h-10 md:w-16 md:h-16 shadow-2xl "
+                />
+
               </Flex>
             </Field>
             <Text fontSize="11px" color={"gray.600"}>

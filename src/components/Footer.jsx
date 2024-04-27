@@ -59,7 +59,7 @@ export default function Footer({ userContent }) {
         >
           قوانین
         </Link>
-        <Text colorScheme="purple" fontFamily="sans-serif" fontWeight='bold'>v1.0.5</Text>
+        <Text colorScheme="purple" fontFamily="monospace" fontWeight='bold'>v0.1.0</Text>
       </Flex>
     </Flex>
   );

@@ -29,6 +29,7 @@ import {
   PopoverBody,
   ListItem,
   List,
+  useToast,
 } from "@chakra-ui/react";
 import { Link, Outlet } from "react-router-dom";
 import { FiChevronDown, FiBell, FiMenu } from "react-icons/fi";
@@ -49,16 +50,17 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 
 const LinkItems = [
   { id: 0, name: "داشبورد", icon: GoHome, href: "/" },
-  { id: 1, name: "گزارش ها", icon: ImStatsDots, href: "/report" },
-  { id: 2, name: "محصولات", icon: FaRegFolder, href: "/product" },
-  { id: 10, name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
-  { id: 3, name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
-  { id: 11, name: "پروفایل", icon: FaRegUser, href: "/profile" },
-  { id: 4, name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
+  { id: -1, name: "گزارش ها", icon: ImStatsDots, href: "/report" },
+  { id: 1, name: "محصولات", icon: FaRegFolder, href: "/product" },
+  { id: 20, name: "چت اپراتور", icon: FaTelegramPlane, href: "/chats" },
+  { id: 2, name: "تنظیمات", icon: IoSettingsOutline, href: "/settings" },
+  { id: 21, name: "پروفایل", icon: FaRegUser, href: "/profile" },
+  { id: 3, name: "راه اندازی", icon: IoCodeSlash, href: "/tool" },
 ];
 
 const SidebarContent = ({ onClose, userContent, ...rest }) => {
   const { colorMode } = useColorMode();
+  const toast = useToast();
 
   return (
     <Box
@@ -82,24 +84,27 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       >
         <img
           src="/logo_hix.svg"
-          className={`w-[30%] md:w-[70%] aspect-[1] ${
-            colorMode === "light" ? "mix-blend-normal" : "mix-blend-lighten"
-          } `}
+          className={`w-[30%] md:w-[70%] aspect-[1] ${colorMode === "light" ? "mix-blend-normal" : "mix-blend-lighten"
+            } `}
         />
         <div className="flex md:hidden flex-row flex-grow justify-end px-4">
           <CloseButton onClick={onClose} />
         </div>
       </Flex>
-      {LinkItems.filter((l) =>
-        userContent?.user_plan_id
-          ? true
-          : userContent.user.operator_user_plan_id
-          ? l.id >= 10
-          : false
-      ).map((link) => {
+      {LinkItems.map((link) => {
+        const available = (userContent?.user_plan_id && userContent.plan.price === 0 ? link.id >= 0 : userContent.user.operator_user_plan_id ? link.id >= 20 : false);
+        
         return (
           // userContent?.user_plan_id ?
-          <Link key={link.name} to={link.href} onClick={onClose}>
+          <Link key={link.name} to={available ? link.href : window.location.href} onClick={() => {
+            onClose();
+            if(!available) {
+              toast({
+                title: "شما به این بخش از داشبورد دسترسی ندارید.",
+                status: "error"
+              })
+            }
+          }} >
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
         );
@@ -288,8 +293,8 @@ const MobileNav = ({ onOpen, userContent, userToken, avatar, ...rest }) => {
               <PopoverBody>
                 <List spacing={3}>
                   {userContent &&
-                  userContent.notifications &&
-                  userContent.notifications.length > 0 ? (
+                    userContent.notifications &&
+                    userContent.notifications.length > 0 ? (
                     userContent.notifications.map((n, i) => (
                       <ListItem key={i}>
                         <Flex flexDir={"row"} className=" p-1 text-xs">
