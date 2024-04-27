@@ -68,6 +68,15 @@ export default function Pricing({ userToken, monthPlan }) {
       })
       .catch((error) => {
         console.log(error);
+        if(error.response.status === 403) {
+          toast({
+            title: `شما قبلا بسته رایگان را فعال فعال کرده اید.`,
+            status: "error",
+            position: "bottom-left",
+            isClosable: false,
+          });
+          return;
+        }
         toast({
           title: `مشکلی به وجود آمده است`,
           status: "error",

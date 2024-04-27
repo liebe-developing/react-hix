@@ -43,7 +43,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
     brand,
     status,
     price,
-    category_title,
+    category,
     attributes,
     weight,
   } = dataContentModal;
@@ -57,12 +57,10 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
     brand: brand,
     status: status,
     price: price,
-    category_title: category_title,
+    category_title: category,
     attributes: attributes,
     weight: weight,
   });
-
-  console.log(productFormData.title);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

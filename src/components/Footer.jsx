@@ -31,7 +31,7 @@ export default function Footer({ userContent }) {
         gap={2}
       >
         <a href="https://portal.hixdm.com/">
-          <Text>تمامی حقوق محفوظ است.</Text>
+          <Text fontSize={"small"}>تمامی حقوق محفوظ است.</Text>
         </a>
         <a href="https://portal.hixdm.com/">
           <img className="inline" src="/logo_hix.svg" alt="" width={50} />
@@ -49,13 +49,13 @@ export default function Footer({ userContent }) {
               ? "/chats"
               : "/price-plan"
           }
-          className="hover:bg-[#3E256B] rounded-md hover:text-white p-2 text-sm md:text-md duration-300"
+          className="text-[13px] md:text-md hover:bg-[#3E256B] rounded-md hover:text-white p-2  duration-300"
         >
           صفحه اصلی
         </Link>
         <Link
           to={"/termsofservices"}
-          className=" text-sm md:text-md p-2 rounded-md hover:bg-[#3E256B] hover:text-white duration-300"
+          className="text-[13px] md:text-md p-2 rounded-md hover:bg-[#3E256B] hover:text-white duration-300"
         >
           قوانین
         </Link>
