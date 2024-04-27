@@ -281,14 +281,14 @@ const Settings = () => {
       <form onSubmit={handleSubmit}>
         <SimpleGrid columns={2} spacing={8} my={12}>
           <Field
-            label="عنوان بالای ابزارک"
+            label="عنوان بالای ویجت"
             placeholder="پشتیبانی سایت"
             onChange={handleChange}
             value={formData.widgetTitle}
             name="widgetTitle"
           />
           <Field
-            label="توضیح بالای ابزارک"
+            label="توضیح بالای  ویجت"
             placeholder="پاسخگوی سوالات شما هستیم"
             onChange={handleChange}
             value={formData.widgetDescription}
@@ -303,13 +303,13 @@ const Settings = () => {
           />
           <Field
             onChange={handleChange}
-            label="توضیحات فروشگاه"
-            placeholder="توضیحات"
+            label="توضیحات فروشگاه "
+            placeholder="لطفا توضیحات مرتبط با کسب و کار خود را وارد نمایید!"
             value={formData.storeDescription}
             name="storeDescription"
           />
           <FormControl>
-            <FormLabel fontSize="14px">موقعیت نمایش ابزارک</FormLabel>
+            <FormLabel fontSize="14px">موقعیت نمایش ویجت</FormLabel>
             <Select
               onChange={handleChange}
               name="widgetPosition"
@@ -322,7 +322,7 @@ const Settings = () => {
             </Select>
           </FormControl>
           <Field
-            label="رنگ ابزارک"
+            label="رنگ ویجت"
             type="color"
             w={{ base: "100%", md: "50%", lg: "30%" }}
             onChange={handleChange}
@@ -331,7 +331,7 @@ const Settings = () => {
           />
           <Flex flexDir="column">
             <Field
-              label="آیکون ابزارک"
+              label="آیکون ویجت"
               type="file"
               display="none"
               accept=".png, .jpeg"

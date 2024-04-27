@@ -20,7 +20,7 @@ function Tool() {
 
   return (
     <div className="m-5">
-      <h2 className="text-primary">نصب ابزارک</h2>
+      <h2 className="text-primary">نصب ویجت</h2>
 
       {/* < contentCopy > */}
       <div className={`w-full my-9 py-9 px-4 text-white rounded-md relative ${useColorModeValue("bg-gray-400", "bg-gray-700")}`}>
@@ -28,7 +28,7 @@ function Tool() {
           <ArrowDown className="text-3xl text-white" />
         </span>
         <h3>
-          برای نمایش ابزارک گفتگو در سایت خود، کد زیر را در قالب سایت درج کنید:
+          برای نمایش ویحت گفتگو در سایت خود، کد زیر را در قالب سایت درج کنید:
         </h3>
         {/* <button
         dir="ltr"
@@ -68,7 +68,7 @@ function Tool() {
           <h2 className="text-primary mb-4">صفحه اختصاصی هیکس</h2>
           <h4>
             توسعه دهندگان می توانند برای ایجاد تعامل بیشتر هیکس با سایت خود، از
-            مستندات ابزارک و نیزمستندات API استفاده کنند.
+            مستندات ویجت و نیزمستندات API استفاده کنند.
           </h4>
         </div>
       </div>
