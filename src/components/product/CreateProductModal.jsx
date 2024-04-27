@@ -14,7 +14,6 @@ import { useRef, useState } from "react";
 import { apiPostRequest } from "../../api/apiRequest";
 import { useToast } from "@chakra-ui/react";
 import { useOutletContext } from "react-router-dom";
-import { numberToWords } from "@persian-tools/persian-tools";
 import InputForm from "./InputForm";
 import Loading from "../Loading";
 
@@ -110,7 +109,7 @@ const CreateProductModal = ({ isOpen, onClose }) => {
             </SimpleGrid>
             <PrimaryButton type="submit">
               {loading ? (
-                <Loading emColor="gray.200" color="orange.500" />
+                <Loading emColor="gray.200" color="orange.500" size="md" />
               ) : (
                 "ثبت محصول"
               )}

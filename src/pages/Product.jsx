@@ -90,7 +90,7 @@ function Product() {
                   scope="col"
                   className="text-[10px] md:text-lg font-bold  text-center py-4"
                 >
-                  شمارنده
+                  کد محصول
                 </th>
                 <th
                   scope="col"

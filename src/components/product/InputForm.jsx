@@ -94,7 +94,7 @@ const InputForm = ({ handleChange, productFormData, priceNumInput }) => {
       <Field
         label="عکس محصول (url وارد نمایید!)"
         value={image}
-        placeholder="آدرس اینترنتی محصول"
+        placeholder="آدرس اینترنتی عکس محصول را وارد نمایید!"
         style={{ border: "1px solid gray" }}
         name="image"
         onChange={handleChange}

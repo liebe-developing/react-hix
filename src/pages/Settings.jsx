@@ -109,6 +109,7 @@ const Settings = () => {
     setFormData({
       ...formData,
       selectedWidgetFile: {
+      selectedWidgetFile: {
         name: e.target.files[0].name,
         dataUrl: imageDataUrl,
         data: imageBase64,
@@ -128,8 +129,8 @@ const Settings = () => {
       pos: formData.widgetPosition,
       icon:
         formData.selectedWidgetFile &&
-        formData.selectedWidgetFile.name &&
-        formData.selectedWidgetFile.data
+          formData.selectedWidgetFile.name &&
+          formData.selectedWidgetFile.data
           ? formData.selectedWidgetFile
           : formData.iconUrl,
       welcome: formData.welcomeMessage,
@@ -202,10 +203,9 @@ const Settings = () => {
         console.log(res);
         if (res.response.status === 400) {
           toast({
-            title: `شما حداکثر مجاز به اضافه کردن ${
-              userContent.plan.operator_count +
+            title: `شما حداکثر مجاز به اضافه کردن ${userContent.plan.operator_count +
               userContent.plan.gift_operator_count
-            } تعداد اپراتور هستید.`,
+              } تعداد اپراتور هستید.`,
             status: "error",
             position: "top-right",
           });
@@ -282,14 +282,14 @@ const Settings = () => {
       <form onSubmit={handleSubmit}>
         <SimpleGrid columns={2} spacing={8} my={12}>
           <Field
-            label="عنوان بالای ابزارک"
+            label="عنوان بالای ویجت"
             placeholder="پشتیبانی سایت"
             onChange={handleChange}
             value={formData.widgetTitle}
             name="widgetTitle"
           />
           <Field
-            label="توضیح بالای ابزارک"
+            label="توضیح بالای  ویجت"
             placeholder="پاسخگوی سوالات شما هستیم"
             onChange={handleChange}
             value={formData.widgetDescription}
@@ -304,15 +304,24 @@ const Settings = () => {
           />
           <Field
             onChange={handleChange}
-            label="توضیحات فروشگاه"
-            placeholder="توضیحات"
+            label="توضیحات فروشگاه "
+            placeholder="لطفا توضیحات مرتبط با کسب و محصولات خود را وارد نمایید!"
             value={formData.storeDescription}
             name="storeDescription"
           />
           <FormControl>
-            <FormLabel fontSize="14px">موقعیت نمایش ابزارک</FormLabel>
+            <FormLabel fontSize="14px">موقعیت نمایش ویجت</FormLabel>
             <Select
-              onChange={handleChange}
+              onChange={(e) => {
+                if (userContent.plan.price === 0) {
+                  toast({
+                    title: "این قابلیت در بسته رایگان غیر فعال میباشد!",
+                    status: "error"
+                  })
+                  return;
+                }
+                handleChange(e)
+              }}
               name="widgetPosition"
               value={formData.widgetPosition}
               _placeholder={{ fontSize: "12px" }}
@@ -323,16 +332,26 @@ const Settings = () => {
             </Select>
           </FormControl>
           <Field
-            label="رنگ ابزارک"
+            label="رنگ ویجت"
             type="color"
             w={{ base: "100%", md: "50%", lg: "30%" }}
+            onClick={(e) => {
+              if (userContent.plan.price === 0) {
+                toast({
+                  title: "این قابلیت در بسته رایگان غیر فعال میباشد!",
+                  status: "error"
+                })
+                e.preventDefault();
+                return;
+              }
+            }}
             onChange={handleChange}
             value={formData.widgetColor}
             name="widgetColor"
           />
           <Flex flexDir="column">
             <Field
-              label="آیکون ابزارک"
+              label="آیکون ویجت"
               type="file"
               display="none"
               accept=".png, .jpeg"
@@ -351,7 +370,16 @@ const Settings = () => {
                   fontSize={{ base: "14px", md: "18px" }}
                   variant="solid"
                   colorScheme="purple"
-                  onClick={() => fileInput.current.click()}
+                  onClick={() => {
+                    if (userContent.plan.price === 0) {
+                      toast({
+                        title: "این قابلیت در بسته رایگان غیر فعال میباشد!",
+                        status: "error"
+                      })
+                      return;
+                    }
+                    fileInput.current.click()
+                  }}
                 >
                   انتخاب فایل
                 </Button>
