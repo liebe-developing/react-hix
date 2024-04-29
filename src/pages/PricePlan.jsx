@@ -41,7 +41,6 @@ const PricePlan = () => {
       .then((res) => {
         setIsLoding(false);
         const plans = res.data.data.map((p) => {
-          console.log(p.id + " , " + userContent.plan.id);
           return {
             ...p,
             relativeCurrent: !userContent.user_plan_id
