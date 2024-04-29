@@ -72,7 +72,7 @@ const ResetPassword = () => {
     e.preventDefault();
     setLoading(true);
 
-    apiPostRequest("/api/auth/reset_password", undefined, { email })
+    apiPostRequest("/api/reset", undefined, { email })
       .then(function (res) {
         setLoading(false);
         toast({
@@ -85,6 +85,11 @@ const ResetPassword = () => {
       .catch((error) => {
         if (error.response.status === 404) {
           setIsEmailAvailable(false);
+          toast({
+            title: `ایمیلی وجود ندارد!`,
+            status: "error",
+            position: "top-right",
+          });
         } else {
           setError(true);
         }
@@ -96,7 +101,33 @@ const ResetPassword = () => {
   const handleResetPassword = (e) => {
     e.preventDefault();
     setLoadingResetPassword(false);
-    console.log(formData);
+    apiPostRequest("/api/reset/check",undefined,{
+      password : formData.newPassword,
+      email,
+      verify_code:formData.verify_code 
+
+    }).then(res =>{
+      toast({
+        title: `رمز عبور شما با موفقیت بروزرسانی شد!`,
+        status: "error",
+        position: "top-right",
+      });
+      navigate("/sign-in")
+    }).catch(err => {
+     if(err.response.status === 404 ){
+       toast({
+         title: `کد تایید معتبر نمی باشد!`,
+         status: "error",
+         position: "top-right",
+       });
+     }else{
+       toast({
+         title: `خطایی رخ داده است!`,
+         status: "error",
+         position: "top-right",
+       });
+     }
+    })
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;

@@ -100,12 +100,10 @@ const SignUp = () => {
               status: "success",
               position: "top-right",
             });
-            setLoading(false);
             navigate("/sign-in");
           })
           .catch(() => {
             setError(true);
-            setLoading(false);
 
             setFormData((pState) => {
               return {
@@ -113,6 +111,8 @@ const SignUp = () => {
                 password: "",
                 restpass: "",
               };
+            }).finally(() => {
+              setLoading(false);
             });
 
             toast({
@@ -131,10 +131,9 @@ const SignUp = () => {
         position: "top-right",
         isClosable: true,
       });
-    }
-    setTimeout(() => {
+    } finally {
       setLoading(false);
-    }, 3000);
+    }
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;

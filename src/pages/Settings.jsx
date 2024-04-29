@@ -225,21 +225,16 @@ const Settings = () => {
             status: "success",
             position: "top-right",
           });
-          setLoadingOpEmails(false);
         }
       })
       .catch((err) => {
         console.log(err);
-        setLoadingOpEmails(false);
       })
       .finally(() => {
         onClose();
         setOperators([]);
+        setLoadingOpEmails(false);
       });
-
-    setTimeout(() => {
-      setLoadingOpEmails(false);
-    }, 3000);
   };
 
   console.log(operators);

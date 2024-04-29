@@ -84,7 +84,6 @@ const SignIn = () => {
     apiPostRequest("/api/auth/login", undefined, formData)
       .then((res) => {
         dispatch(signInSuccess(res.data));
-        setLoading(false);
         navigate("/");
       })
       .catch((err) => {
@@ -98,13 +97,11 @@ const SignIn = () => {
           password: "",
         });
 
-        setLoading(false);
         setError(true);
+      }).finally(() => {
+        setLoading(false);
       });
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
