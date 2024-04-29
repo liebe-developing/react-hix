@@ -100,34 +100,47 @@ const ResetPassword = () => {
   /* Write the rest of codes to send verify code and new password to database */
   const handleResetPassword = (e) => {
     e.preventDefault();
-    setLoadingResetPassword(false);
-    apiPostRequest("/api/reset/check",undefined,{
-      password : formData.newPassword,
-      email,
-      verify_code:formData.verify_code 
-
-    }).then(res =>{
+    if(formData.newPassword.length < 4){
+      
       toast({
-        title: `رمز عبور شما با موفقیت بروزرسانی شد!`,
-        status: "error",
-        position: "top-right",
-      });
-      navigate("/sign-in")
-    }).catch(err => {
-     if(err.response.status === 404 ){
-       toast({
-         title: `کد تایید معتبر نمی باشد!`,
-         status: "error",
-         position: "top-right",
-       });
-     }else{
-       toast({
-         title: `خطایی رخ داده است!`,
-         status: "error",
-         position: "top-right",
-       });
-     }
-    })
+          title: `رمز عبور باید بین 4 تا 16 کاراکتر باشد`,
+          status: "error",
+          position: "top-right",
+      })
+      
+    }else{
+      setLoading(true)
+      setLoadingResetPassword(false);
+      apiPostRequest("/api/reset/check", undefined, {
+        password: formData.newPassword,
+        email,
+        verify_code: formData.verify_code
+
+      }).then(res => {
+        toast({
+          title: `رمز عبور شما با موفقیت بروزرسانی شد!`,
+          status: "success",
+          position: "top-right",
+        });
+        navigate("/sign-in")
+      }).catch(err => {
+        if (err.response.status === 404) {
+          toast({
+            title: `کد تایید معتبر نمی باشد!`,
+            status: "error",
+            position: "top-right",
+          });
+        } else {
+          toast({
+            title: `خطایی رخ داده است!`,
+            status: "error",
+            position: "top-right",
+          });
+        }
+      }).finally(()=>{
+        setLoading(false)
+      })
+    }
   };
 
   const spinAnimation = `${moveUpAndDown} infinite 2s linear alternate`;
