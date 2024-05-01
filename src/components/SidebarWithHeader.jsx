@@ -74,7 +74,6 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
       pos="fixed"
       h="full"
       overflowY="auto"
-      // py={2.5}
       {...rest}
     >
       <Flex
@@ -124,11 +123,6 @@ const SidebarContent = ({ onClose, userContent, ...rest }) => {
             <NavItem icon={link.icon}>{link.name}</NavItem>
           </Link>
         );
-        //  : (
-        //   <NavItem icon={link.icon} key={link.name}>
-        //     {link.name}
-        //   </NavItem>
-        // );
       })}
       <Link to="/price-plan">
         <Box

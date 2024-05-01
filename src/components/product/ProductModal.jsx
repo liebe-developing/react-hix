@@ -131,17 +131,16 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
               >
                 <Box
                   flex={{ base: 1.5, md: 1 }}
-                  h={{ base: "300px", md: "440px" }}
+                  h={{ base: "auto", md: "440px" }}
                   minH={{ base: "300px", md: "440px" }}
                   w={{ base: "95%", md: 350 }}
-                  pos="sticky"
                   top={0}
                   right={0}
                 >
                   {dataContentModal.image && (
                     <Image
-                      w="full"
-                      h="full"
+                      w="100%"
+                      h="70%"
                       objectFit="cover"
                       name={productFormData.title}
                       src={dataContentModal.image}
@@ -199,25 +198,3 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
 
 export default ProductModal;
 
-//  content data
-// attributes: ""
-
-// brand: "Nitu"
-
-// category_id: 10
-
-// description: "نوع:تبدیل,نوع رابط:MICRO USB به USB"
-
-// id: 25
-
-// image: "https://static.fafait.net/img/480-480-/media/products/332/248308.png.webp"
-
-// price: 69000
-
-// status: true
-
-// title: "تبدیل OTG USB به Micro-USB نیتو مدل NT-CN17"
-
-// url: "https://fafait.net/product/42963"
-
-// user_plan_id: 1
