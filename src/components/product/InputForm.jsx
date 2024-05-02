@@ -10,7 +10,7 @@ const InputForm = ({ handleChange, productFormData, priceNumInput }) => {
     image,
     price,
     attributes,
-    weight,
+    // weight,
     brand,
     category_title,
   } = productFormData;
@@ -56,14 +56,14 @@ const InputForm = ({ handleChange, productFormData, priceNumInput }) => {
         name="attributes"
         onChange={handleChange}
       />
-      <Field
+      {/* <Field
         label="وزن"
         value={weight}
         placeholder="وزن محصول"
         style={{ border: "1px solid gray" }}
         name="weight"
         onChange={handleChange}
-      />
+      /> */}
       <Field
         label="برند"
         value={brand}

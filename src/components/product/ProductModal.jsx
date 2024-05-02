@@ -43,7 +43,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
     price: dataContentModal.price,
     category_title: dataContentModal.category,
     attributes: dataContentModal.attributes,
-    weight: dataContentModal.weight,
+    // weight: dataContentModal.weight,
   });
 
   const handleChange = (e) => {
@@ -59,7 +59,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
   };
 
   const handleChangeCheckbox = () => {
-    setProductFormData({ status: !productFormData.status });
+    setProductFormData((pState) => ({...pState, status: !productFormData.status }));
   };
 
   const handleEditProduct = (e) => {
@@ -141,7 +141,7 @@ const ProductModal = ({ isOpen, onClose, dataContentModal }) => {
                     <Image
                       w="100%"
                       h="70%"
-                      objectFit="cover"
+                      objectFit="contain"
                       name={productFormData.title}
                       src={dataContentModal.image}
                       loading="lazy"
